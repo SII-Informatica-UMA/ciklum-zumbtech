@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormularioContactoComponent} from './formulario-contacto/formulario-contacto.component'
 
 @Component({
   selector: 'app-root',
