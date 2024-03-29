@@ -41,26 +41,51 @@ Este proyecto hace uso de las siguientes tecnologías:
 3. Instala las dependencias necesarias:
    ```bash
    npm install
-4. Configura la conexión con Firebase para la autenticación de usuarios y el almacenamiento de datos.
-5. Ejecuta la aplicación:
+4. Ejecuta la aplicación:
    ```bash
    ng serve -o
-6. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
+5. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
 ## Información para Colaboradores
 
 
-1. **Crear Ramas Individuales**: Antes de comenzar a trabajar en una nueva característica o solucionar un problema, siempre crea una rama separada utilizando el comando `git checkout -b nombre_de_la_rama`. Esto asegurará que cada contribución esté aislada y se pueda manejar de manera independiente.
-
-2. **Hacer Commits en la Rama Respectiva**: Realiza tus cambios y commits en la rama que has creado para tu tarea específica. Utiliza el siguiente comando para hacer commits en tu rama:
+1. **Crear y Gestionar Ramas Individuales**: Antes de comenzar a trabajar en una nueva característica o solucionar un problema, siempre crea una rama separada utilizando el comando
    ```bash
-   git add .
+      git checkout nombre_de_la_rama
+   ```
+    Esto asegurará que cada contribución esté aislada y se pueda manejar de manera independiente.
+    En caso de ya existir la rama en remoto y quere conectar la información en local, introducir el siguiente comando:
+   ```bash
+      git pull origin nombre_de_la_rama
+   ```
+   En caso de haber hecho muchos cambios en una rama en local y querer descartarlos todos y tener los datos de la versión más actualizada, insertar:
+   ```bash
+      git clean -fd
+      git pull origin nombre_de_la_rama
+   ```
+
+4. **Hacer Commits en la Rama Respectiva**: Realiza tus cambios y commits en la rama que has creado para tu tarea específica. Utiliza el siguiente comando para saber que archivos has modificado y elegir cuáles subir::
+   ```bash
+   git diff --name-only inicio/sesión
+   ```
+   Luego elegir uno a uno los archivos que queremos hacerles commit:
+   ```bash
+   git add nombre_archivo_1 nombre_archivo_2 ... nombre_archivo_n
+   ```
+   Y por último hacer el commit junto con un mensaje descriptivo:
+   ```bash
    git commit -m "Descripción clara y concisa de tus cambios"
+   ```
 
-3. **Sincronizar con el Repositorio Remoto**: Antes de hacer un push de tus cambios al repositorio remoto, asegúrate de sincronizar tu rama con la rama principal (`main`) utilizando el comando `git pull origin main`. Esto ayudará a evitar conflictos y mantener tu rama actualizada con los cambios más recientes del proyecto.
-
-4. **Revisión de Código**: Una vez que hayas completado tu trabajo y estés listo para fusionarlo con la rama principal (`main`), haz un pull request desde tu rama hacia `main`. Esto permitirá que otros colaboradores revisen tus cambios, hagan comentarios y proporcionen retroalimentación antes de que se realice la fusión. Puedes hacerlo desde la interfaz de usuario de GitHub o utilizando el siguiente comando:
+6. **Sincronizar con el Repositorio Remoto**: Antes de hacer un push de tus cambios al repositorio remoto, asegúrate de sincronizar tu rama con la rama principal (`main`). Sigue estos pasos:
    ```bash
-   git push origin nombre_de_la_rama
+   git checkout main
+   git pull origin main
+   git merge nombre_de_tu_rama
+   ```
+
+8. **Revisión de Código**: Una vez que hayas completado tu trabajo y estés listo para fusionarlo con la rama principal (`main`), haz un pull request desde tu rama hacia `main`. Esto permitirá que otros colaboradores revisen tus cambios, hagan comentarios y proporcionen retroalimentación antes de que se realice la fusión. Puedes hacerlo desde la interfaz de usuario de GitHub o utilizando el siguiente comando:
+   ```bash
+   git push origin main
 ## Soporte
 
 Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en [correo electrónico o página web].
