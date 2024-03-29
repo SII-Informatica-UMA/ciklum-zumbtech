@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {ContactosService } from './usuario.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Usuario} from './usuario'
 
 @Component({
   selector: 'app-root',
@@ -14,18 +17,10 @@ export class AppComponent {
   }
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private contactosService: ContactosService, private modalService: NgbModal) { }
 
-  registrarUsuario(nombre: string, email: string, password: string) {
-    const url = 'http://localhost:8080'; // Reemplaza con la URL y el endpoint correctos
-    const body = { 
-      nombre: nombre,
-      apellido1: email,
-      apellido2:email,
-      email:email 
-    }; // Datos del usuario a enviar al backend
-
-    this.http.post(url, body).subscribe(
+  registrarUsuario(user: Usuario) {
+    this.contactosService.addContacto(user).subscribe(
       (response) => {
         console.log('Usuario registrado exitosamente:', response);
         // Puedes manejar la respuesta del backend aquí, por ejemplo, mostrar un mensaje de éxito al usuario
@@ -39,9 +34,17 @@ export class AppComponent {
 
   onClickRegistrar() {
     const nombre = (document.getElementById('nameR') as HTMLInputElement).value;
+    const surname1 = (document.getElementById('surname1R') as HTMLInputElement).value;
+    const surname2 = (document.getElementById('surname2R') as HTMLInputElement).value;
     const email = (document.getElementById('emailR') as HTMLInputElement).value;
     const password = (document.getElementById('passwordR') as HTMLInputElement).value;
-    this.registrarUsuario(nombre, email, password);
+    const user: Usuario = { 
+      name: nombre,
+      surname1: surname1,
+      surname2:surname2,
+      email:email 
+    };
+    this.registrarUsuario(user);
   }
 
 }
