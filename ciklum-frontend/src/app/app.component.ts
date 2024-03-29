@@ -1,19 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html', 
+  templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  // Variables
+export class AppComponent {
+  isRightPanelActive: boolean = false;
 
-  // Constructor
-  constructor() { }
-
-  // Funciones 
-  ngOnInit(): void {
+  togglePanel(): void {
+    this.isRightPanelActive = !this.isRightPanelActive;
   }
-
 }
