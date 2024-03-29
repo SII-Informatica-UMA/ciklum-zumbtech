@@ -50,7 +50,7 @@ Este proyecto hace uso de las siguientes tecnologías:
 
 1. **Crear y Gestionar Ramas Individuales**: Antes de comenzar a trabajar en una nueva característica o solucionar un problema, siempre crea una rama separada utilizando el comando
    ```bash
-      git checkout nombre_de_la_rama
+      git checkout -b nombre_de_la_rama
    ```
     Esto asegurará que cada contribución esté aislada y se pueda manejar de manera independiente.
     En caso de ya existir la rama en remoto y quere conectar la información en local, introducir el siguiente comando:
