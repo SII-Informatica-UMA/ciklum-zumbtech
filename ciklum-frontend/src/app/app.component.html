@@ -1,22 +1,66 @@
-<div class="container">
-    <h1> Texto de prueba </h1>
-    <!-- 
-        <div class="row">
-        <app-formulario-contacto></app-formulario-contacto>
+<div class="container" [ngClass]="{ 'right-panel-active': isRightPanelActive }" id="container">
+    <div class="form-container sign-up-container">
+      <form action="#">
+        <h1>Crea tu Cuenta</h1>
+        <div class="social-container">
+          <a href="#" class="social">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="bi bi-google" id="red"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="bi bi-linkedin"></i>
+          </a>
         </div>
-        <div class="row">
-            <app-detalle-contacto></app-detalle-contacto>
+        <span>o usa tu email como registro</span>
+        <input type="text" id="nameR" placeholder="Name" />
+        <input type="text" id="surname1R" placeholder="First Surname" />
+        <input type="text" id="surname2R" placeholder="Second Surname" />
+        <input type="email" id="emailR" placeholder="Email" />
+        <input type="password" id="passwordR" placeholder="Password" />
+        <input type="password" placeholder="Repeat Password" />
+        <button type="button" id="lila" (click)="onClickRegistrar()">Registrar</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form action="#">
+        <h1>Iniciar Sesión</h1>
+        <div class="social-container">
+          <a href="#" class="social">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="bi bi-google" id="red"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="bi bi-linkedin"></i>
+          </a>
         </div>
-     -->
-     <!-- 
-       -- Ejemplo de código HTML de la rama info/sesion
-
-     <div class="row">
-        <app-tabla-info-sesion></app-tabla-info-sesion>
+        <span>o usa tu email</span>
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+        <a href="#">Olvidaste tu contraseña?</a>
+        <button>Iniciar sesión</button>
+      </form>
     </div>
-    
-    <div class="row">
-        <app-contacto-sesion></app-contacto-sesion>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>¡Bienvenido!</h1>
+          <p>
+            Inicia sesión con tu cuenta
+          </p>
+          <button class="ghost" (click)="togglePanel()" id="signIn">Inicia sesión</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hola!!!</h1>
+          <p>
+            Crear tu cuenta
+          </p>
+          <button class="ghost" (click)="togglePanel()" id="signUp">Registrar</button>
+        </div>
+      </div>
     </div>
-    -->
-</div>
+  </div>
+  
