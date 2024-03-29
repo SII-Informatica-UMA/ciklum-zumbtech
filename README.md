@@ -63,9 +63,9 @@ Este proyecto hace uso de las siguientes tecnologías:
       git pull origin nombre_de_la_rama
    ```
 
-4. **Hacer Commits en la Rama Respectiva**: Realiza tus cambios y commits en la rama que has creado para tu tarea específica. Utiliza el siguiente comando para saber que archivos has modificado y elegir cuáles subir::
+4. **Hacer Commits en la Rama Respectiva**: Realiza tus cambios y commits en la rama que has creado para tu tarea específica. Utiliza el siguiente comando para saber que archivos has modificado y elegir cuáles subir:
    ```bash
-   git diff --name-only inicio/sesión
+   git diff --name-only nombre_de_la_rama
    ```
    Luego elegir uno a uno los archivos que queremos hacerles commit:
    ```bash
