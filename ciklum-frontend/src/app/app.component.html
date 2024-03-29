@@ -14,11 +14,13 @@
           </a>
         </div>
         <span>o usa tu email como registro</span>
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input type="text" id="nameR" placeholder="Name" />
+        <input type="text" id="surname1R" placeholder="First Surname" />
+        <input type="text" id="surname2R" placeholder="Second Surname" />
+        <input type="email" id="emailR" placeholder="Email" />
+        <input type="password" id="passwordR" placeholder="Password" />
         <input type="password" placeholder="Repeat Password" />
-        <button id="lila">Registrar</button>
+        <button type="button" id="lila" (click)="onClickRegistrar()">Registrar</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
