@@ -86,6 +86,11 @@ Este proyecto hace uso de las siguientes tecnologías:
 8. **Revisión de Código**: Una vez que hayas completado tu trabajo y estés listo para fusionarlo con la rama principal (`main`), haz un pull request desde tu rama hacia `main`. Esto permitirá que otros colaboradores revisen tus cambios, hagan comentarios y proporcionen retroalimentación antes de que se realice la fusión. Puedes hacerlo desde la interfaz de usuario de GitHub o utilizando el siguiente comando:
    ```bash
    git push origin main
+   ```
+   También se pueden subir directamente todos los cambios de una rama local a la misma rama en remoto, sin tener que hacer "merge" con main. Esto puede ser útil, si se desea completar una funcionalidad completa antes de subirlo a la rama principal. En ese caso, nos saltaríamos el paso 3 y directamente usaríamos:
+   ```bash
+   git push origin nombre_de_la_rama"
+   ```
 ## Soporte
 
 Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en [correo electrónico o página web].
