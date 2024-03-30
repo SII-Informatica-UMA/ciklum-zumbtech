@@ -53,7 +53,7 @@ Este proyecto hace uso de las siguientes tecnologías:
       git checkout -b nombre_de_la_rama
    ```
     Esto asegurará que cada contribución esté aislada y se pueda manejar de manera independiente.
-    En caso de ya existir la rama en remoto y quere conectar la información en local, introducir el siguiente comando:
+    En caso de ya existir la rama en remoto y querer conectar la información en local, introducir adicionalmente el siguiente comando:
    ```bash
       git pull origin nombre_de_la_rama
    ```
