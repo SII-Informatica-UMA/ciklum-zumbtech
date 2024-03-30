@@ -19,8 +19,9 @@
         <input type="text" id="surname2R" placeholder="Second Surname" />
         <input type="email" id="emailR" placeholder="Email" />
         <input type="password" id="passwordR" placeholder="Password" />
-        <input type="password" placeholder="Repeat Password" />
+        <input type="password" id="password2R" placeholder="Repeat Password" />
         <button type="button" id="lila" (click)="onClickRegistrar()">Registrar</button>
+        <div class="error-message" [ngClass]="{ 'red-text': errorMessageR }" *ngIf="errorMessageR">{{ errorMessageR }}</div>
       </form>
     </div>
     <div class="form-container sign-in-container">
@@ -38,10 +39,11 @@
           </a>
         </div>
         <span>o usa tu email</span>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input type="email" id="emailL" placeholder="Email" />
+        <input type="password" id="passwordL" placeholder="Password" />
         <a href="#">Olvidaste tu contraseña?</a>
-        <button>Iniciar sesión</button>
+        <button (click)="onClickIniciarSesion()">Iniciar Sesión</button>
+        <div class="error-message" [ngClass]="{ 'red-text': errorMessageI }" *ngIf="errorMessageI">{{ errorMessageI }}</div>
       </form>
     </div>
     <div class="overlay-container">

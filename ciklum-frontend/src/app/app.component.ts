@@ -11,6 +11,8 @@ import {Usuario} from './usuario'
 })
 export class AppComponent {
   isRightPanelActive: boolean = false;
+  errorMessageR: string = "";
+  errorMessageI: string = "";
 
   togglePanel(): void {
     this.isRightPanelActive = !this.isRightPanelActive;
@@ -38,13 +40,39 @@ export class AppComponent {
     const surname2 = (document.getElementById('surname2R') as HTMLInputElement).value;
     const email = (document.getElementById('emailR') as HTMLInputElement).value;
     const password = (document.getElementById('passwordR') as HTMLInputElement).value;
+    const password2 = (document.getElementById('password2R') as HTMLInputElement).value;
+    if (!nombre || !surname1 || !surname2 || !email || !password) {
+      // Actualizar el mensaje de error
+      this.errorMessageR = 'Por favor, complete todos los campos';
+      return; // Cancelar el registro
+    }
+    else if(!(password === password2)) {
+      this.errorMessageR = 'Las dos contraseñas deben ser iguales';
+      return; // Cancelar el registro
+    }
     const user: Usuario = { 
-      name: nombre,
-      surname1: surname1,
-      surname2:surname2,
-      email:email 
+      nombre: nombre,
+      apellido1: surname1,
+      apellido2:surname2,
+      email:email,
+      password: password,
+      administrador: false
     };
     this.registrarUsuario(user);
+  }
+
+  onClickIniciarSesion() {
+    const email = (document.getElementById('emailR') as HTMLInputElement).value;
+    const password = (document.getElementById('passwordR') as HTMLInputElement).value;
+    if (!email || !password) {
+      // Actualizar el mensaje de error
+      this.errorMessageI = 'Por favor, complete todos los campos';
+      return; // Cancelar el registro
+    }
+    else {
+      this.errorMessageI = '';
+      return;
+    }
   }
 
 }

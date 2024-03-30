@@ -16,7 +16,6 @@ export class ContactosService {
   }*/
 
   addContacto(contacto: Usuario): Observable<Usuario> {
-    console.log("jpdjj")
     return this.http.post<Usuario>(this.baseURI, contacto);
   }
 
