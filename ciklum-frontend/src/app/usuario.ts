@@ -1,6 +1,8 @@
 export interface Usuario {
-    name: string;
-    surname1: string;
-    surname2: string;
+    nombre: string;
+    apellido1: string;
+    apellido2: string;
     email: string;
+    password: string;
+    administrador: boolean;
 }
