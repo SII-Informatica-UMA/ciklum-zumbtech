@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Usuario } from './usuario';
+import {Usuario } from '../entities/usuario';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 

@@ -22,6 +22,7 @@
         <input type="password" id="password2R" placeholder="Repeat Password" />
         <button type="button" id="lila" (click)="onClickRegistrar()">Registrar</button>
         <div class="error-message" [ngClass]="{ 'red-text': errorMessageR }" *ngIf="errorMessageR">{{ errorMessageR }}</div>
+        <div class="error-message" [ngClass]="{ 'green-text': successMessageR }" *ngIf="successMessageR">{{ successMessageR }}</div>
       </form>
     </div>
     <div class="form-container sign-in-container">
@@ -41,9 +42,10 @@
         <span>o usa tu email</span>
         <input type="email" id="emailL" placeholder="Email" />
         <input type="password" id="passwordL" placeholder="Password" />
-        <a href="#">Olvidaste tu contraseña?</a>
+        <a class="link-primary float-end" [routerLink]="'/forgotten-password'">Olvidaste tu contraseña?</a>
         <button (click)="onClickIniciarSesion()">Iniciar Sesión</button>
         <div class="error-message" [ngClass]="{ 'red-text': errorMessageI }" *ngIf="errorMessageI">{{ errorMessageI }}</div>
+        <div class="error-message" [ngClass]="{ 'green-text': successMessageI }" *ngIf="successMessageI">{{ successMessageI }}</div>
       </form>
     </div>
     <div class="overlay-container">

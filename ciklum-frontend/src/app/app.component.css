@@ -52,7 +52,6 @@ a {
   width: 768px;
   max-width: 100%;
   min-height: 625px;
-  
   position: absolute;
   top: 50%;
   left: 50%;
@@ -226,4 +225,8 @@ button.ghost {
 
 .red-text {
   color: red;
+}
+
+.green-text {
+  color: green;
 }
