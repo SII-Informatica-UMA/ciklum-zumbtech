@@ -1,29 +1,49 @@
-import { Injectable } from '@angular/core';
-import {Usuario } from '../entities/usuario';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Observable, map, of } from "rxjs";
+import { Usuario } from "../entities/usuario";
+import { HttpClient } from "@angular/common/http";
+import { BACKEND_URI } from "../config/config";
+import { JwtResponse, Login } from "../entities/login";
+
+// Este servicio usa el backend real
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactosService {
-  private baseURI: string = 'http://localhost:8080/usuario';
+export class BackendService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
-  /*getContactos(): Observable<Usuario []> {
-    return this.http.get<Usuario []>(this.baseURI);
-  }*/
-
-  addContacto(contacto: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.baseURI, contacto);
+  getUsuarios(): Observable<Usuario[]> {
+    return this.httpClient.get<Usuario[]>(BACKEND_URI + '/usuario');
   }
 
-  /*editarContacto(contacto: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(this.baseURI + '/' + contacto.id, contacto);
+  postUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.httpClient.post<Usuario>(BACKEND_URI + '/usuario', usuario);
   }
 
-  eliminarcContacto(id: number): Observable<HttpResponse<string>> {
-    return this.http.delete(this.baseURI + '/' + id, {observe: "response", responseType: 'text'});
-  }*/
+  putUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.httpClient.put<Usuario>(BACKEND_URI + '/usuario/' + usuario.id, usuario);
+  }
+
+  deleteUsuario(id: number): Observable<void> {
+    return this.httpClient.delete<void>(BACKEND_URI + '/usuario/' + id);
+  }
+
+  getUsuario(id: number): Observable<Usuario> {
+    return this.httpClient.get<Usuario>(BACKEND_URI + '/usuario/' + id);
+  }
+
+  login(log: Login): Observable<string> {
+    return this.httpClient.post<JwtResponse>(BACKEND_URI + '/login', {email: log.email, password: log.password})
+      .pipe(map(jwtResponse => jwtResponse.jwt));
+  }
+
+  forgottenPassword(email: string): Observable<void> {
+    return this.httpClient.post<void>(BACKEND_URI + '/forgottenpassword', {email: email});
+  }
+
+  resetPassword(token: string, password: string): Observable<void> {
+    return this.httpClient.post<void>(BACKEND_URI + '/passwordreset', {token: token, password: password});
+  }
 }
