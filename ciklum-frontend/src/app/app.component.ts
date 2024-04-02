@@ -15,60 +15,55 @@ export class AppComponent {
   successMessageR: string = "";
   errorMessageI: string = "";
   successMessageI: string = "";
-  usuarios: Usuario[] = [];
+  public mostrarComponente: boolean = true;
 
   togglePanel(): void {
     this.isRightPanelActive = !this.isRightPanelActive;
+    this.clearMessages();
+  }
+
+  clearMessages(): void {
     this.errorMessageR = "";
     this.successMessageR = "";
     this.errorMessageI = "";
     this.successMessageI = "";
   }
 
-  constructor(private usuarioService: UsuarioService, private modalService: NgbModal) { }
-
-  ngOnInit(): void {
-    this.usuarios = this.usuarioService.getContactos();
-  }
+  constructor(private usuarioService: BackendService, private modalService: NgbModal) { }
 
   registrarUsuario(user: Usuario) {
     this.successMessageR = "";
     this.errorMessageR = "";
-    for(let i = 0; i < this.usuarios.length; ++i) {
-        if(this.usuarios[i].email === user.email) {
+    this.usuarioService.postUsuario(user).subscribe({
+      next: (usuario) => {
+        this.successMessageI = "Usuario registrado";
+        this.isRightPanelActive = !this.isRightPanelActive;
+      },
+      error: (error) => {
+        if (error.status === 403) {
+          this.errorMessageR = 'Acceso no autorizado';
+        } else {
           this.errorMessageR = 'Correo asociado a una cuenta ya existente';
-          return; 
         }
-    }
-    this.usuarioService.addContacto(user);
-    this.successMessageI = "Usuario registrado";
-    this.isRightPanelActive = !this.isRightPanelActive;
+      }
+    });
   }
 
   iniciarSesionUsuario(log: Login) {
-    this.successMessageI = "";
-    this.successMessageI = "";
-    for(let i = 0; i < this.usuarios.length; ++i) {
-      if(this.usuarios[i].email === log.email) {
-        if(this.usuarios[i].password === log.password) {
-            console.log("logeaste");
-        }
-        else {
-          this.errorMessageI = 'Contraseña incorrecta';
-        }
-        return;
+    this.usuarioService.login(log).subscribe({
+      next: (usuario) => {
+        this.successMessageI = "Loggeado";
+      },
+      error: (error) => {
+        this.errorMessageI = 'Credenciales no correctas';
       }
-      if(i == this.usuarios.length-1) {
-        this.errorMessageI = 'Correo no asociado a ningún usuario';
-        return;
-      }
-    }
-    
+    });
   }
 
   onClickRegistrar() {
+    this.clearMessages();
     const user: Usuario = { 
-      id: this.usuarios.length,
+      id: 0,
       nombre: (document.getElementById('nameR') as HTMLInputElement).value,
       apellido1: (document.getElementById('surname1R') as HTMLInputElement).value,
       apellido2:(document.getElementById('surname2R') as HTMLInputElement).value,
@@ -90,6 +85,7 @@ export class AppComponent {
   }
 
   onClickIniciarSesion() {
+    this.clearMessages();
     const log: Login = { 
       email:(document.getElementById('emailL') as HTMLInputElement).value,
       password: (document.getElementById('passwordL') as HTMLInputElement).value
@@ -100,4 +96,5 @@ export class AppComponent {
     }
     this.iniciarSesionUsuario(log);
   }
+
 }
