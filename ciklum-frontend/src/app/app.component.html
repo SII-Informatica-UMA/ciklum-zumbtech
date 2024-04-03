@@ -1,68 +1,26 @@
-<div class="container" [ngClass]="{ 'right-panel-active': isRightPanelActive }" id="container">
-    <div class="form-container sign-up-container">
-      <form action="#">
-        <h1>Crea tu Cuenta</h1>
-        <div class="social-container">
-          <a href="#" class="social">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="#" class="social">
-            <i class="bi bi-google" id="red"></i>
-          </a>
-          <a href="#" class="social">
-            <i class="bi bi-linkedin"></i>
-          </a>
-        </div>
-        <span>o usa tu email como registro</span>
-        <input type="text" id="nameR" placeholder="Name" />
-        <input type="text" id="surname1R" placeholder="First Surname" />
-        <input type="text" id="surname2R" placeholder="Second Surname" />
-        <input type="email" id="emailR" placeholder="Email" />
-        <input type="password" id="passwordR" placeholder="Password" />
-        <input type="password" id="password2R" placeholder="Repeat Password" />
-        <button type="button" id="lila" (click)="onClickRegistrar()">Registrar</button>
-        <div class="error-message" [ngClass]="{ 'red-text': errorMessageR }" *ngIf="errorMessageR">{{ errorMessageR }}</div>
-      </form>
+<body>
+<div class="row">
+  <div class="col-2">
+    <a *ngIf="!usuarioSesion"  [routerLink]="'/login'"><button class="btn btn-primary">Empezar</button></a>
+    <button *ngIf="usuarioSesion"  class="btn btn-primary" (click)="logout()">Cerrar sesión</button>
+</div>
+    <h3 class="col-6">Gestión de entrenamientos deportivos</h3>
+    <div class="col-1" *ngIf="usuarioSesion">
+      <p class="align-middle m-1">Bienvenido, {{usuarioSesion.nombre}}</p>
     </div>
-    <div class="form-container sign-in-container">
-      <form action="#">
-        <h1>Iniciar Sesión</h1>
-        <div class="social-container">
-          <a href="#" class="social">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="#" class="social">
-            <i class="bi bi-google" id="red"></i>
-          </a>
-          <a href="#" class="social">
-            <i class="bi bi-linkedin"></i>
-          </a>
-        </div>
-        <span>o usa tu email</span>
-        <input type="email" id="emailL" placeholder="Email" />
-        <input type="password" id="passwordL" placeholder="Password" />
-        <a href="#">Olvidaste tu contraseña?</a>
-        <button (click)="onClickIniciarSesion()">Iniciar Sesión</button>
-        <div class="error-message" [ngClass]="{ 'red-text': errorMessageI }" *ngIf="errorMessageI">{{ errorMessageI }}</div>
-      </form>
+    <div class="col-1" >
+      <select *ngIf="usuarioSesion" class="form-select" [(ngModel)]="rolIndex">
+        <option *ngFor="let rol of usuarioSesion.roles, let i = index" [value]="i" >{{rol.rol | titlecase}} {{rol.nombreCentro?'en '+rol.nombreCentro:''}}</option>
+      </select>
     </div>
-    <div class="overlay-container">
-      <div class="overlay">
-        <div class="overlay-panel overlay-left">
-          <h1>¡Bienvenido!</h1>
-          <p>
-            Inicia sesión con tu cuenta
-          </p>
-          <button class="ghost" (click)="togglePanel()" id="signIn">Inicia sesión</button>
-        </div>
-        <div class="overlay-panel overlay-right">
-          <h1>Hola!!!</h1>
-          <p>
-            Crear tu cuenta
-          </p>
-          <button class="ghost" (click)="togglePanel()" id="signUp">Registrar</button>
-        </div>
-      </div>
-    </div>
+    
+</div>
+
+
+  <div class="navbar-nav">
+    <a *ngIf="!usuarioSesion" class="nav-item nav-link" [routerLink]="''">Home</a>
+    <a *ngIf="usuarioSesion" class="nav-item nav-link" [routerLink]="'principal'">Home</a>
   </div>
-  
+</body>
+
+<router-outlet />
