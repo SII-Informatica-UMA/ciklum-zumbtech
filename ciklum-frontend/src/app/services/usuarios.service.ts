@@ -7,6 +7,7 @@ import * as jose from 'jose';
 import { Usuario } from "../entities/usuario";
 import { BackendFakeService } from "./backend.fake.service";
 import { BackendService } from "./backend.service";
+import { LoginComponent } from "../login/login.component";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { BackendService } from "./backend.service";
 export class UsuariosService {
   _rolCentro?: RolCentro;
 
-  constructor(private backend: BackendFakeService) {}
+  constructor(private backend: BackendService) {}
 
   doLogin(login: Login): Observable<UsuarioSesion> {
     let jwtObs = this.backend.login(login.email, login.password);

@@ -47,6 +47,6 @@ export class AppComponent {
   logout() {
     this.usuarioService.doLogout();
     this.actualizarRol();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/');
   }
 }

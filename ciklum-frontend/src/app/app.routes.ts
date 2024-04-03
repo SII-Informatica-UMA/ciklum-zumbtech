@@ -23,7 +23,7 @@ export const routes: Routes = [
     component: ListadoUsuarioComponent
   },
   {
-    path: '',
+    path: 'principal',
     component: PrincipalComponent
   }
 ];

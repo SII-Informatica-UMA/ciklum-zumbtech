@@ -1,0 +1,32 @@
+body .row {
+    display: flex;
+    flex-wrap: nowrap; 
+    justify-content: center; /* Alinea los elementos al final (derecha) */
+    align-items: flex-start; /* Alinea los elementos arriba */
+    height: 100px; /* Altura del div contenedor */
+    padding: 20px; /* Añade un poco de espacio interno al div */
+    background-color: lightgray;
+}
+
+body div h3 {
+    width: 600px;
+}
+
+body {
+    height: 100px;
+}
+
+body .row:nth-child(4) {
+    order: -1;
+
+}
+
+  .navbar-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Opcional: ajusta el ancho según sea necesario */
+    padding: 10px; /* Opcional: añade espaciado interior */
+    text-align: center; /* Opcional: centra el contenido horizontalmente */
+  }
+  
