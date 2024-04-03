@@ -1,0 +1,42 @@
+<div class="container">
+    <button class="btn btn-primary mb-3" (click)="vueltaAlHome()">Home</button>
+    <div class="row" *ngIf="mostrarEstadoPesatana()">
+        <div class="container">
+            <h4> Sesión X del usuario Y</h4>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nombre de Sesión</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sesion of sesiones">
+                  <td>{{ sesion.nombre }}</td>
+                  <td>{{ sesion.descripcion }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-info m-1" (click)="verSesion()">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary m-1" (click)="editarSesion(sesion)">
+                      <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger m-1" (click)="eliminarSesion(sesion)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col">
+                <button type="button" class="btn btn-outline-success bi bi-plus-lg" (click)="agregarSesion()">
+                  
+                </button>
+              </div>
+            </div>
+          </div>
+          
+    </div>
+</div>

@@ -1,0 +1,81 @@
+<h3>Tabla de Información de la sesión</h3>
+
+<div class="seccion">
+    <div class="usuario">
+        <h2 style="text-align: center;">Información del usuario</h2>
+        <p>
+            <b>Nombre:</b>
+            {{sesion.usuario.nombre}}
+        <p>
+            <b>Apellidos:</b>
+            {{sesion.usuario.apellidos}}
+        <p>
+            <b>Peso:</b>
+            {{sesion.usuario.peso}}
+        <p>
+            <b>Altura:</b>
+            {{sesion.usuario.altura}}
+    </div>
+    <div class="ejercicio">
+        <h2 style="text-align: center;">Información de la sesión</h2>
+        <p>
+            <b>Latidos por minuto:</b>
+            {{sesion.lpm}}
+        <p>
+            <b>Calorias consumidas:</b>
+            {{sesion.cal_consumidas}}
+        <p>
+            <b>Tiempo de ejercicio:</b>
+            {{sesion.tiempo_ejercicio}}
+    </div>
+</div>
+<div class="entrenador">
+    <p>
+        <b>Ha sido entrenado por:</b> 
+        {{sesion.entrenador.nombre}}
+        {{sesion.entrenador.apellidos}}
+    </p>
+</div>
+
+ <!--
+<table>
+    <div class="usuario">
+        <tr>
+            <th>Nombre:</th>
+            <td>{{sesion.usuario.nombre}}</td>
+        </tr>
+        <tr>
+            <th>Apellidos:</th>
+            <td>{{sesion.usuario.apellidos}}</td>
+        </tr>
+        <tr>
+            <th>Peso:</th>
+            <td>{{sesion.usuario.peso}}</td>
+        </tr>
+        <tr>
+            <th>Altura:</th>
+            <td>{{sesion.usuario.altura}}</td>
+        </tr>
+    </div>
+    <div class="ejercicio">
+        <tr>
+            <th>Latidos por minuto:</th>
+            <td>{{sesion.lpm}}</td>
+        </tr>
+        <tr>
+            <th>Calorias consumidas:</th>
+            <td>{{sesion.cal_consumidas}}</td>
+        </tr>
+        <tr>
+            <th>Tiempo de ejercicio:</th>
+            <td>{{sesion.tiempo_ejercicio}}</td>
+        </tr>
+    </div>
+</table>
+-->
+<!-- 
+
+    AQUI VAN LOS DETALLES DE LA TABLA
+
+
+ -->
