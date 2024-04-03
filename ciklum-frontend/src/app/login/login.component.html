@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="card" *ngIf="!usuario">
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="email" class="col-form-label">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="loginInfo.email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" [(ngModel)]="loginInfo.password" name="password"
+              required>
+          </div>
+          <button (click)="login()" class="btn btn-primary mb-3">Login</button>
+          <a class="link-primary float-end" [routerLink]="'/forgotten-password'">He olvidado mi contraseña</a>
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{error}}
+          </div>
+        </div>
+      </div>
+        <div class="card" *ngIf="usuario">
+          <div class="card-body">
+            <p class="alert alert-warning">Si quiere hacer login debe cerrar primero la sesión actual.</p>
+          </div>
+        </div>
+    </div>
+  </div>

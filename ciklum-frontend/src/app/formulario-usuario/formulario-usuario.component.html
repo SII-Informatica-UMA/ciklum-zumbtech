@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">{{accion}} usuario</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cierre usuario')"></button>
+</div>
+<div class="modal-body">
+  <form class="form-group" novalidate>
+    <label for="nombre">Nombre:</label>
+    <input class="form-control" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" placeholder="nombre">
+    <label for="apellido1">Primer apellido:</label>
+    <input class="form-control" id="apellido1" name="apellido1" [(ngModel)]="usuario.apellido1"
+      placeholder="primer apellido">
+    <label for="apellido2">Segundo apellido:</label>
+    <input class="form-control" id="apellido2" name="apellido2" [(ngModel)]="usuario.apellido2"
+      placeholder="segundo apellido">
+    <label for="email">E-mail:</label>
+    <input class="form-control" id="email" name="email" [(ngModel)]="usuario.email" placeholder="cuenta@dominio.com">
+    <label for="contrasenia">Contraseña:</label>
+    <input class="form-control" [class.is-invalid]="error" id="contrasenia" name="contrasenia"
+      [(ngModel)]="usuario.password" placeholder="(deje en blanco para mantener o generar)" type="password">
+    <div *ngIf="error" class="invalid-feedback">
+      {{error}}
+    </div>
+    <label for="rcontrasenia">Repita contraseña:</label>
+    <input class="form-control" [class.is-invalid]="error" id="rcontrasenia" name="rcontrasenia" [(ngModel)]="rpassword"
+      placeholder="(deje en blanco para mantener o generar)" type="password">
+
+    <div class="form-check">
+      <input class="form-check-input" id="administrador" name="administrador" [(ngModel)]="usuario.administrador"
+        type="checkbox">
+      <label class="form-check-label" for="administrador">Administrador</label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="guardarUsuario()">Guardar</button>
+</div>
