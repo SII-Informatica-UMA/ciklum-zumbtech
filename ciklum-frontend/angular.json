@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "practica5": {
+    "gestion-usuarios": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -11,11 +11,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ciklum-zumbtech",
+            "outputPath": "dist/gestion-usuarios",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -48,12 +48,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -62,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "practica5:build:production"
+              "buildTarget": "gestion-usuarios:build:production"
             },
             "development": {
-              "browserTarget": "practica5:build:development"
+              "buildTarget": "gestion-usuarios:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +70,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "practica5:build"
+            "buildTarget": "gestion-usuarios:build"
           }
         },
         "test": {
@@ -96,8 +93,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

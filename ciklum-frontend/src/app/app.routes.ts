@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ListadoUsuarioComponent } from './listado-usuario/listado-usuario.component';
 import { PrincipalComponent } from './principal/principal.component';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: AppComponent
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'forgotten-password',
@@ -23,7 +23,7 @@ export const routes: Routes = [
     component: ListadoUsuarioComponent
   },
   {
-    path: 'principal',
+    path: '',
     component: PrincipalComponent
   }
 ];

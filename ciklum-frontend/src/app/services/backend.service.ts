@@ -3,7 +3,7 @@ import { Observable, map, of } from "rxjs";
 import { Usuario } from "../entities/usuario";
 import { HttpClient } from "@angular/common/http";
 import { BACKEND_URI } from "../config/config";
-import { JwtResponse, Login } from "../entities/login";
+import { JwtResponse } from "../entities/login";
 
 // Este servicio usa el backend real
 
@@ -34,8 +34,8 @@ export class BackendService {
     return this.httpClient.get<Usuario>(BACKEND_URI + '/usuario/' + id);
   }
 
-  login(log: Login): Observable<string> {
-    return this.httpClient.post<JwtResponse>(BACKEND_URI + '/login', {email: log.email, password: log.password})
+  login(email: string, password: string): Observable<string> {
+    return this.httpClient.post<JwtResponse>(BACKEND_URI + '/login', {email: email, password: password})
       .pipe(map(jwtResponse => jwtResponse.jwt));
   }
 
