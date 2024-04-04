@@ -4,3 +4,25 @@
 }
 
 
+
+.locked-button {
+    background-color: darkred; /* Color rojo */
+    border-color: #FF0000; /* Color rojo */
+    position: relative; /* Permite posicionar el icono absolutamente */
+}
+
+.locked-button2 {
+    border-color: darkgreen; /* Color rojo */
+    position: relative; /* Permite posicionar el icono absolutamente */
+}
+
+
+
+.locked-button i {
+    position: absolute; /* Posiciona el icono absolutamente */
+    right: 10px; /* Ajusta la posición del icono desde el borde derecho */
+    top: 50%; /* Centra verticalmente el icono */
+    transform: translateY(-50%); /* Ajusta la posición vertical del icono */
+    color: white; /* Color del icono */
+}
+

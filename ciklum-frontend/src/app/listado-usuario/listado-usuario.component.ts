@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Usuario, UsuarioImpl } from '../entities/usuario';
 import { Rol } from '../entities/login';
 import { FormularioUsuarioComponent } from '../formulario-usuario/formulario-usuario.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listado-usuario',
@@ -17,9 +18,16 @@ import { FormularioUsuarioComponent } from '../formulario-usuario/formulario-usu
 export class ListadoUsuarioComponent {
   usuarios: Usuario [] = [];
 
-  constructor(private usuariosService: UsuariosService, private modalService: NgbModal) {
+  constructor(private usuariosService: UsuariosService, private modalService: NgbModal, private router: Router) {
     this.actualizarUsuarios();
    }
+
+
+
+  vueltaAlHome(): void {
+    //this.estadoPestanaService.cambiarMostrarPestana(true);
+    this.router.navigateByUrl('principal');
+  }
 
   private get rol() {
     return this.usuariosService.rolCentro;
