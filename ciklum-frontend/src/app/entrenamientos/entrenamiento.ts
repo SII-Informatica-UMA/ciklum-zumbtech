@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { EstadoPestanaService } from './estado-pestana.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,16 +13,12 @@ import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/cont
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
 })
 export class Entrenamiento implements OnInit {
-  mostrarPestana: boolean; // Definir la propiedad mostrarPestana
   sesiones: any[] = [];
 
-  constructor(private estadoPestanaService: EstadoPestanaService, private router: Router) {
-    this.mostrarPestana = estadoPestanaService.mostrarEstadoPestana();
+  constructor(private router: Router) {
   }
 
-  mostrarEstadoPesatana(): boolean {
-    return this.estadoPestanaService.mostrarEstadoPestana();
-  }
+  
 
   vueltaAlHome(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);
@@ -42,7 +37,6 @@ export class Entrenamiento implements OnInit {
   verSesion() {
     // Navegar a la ruta 'contacto-sesion'
     this.router.navigate(['detalle']);
-    this.estadoPestanaService.cambiarMostrarPestana(false);
     
   }
 
