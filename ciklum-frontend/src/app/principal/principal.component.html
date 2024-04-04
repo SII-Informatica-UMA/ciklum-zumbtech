@@ -1,4 +1,8 @@
-<h4>Página principal</h4>
-<a [routerLink]="'/usuarios'">Gestión de usuarios (solo administradores)</a>
-<br>
-<a [routerLink]="'/entrenamiento'">cosodeivan</a>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row">
+        <div class="col-lg-8">
+            <button [routerLink]="'/usuarios'" class="btn btn-primary btn-lg btn-block custom-button mb-3">Gestión de usuarios (solo administradores)</button>
+            <button [routerLink]="'/entrenamiento'" class="btn btn-success btn-lg btn-block custom-button">Servicio de Entrenamientos (solo clientes)</button>
+        </div>
+    </div>
+</div>
