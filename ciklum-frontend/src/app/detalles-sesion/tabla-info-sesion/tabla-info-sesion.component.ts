@@ -4,6 +4,7 @@ import { sesion_user } from './sesion-usuario';
 @Component({
   selector: 'app-tabla-info-sesion',
   templateUrl: './tabla-info-sesion.component.html',
+  standalone: true,
   styleUrls: ['./tabla-info-sesion.component.css']
 })
 export class TablaInfoSesionComponent {

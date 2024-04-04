@@ -41,7 +41,7 @@ export class Entrenamiento implements OnInit {
 
   verSesion() {
     // Navegar a la ruta 'contacto-sesion'
-    this.router.navigate(['/detalles-sesion']);
+    this.router.navigate(['detalle']);
     this.estadoPestanaService.cambiarMostrarPestana(false);
     
   }
