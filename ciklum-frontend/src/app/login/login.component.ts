@@ -65,7 +65,7 @@ export class LoginComponent {
   errorMessageI: string = "";
   successMessageI: string = "";
   login: Login = { email: '', password: '' };
-  user: Usuario = { id: 0, nombre: '', apellido1: '', apellido2:'', email:'', password: '', administrador: false };
+  user: Usuario = { id: 0, nombre: '', apellido1: '', apellido2:'', email:'', password: '', administrador: true };
   password2: string = '';
 
   togglePanel(): void {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UsuarioD, usuarioDummy } from '../../entities/usuarioD';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Importa NgbModal
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,7 +20,13 @@ export class ContactoSesionComponent {
 
 
   // Constructor
-  constructor(public modalService: NgbModal) {} // Inyecta NgbModal en el constructor
+  constructor(public modalService: NgbModal, private router: Router) {} // Inyecta NgbModal en el constructor
+
+
+  vueltaAlHome(): void {
+    //this.estadoPestanaService.cambiarMostrarPestana(true);
+    this.router.navigateByUrl('entrenamiento');
+  }
 
   // Funciones
 

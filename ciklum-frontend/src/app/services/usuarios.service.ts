@@ -39,6 +39,7 @@ export class UsuariosService {
       if (usuarioSesion.roles.length > 0) {
         this.rolCentro = usuarioSesion.roles[0];
       } else {
+        //this.rolCentro = {rol:Rol.CLIENTE, centro:0, nombreCentro:""};
         this.rolCentro = undefined;
       }
       return usuarioSesion;
