@@ -93,7 +93,7 @@ Este proyecto hace uso de las siguientes tecnologías:
    ```
 ## Soporte
 
-Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en [correo electrónico o página web].
+Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en 0610948715@uma.es.
 
 ¡Gracias por tu interés en nuestro proyecto! Esperamos tus contribuciones.
 
