@@ -3,54 +3,55 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/contacto-sesion.component';
 
 @Component({
-  selector: 'app-entrenamiento',
-  templateUrl: './entrenamiento.html', 
-  styleUrls: ['./entrenamiento.css'],
+  selector: 'app-sesiones-lista',
   standalone: true,
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
+  templateUrl: './sesiones-lista.component.html',
+  styleUrl: './sesiones-lista.component.css'
 })
-export class Entrenamiento implements OnInit {
-  planes: any[] = [];
+export class SesionesListaComponent {
+  sesiones: any[] = [];
 
   constructor(private router: Router) {
   }
 
   
-
-  vueltaAlHome(): void {
+  backToEntrenamientos(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);
-    this.router.navigateByUrl('principal');
+    this.router.navigateByUrl('entrenamientos');
   }
+
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
-    this.planes = [
-      { nombre: 'Plan 1', descripcion: 'Descripción del plan de entrenamiento 1' },
-      { nombre: 'Plan 2', descripcion: 'Descripción del plan de entrenamiento 2' },
+    this.sesiones = [
+      { nombre: 'Sesión 1', descripcion: 'Descripción de la sesión 1' },
+      { nombre: 'Sesión 2', descripcion: 'Descripción de la sesión 2' },
       // Agrega más sesiones si es necesario
     ];
   }
 
-  verPlan() {
+  verSesion() {
     // Navegar a la ruta 'contacto-sesion'
-    this.router.navigate(['sesiones']);
+    this.router.navigate(['detalles']);
     
   }
 
-  editarPlan(planes: any) {
+  editarSesion(sesion: any) {
     // Lógica para editar la sesión
+    console.log('Editar sesión:', sesion);
   }
 
-  eliminarPlan(planes: any) {
+  eliminarSesion(sesion: any) {
     // Lógica para eliminar la sesión
+    console.log('Eliminar sesión:', sesion);
   }
 
-  agregarPlan() {
+  agregarSesion() {
     // Lógica para añadir una nueva sesión
+    console.log('Añadir nueva sesión');
     // Aquí podrías abrir un formulario para añadir una nueva sesión
   }
-
 }
