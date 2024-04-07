@@ -34,4 +34,7 @@ export class TablaInfoSesionComponent {
   constructor(private userService: UsuariosService) {}
 
   /* Funciones */
+  getDate(dia: Date): number {
+    return dia.getTime();
+  }
 }

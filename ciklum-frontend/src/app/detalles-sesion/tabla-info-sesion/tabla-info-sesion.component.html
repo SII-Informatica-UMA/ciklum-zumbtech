@@ -1,70 +1,30 @@
-<h3>Tabla de Información de la sesión</h3>
+<div class="container">
+    <h4 class="mt-4">SESIÓN {{sesion.id}}</h4>
 
-<div class="seccion">
-    <div class="usuario">
-        <h2 style="text-align: center;">Información del usuario</h2>
-        <p>
-            <b>Inicio:</b>
-            {{sesion.inicio}}
-        <p>
-            <b>Datos de salud:</b>
-            {{sesion.datosSalud}}
-        <div *ngFor="let link of sesion.multimedia">
-            <b>Multimedia:</b>
-            {{link}}
+    <div class="seccion">
+        <div class="usuario">
+            <h2 style="text-align: center;">Información de la sesión</h2>
+                <b>Inicio:</b>
+                {{sesion.inicio}} <br>
+                <b>Fin:</b>
+                {{sesion.fin}} <br>
+                <b>Actividad realizada:</b>
+                {{sesion.decripcion}} <br>
+                <b>Tipo de sesión: </b>
+                {{sesion.presencial ? "Presencial" : "Online"}}
         </div>
-        
-    </div>
-    <div class="ejercicio">
-        <h2 style="text-align: center;">Información de la sesión</h2>
-        
+        <div class="ejercicio">
+            <h2 style="text-align: center;">Informe general</h2>
+            <div>
+                <b>Salud:</b>
+                <div *ngFor="let dato of sesion.datosSalud">
+                    {{dato}}
+                </div>
+                <div *ngFor="let link of sesion.multimedia">
+                    <b>Multimedia:</b>
+                    {{link}}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="entrenador">
-    <p>
-        
-    </p>
-</div>
-
- <!--
-<table>
-    <div class="usuario">
-        <tr>
-            <th>Nombre:</th>
-            <td>{{sesion.usuario.nombre}}</td>
-        </tr>
-        <tr>
-            <th>Apellidos:</th>
-            <td>{{sesion.usuario.apellidos}}</td>
-        </tr>
-        <tr>
-            <th>Peso:</th>
-            <td>{{sesion.usuario.peso}}</td>
-        </tr>
-        <tr>
-            <th>Altura:</th>
-            <td>{{sesion.usuario.altura}}</td>
-        </tr>
-    </div>
-    <div class="ejercicio">
-        <tr>
-            <th>Latidos por minuto:</th>
-            <td>{{sesion.lpm}}</td>
-        </tr>
-        <tr>
-            <th>Calorias consumidas:</th>
-            <td>{{sesion.cal_consumidas}}</td>
-        </tr>
-        <tr>
-            <th>Tiempo de ejercicio:</th>
-            <td>{{sesion.tiempo_ejercicio}}</td>
-        </tr>
-    </div>
-</table>
--->
-<!-- 
-
-    AQUI VAN LOS DETALLES DE LA TABLA
-
-
- -->

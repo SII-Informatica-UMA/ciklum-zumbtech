@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Importa NgbModal
 import { TablaInfoSesionComponent } from './tabla-info-sesion/tabla-info-sesion.component';
 import { ContactoSesionComponent } from './contacto-sesion/contacto-sesion.component';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
@@ -13,6 +14,12 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
 })
 export class DetallesSesionComponent {
 
+  constructor(public modalService: NgbModal, private router: Router) {
+  }
+
+  vueltaASesiones(): void {
+    this.router.navigateByUrl('sesiones');
+  }
 }
 
 

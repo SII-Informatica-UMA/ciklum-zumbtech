@@ -1,0 +1,15 @@
+.detalles-frame {
+    animation-name: slideIn;
+    animation-duration: 2s;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

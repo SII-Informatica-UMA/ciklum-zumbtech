@@ -26,7 +26,7 @@ body {
     margin: auto;
     height: 300px;
     width: 600px;
-    box-shadow: 0px 5px 10px rgb(223, 181, 255);
+    box-shadow: 0px 5px 10px rgb(120, 120, 120);
 }
 
 .entrenador {
@@ -38,21 +38,4 @@ body {
     width: 96%;
     margin-top: 20px;
     box-shadow: 0px 5px 10px rgb(120, 120, 120);
-}
-
-
-
-@keyframes example1 {
-    0%   {left:0px; top:0px;}
-    25%  {left:200px; top:0px;}
-    50%  {background-color: brown; left:0px; top:0px;}
-    75%  {left:-150px; top:0px;}
-    100% {left:0px; top:0px;}
-}
-@keyframes example2 {
-    0%   {left:0px; top:0px;}
-    25%  {left:-200px; top:0px;}
-    50%  {background-color: chartreuse; left:0px; top:0px;}
-    75%  {left:150px; top:0px;}
-    100% {left:0px; top:0px;}
 }
