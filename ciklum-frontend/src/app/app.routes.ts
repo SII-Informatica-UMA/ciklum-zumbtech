@@ -6,9 +6,9 @@ import { ListadoUsuarioComponent } from './listado-usuario/listado-usuario.compo
 import { PrincipalComponent } from './principal/principal.component';
 import { Entrenamiento } from './entrenamientos/entrenamiento';
 import { ContactoSesionComponent } from './detalles-sesion/contacto-sesion/contacto-sesion.component';
-import { SesionesUsuarioComponent } from './sesiones-usuario/sesiones-usuario.component';
 import { TablaInfoSesionComponent } from './detalles-sesion/tabla-info-sesion/tabla-info-sesion.component';
 import { DetallesSesionComponent } from './detalles-sesion/detalles-sesion.component';
+import { SesionesListaComponent } from './entrenamientos/sesiones-lista/sesiones-lista.component';
 
 export const routes: Routes = [
   {
@@ -17,10 +17,10 @@ export const routes: Routes = [
   },
   {
     path: 'sesiones',
-    component: SesionesUsuarioComponent
+    component: SesionesListaComponent
   },
   {
-    path: 'detalle',
+    path: 'detalles',
     component: DetallesSesionComponent
   },
   {
@@ -32,7 +32,7 @@ export const routes: Routes = [
     component: TablaInfoSesionComponent
   },
   {
-    path: 'entrenamiento',
+    path: 'entrenamientos',
     component: Entrenamiento
   },
   {

@@ -3,6 +3,8 @@ import { UsuarioD, usuarioDummy } from '../../entities/usuarioD';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Importa NgbModal
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
 
 
 @Component({
@@ -10,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './contacto-sesion.component.html',
   styleUrls: ['./contacto-sesion.component.css'],
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
 })
 export class ContactoSesionComponent {
   // Variables
@@ -23,9 +25,9 @@ export class ContactoSesionComponent {
   constructor(public modalService: NgbModal, private router: Router) {} // Inyecta NgbModal en el constructor
 
 
-  vueltaAlHome(): void {
+  vueltaASesiones(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);
-    this.router.navigateByUrl('entrenamiento');
+    this.router.navigateByUrl('sesiones');
   }
 
   // Funciones
