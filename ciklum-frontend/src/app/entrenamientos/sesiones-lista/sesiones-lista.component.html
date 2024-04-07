@@ -6,17 +6,17 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Nombre de Sesión</th>
+                  <th>Id de Sesión</th>
                   <th>Descripción</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let sesion of sesiones">
-                  <td>{{ sesion.nombre }}</td>
-                  <td>{{ sesion.descripcion }}</td>
+                  <td>Sesión número {{ sesion.id }}</td>
+                  <td>{{ sesion.trabajoRealizado }}</td>
                   <td>
-                    <button class="btn btn-sm btn-outline-info m-1" (click)="verSesion()">
+                    <button class="btn btn-sm btn-outline-info m-1" (click)="verSesion(sesion.id)">
                       <i class="bi bi-eye-fill"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-primary m-1" (click)="editarSesion(sesion)">

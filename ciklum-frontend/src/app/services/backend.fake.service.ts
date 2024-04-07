@@ -5,6 +5,8 @@ import { SECRET_JWT } from "../config/config";
 import { from } from "rxjs";
 import * as jose from 'jose';
 import { FRONTEND_URI } from "../config/config";
+import { Sesion } from "../entities/sesion";
+import { Plan } from "../entities/sesion";
 
 // Este servicio imita al backend pero utiliza localStorage para almacenar los datos
 
@@ -29,12 +31,62 @@ const usuariosC: Usuario [] = [
   },
 ];
 
+
+const Sesiones: Sesion[] = [
+    {
+      idPlan: 0,
+      inicio: new Date(),
+      fin: new Date(),
+      trabajoRealizado: "jugué a las palas en la playa",
+      multimedia: ["https://www.youtube.com/shorts/-Tj9Ka6CEJw", "https://www.youtube.com/watch?v=xrUVWk5shXo"],
+      decripcion: "soy muy malo y enano",
+      presencial: true,
+      datosSalud: ["tengo asma"],
+      id: 0
+    },
+    {
+      idPlan: 0,
+      inicio: new Date(),
+      fin: new Date(),
+      trabajoRealizado: "dominó con papi",
+      multimedia: ["https://www.youtube.com/watch?v=xrUVWk5shXo"],
+      decripcion: "hamuc",
+      presencial: true,
+      datosSalud: ["ujaja"],
+      id: 1
+    },
+    {
+      idPlan: 1,
+      inicio: new Date(),
+      fin: new Date(),
+      trabajoRealizado: "haciendo press de banca con 500kg",
+      multimedia: ["https://www.youtube.com/watch?v=iu5G37fyyAg"],
+      decripcion: "trembo",
+      presencial: true,
+      datosSalud: ["zoyfuerte"],
+      id: 0
+    },
+  ]
+
+  const Planes: Plan[] = [ 
+    {
+      planId: 0,
+      sesiones: [Sesiones[0], Sesiones[1]]
+    }, 
+    {
+      planId: 1,
+      sesiones: [Sesiones[2]]
+    }
+  ]
+  
+
 @Injectable({
   providedIn: 'root'
 })
 export class BackendFakeService {
   private usuarios: Usuario [];
   private forgottenPasswordTokens;
+  private planes: Plan[];
 
   constructor() {
     let _usuarios = localStorage.getItem('usuarios');
@@ -50,10 +102,41 @@ export class BackendFakeService {
     } else {
       this.forgottenPasswordTokens = new Map();
     }
+    
+    localStorage.removeItem('planes');
+    let _planes = localStorage.getItem('planes');
+    if (_planes) {
+      this.planes = JSON.parse(_planes);
+      this.guardarPlanesEnLocalStorage();
+    } else {
+      this.planes = [...Planes];
+      this.guardarPlanesEnLocalStorage();
+    }
   }
 
   getUsuarios(): Observable<Usuario[]> {
     return of(this.usuarios);
+  }
+
+  getPlanes(): Observable<Plan[]> {
+    console.log(this.planes);
+    return of(this.planes);
+  }
+
+  getSesionesPlan(idPlan: Number): Observable<Sesion[]> {
+    const sesionesEnPlanes1: Sesion[] = [];
+
+    // Iterar sobre cada plan
+    for (const plan of this.planes) {
+        // Verificar si el plan tiene el idPlan deseado
+        if (plan.sesiones && plan.sesiones.length > 0 && plan.sesiones[0].idPlan === idPlan) {
+            // Agregar las sesiones de este plan al arreglo de sesiones si coincide con el idPlan deseado
+            sesionesEnPlanes1.push(...plan.sesiones);
+        }
+    }
+
+    return of(sesionesEnPlanes1);
+
   }
 
   postUsuario(usuario: Usuario): Observable<Usuario> {
@@ -81,6 +164,11 @@ export class BackendFakeService {
 
   private guardarUsuariosEnLocalStorage() {
     localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+  }
+
+  private guardarPlanesEnLocalStorage() {
+    localStorage.removeItem('planes');
+    localStorage.setItem('planes', JSON.stringify(this.planes));
   }
 
   private guardarForgottenPasswordTokensEnLocalStorage() {

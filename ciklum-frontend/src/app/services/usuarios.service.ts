@@ -8,6 +8,7 @@ import { Usuario } from "../entities/usuario";
 import { BackendFakeService } from "./backend.fake.service";
 import { BackendService } from "./backend.service";
 import { LoginComponent } from "../login/login.component";
+import { Plan } from "../entities/sesion";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { LoginComponent } from "../login/login.component";
 export class UsuariosService {
   _rolCentro?: RolCentro;
 
-  constructor(private backend: BackendService) {}
+  constructor(private backend: BackendFakeService) {}
 
   doLogin(login: Login): Observable<UsuarioSesion> {
     let jwtObs = this.backend.login(login.email, login.password);
@@ -90,6 +91,10 @@ export class UsuariosService {
 
   getUsuarios(): Observable<Usuario[]> {
     return this.backend.getUsuarios();
+  }
+
+  getPlanes(): Observable<Plan[]> {
+    return this.backend.getPlanes();
   }
 
   editarUsuario(usuario: Usuario): Observable<Usuario> {

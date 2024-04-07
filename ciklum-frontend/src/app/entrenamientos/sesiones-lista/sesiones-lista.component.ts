@@ -3,6 +3,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { Plan, Sesion } from '../../entities/sesion';
+import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
   selector: 'app-sesiones-lista',
@@ -12,9 +14,9 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
   styleUrl: './sesiones-lista.component.css'
 })
 export class SesionesListaComponent {
-  sesiones: any[] = [];
+  sesiones: Sesion[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UsuariosService) {
   }
 
   
@@ -26,15 +28,15 @@ export class SesionesListaComponent {
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
-    this.sesiones = [
-      { nombre: 'Sesión 1', descripcion: 'Descripción de la sesión 1' },
-      { nombre: 'Sesión 2', descripcion: 'Descripción de la sesión 2' },
-      // Agrega más sesiones si es necesario
-    ];
+    const sesiones = localStorage.getItem('plan');
+    const aux: Plan = sesiones ? JSON.parse(sesiones) : undefined;
+    this.sesiones = aux.sesiones;
   }
 
-  verSesion() {
+  verSesion(sId: Number) {
     // Navegar a la ruta 'contacto-sesion'
+    localStorage.removeItem('sesion');
+    localStorage.setItem('sesion', JSON.stringify(this.sesiones[sId.valueOf()]));
     this.router.navigate(['detalles']);
     
   }

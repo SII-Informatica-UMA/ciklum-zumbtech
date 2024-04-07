@@ -4,36 +4,25 @@
     <div class="usuario">
         <h2 style="text-align: center;">Información del usuario</h2>
         <p>
-            <b>Nombre:</b>
-            {{sesion.usuario.nombre}}
+            <b>Inicio:</b>
+            {{sesion.inicio}}
         <p>
-            <b>Apellidos:</b>
-            {{sesion.usuario.apellidos}}
-        <p>
-            <b>Peso:</b>
-            {{sesion.usuario.peso}}
-        <p>
-            <b>Altura:</b>
-            {{sesion.usuario.altura}}
+            <b>Datos de salud:</b>
+            {{sesion.datosSalud}}
+        <div *ngFor="let link of sesion.multimedia">
+            <b>Multimedia:</b>
+            {{link}}
+        </div>
+        
     </div>
     <div class="ejercicio">
         <h2 style="text-align: center;">Información de la sesión</h2>
-        <p>
-            <b>Latidos por minuto:</b>
-            {{sesion.lpm}}
-        <p>
-            <b>Calorias consumidas:</b>
-            {{sesion.cal_consumidas}}
-        <p>
-            <b>Tiempo de ejercicio:</b>
-            {{sesion.tiempo_ejercicio}}
+        
     </div>
 </div>
 <div class="entrenador">
     <p>
-        <b>Ha sido entrenado por:</b> 
-        {{sesion.entrenador.nombre}}
-        {{sesion.entrenador.apellidos}}
+        
     </p>
 </div>
 

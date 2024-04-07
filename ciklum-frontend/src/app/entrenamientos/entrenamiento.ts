@@ -4,6 +4,9 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/contacto-sesion.component';
+import { UsuariosService } from '../services/usuarios.service';
+import { Sesion } from '../entities/sesion';
+import { Plan } from '../entities/sesion';
 
 @Component({
   selector: 'app-entrenamiento',
@@ -13,9 +16,9 @@ import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/cont
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
 })
 export class Entrenamiento implements OnInit {
-  planes: any[] = [];
+  planes: Plan[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UsuariosService) {
   }
 
   
@@ -27,15 +30,16 @@ export class Entrenamiento implements OnInit {
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
-    this.planes = [
-      { nombre: 'Plan 1', descripcion: 'Descripción del plan de entrenamiento 1' },
-      { nombre: 'Plan 2', descripcion: 'Descripción del plan de entrenamiento 2' },
-      // Agrega más sesiones si es necesario
-    ];
+    this.userService.getPlanes().subscribe(planes => {
+      this.planes = planes;
+    });
+  
   }
 
-  verPlan() {
+  verPlan(idPlan: Number) {
     // Navegar a la ruta 'contacto-sesion'
+    localStorage.removeItem('plan');
+    localStorage.setItem('plan', JSON.stringify(this.planes[idPlan.valueOf()]));
     this.router.navigate(['sesiones']);
     
   }

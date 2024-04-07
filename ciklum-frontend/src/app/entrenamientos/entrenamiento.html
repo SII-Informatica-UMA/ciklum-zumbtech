@@ -6,17 +6,15 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Nombre del Plan</th>
-                  <th>Descripción</th>
+                  <th>Id del Plan</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let plan of planes">
-                  <td>{{ plan.nombre }}</td>
-                  <td>{{ plan.descripcion }}</td>
+                  <td>Plan número {{ plan.planId }}</td>
                   <td>
-                    <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan()">
+                    <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan(plan.planId)">
                       <i class="bi bi-eye-fill"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-primary m-1" (click)="editarPlan(plan)">
