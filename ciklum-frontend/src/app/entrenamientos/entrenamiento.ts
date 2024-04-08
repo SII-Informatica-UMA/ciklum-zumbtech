@@ -17,6 +17,7 @@ import { Plan } from '../entities/sesion';
 })
 export class Entrenamiento implements OnInit {
   planes: Plan[] = [];
+  idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
 
   constructor(private router: Router, private userService: UsuariosService) {
   }
@@ -30,9 +31,8 @@ export class Entrenamiento implements OnInit {
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
-    this.userService.getPlanes().subscribe(planes => {
-      this.planes = planes;
-    });
+    this.actualizarPlanes();
+    console.log(this.idUser);
   
   }
 
@@ -55,6 +55,14 @@ export class Entrenamiento implements OnInit {
   agregarPlan() {
     // Lógica para añadir una nueva sesión
     // Aquí podrías abrir un formulario para añadir una nueva sesión
+    this.userService.postPlan(new Date(), new Date(), "Caca", this.idUser).subscribe(() => {
+      this.actualizarPlanes();
+    });
   }
 
+  actualizarPlanes() {
+    this.userService.getPlanes(this.idUser).subscribe(planes => {
+      this.planes = planes;
+    });
+  }
 }

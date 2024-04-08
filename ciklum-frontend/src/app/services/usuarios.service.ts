@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, numberAttribute } from "@angular/core";
 import { Login, UsuarioSesion, Rol, RolCentro } from "../entities/login";
 import { Observable, of, forkJoin, concatMap, lastValueFrom } from "rxjs";
 import {map} from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { Usuario } from "../entities/usuario";
 import { BackendFakeService } from "./backend.fake.service";
 import { BackendService } from "./backend.service";
 import { LoginComponent } from "../login/login.component";
-import { Plan } from "../entities/sesion";
+import { Plan, Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ import { Plan } from "../entities/sesion";
 export class UsuariosService {
   _rolCentro?: RolCentro;
 
-  constructor(private backend: BackendFakeService) {}
+  constructor(private backend: BackendService) {}
 
   doLogin(login: Login): Observable<UsuarioSesion> {
     let jwtObs = this.backend.login(login.email, login.password);
@@ -93,10 +93,6 @@ export class UsuariosService {
     return this.backend.getUsuarios();
   }
 
-  getPlanes(): Observable<Plan[]> {
-    return this.backend.getPlanes();
-  }
-
   editarUsuario(usuario: Usuario): Observable<Usuario> {
     return this.backend.putUsuario(usuario);
   }
@@ -106,9 +102,45 @@ export class UsuariosService {
   }
 
   aniadirUsuario(usuario: Usuario): Observable<Usuario> {
+    this.postEntrena(usuario.id, "Entrenador").subscribe(info => {
+      console.log(info.idCliente + "   " + info.idEntrenador);
+    });
     return this.backend.postUsuario(usuario);
   }
 
+  getSesion(id: number): Observable<Sesion> {
+    return this.backend.getSesion(id);
+  }
 
+  getSesiones(id: number): Observable<Sesion[]> {
+    return this.backend.getSesiones(id);
+  }
 
+  putSesion(id: number, sesion: Sesion): Observable<Sesion> {
+    return this.backend.putSesion(id, sesion);
+  }
+
+  deleteSesion(id: number): Observable<void> {
+    return this.backend.deleteSesion(id);
+  }
+
+  postSesion(id: number, sesion: Sesion) {
+    return this.backend.postSesion(id, sesion);
+  }
+
+  /*getPlanes() {
+    return this.backend.getPlanes();
+  }*/
+
+  postEntrena(idClienteEntrenador: number, especialidad: string): Observable<entrenadorCliente> {
+    return this.backend.postEntrena(idClienteEntrenador, especialidad);
+  }
+
+  getPlanes(idE: number | undefined): Observable<Plan[]> {
+    return this.backend.getPlanes(idE);
+  }
+
+  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
+    return this.backend.postPlan(fInicio, fFinal, rRecurrencia, idE);
+  }
 }

@@ -4,6 +4,7 @@ import { Usuario } from "../entities/usuario";
 import { HttpClient } from "@angular/common/http";
 import { BACKEND_URI } from "../config/config";
 import { JwtResponse } from "../entities/login";
+import { Plan, Rutina, Sesion, SesionP, entrenadorCliente } from "../entities/sesion";
 
 // Este servicio usa el backend real
 
@@ -13,6 +14,40 @@ import { JwtResponse } from "../entities/login";
 export class BackendService {
 
   constructor(private httpClient: HttpClient) {}
+
+  postEntrena(idClienteEntrenador: number, especialidad: string): Observable<entrenadorCliente> {
+    return this.httpClient.post<entrenadorCliente>(BACKEND_URI + '/entrena?entrenador=' + idClienteEntrenador, 
+      {idEntrenador: idClienteEntrenador, idCliente: idClienteEntrenador, especialidad: especialidad});
+  }
+
+  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
+    return this.httpClient.post<Rutina>(BACKEND_URI + '/plan?entrena=' + idE, 
+    {fechaIncio: fInicio, fechaFin: fFinal, reglaRecurrencia: rRecurrencia, idRutina: 0});
+  }
+
+  getPlanes(idE: number | undefined): Observable<Plan[]> {
+    return this.httpClient.get<Plan[]>(BACKEND_URI + '/plan?entrena=' + idE);
+  }
+
+  getSesion(id: number): Observable<Sesion> {
+    return this.httpClient.get<Sesion>(BACKEND_URI + '/sesion/' + id); 
+  }
+
+  getSesiones(id: number): Observable<Sesion[]> {
+    return this.httpClient.get<Sesion[]>(BACKEND_URI + '/sesion/?plan=' + id); 
+  }
+
+  putSesion(id: number, sesion: SesionP): Observable<Sesion> {
+    return this.httpClient.put<Sesion>(BACKEND_URI + '/sesion/' + id, sesion);
+  }
+
+  deleteSesion(id: number): Observable<void> {
+    return this.httpClient.delete<void>(BACKEND_URI + '/sesion/' + id);
+  }
+
+  postSesion(id: number, sesion: Sesion) {
+    return this.httpClient.post<Sesion>(BACKEND_URI + '/sesion?plan=' + id, sesion);
+  }
 
   getUsuarios(): Observable<Usuario[]> {
     return this.httpClient.get<Usuario[]>(BACKEND_URI + '/usuario');
