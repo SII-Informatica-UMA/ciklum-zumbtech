@@ -5,7 +5,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ListadoUsuarioComponent } from './listado-usuario/listado-usuario.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { Entrenamiento } from './entrenamientos/entrenamiento';
-import { ContactoSesionComponent } from './detalles-sesion/contacto-sesion/contacto-sesion.component';
 import { TablaInfoSesionComponent } from './detalles-sesion/tabla-info-sesion/tabla-info-sesion.component';
 import { DetallesSesionComponent } from './detalles-sesion/detalles-sesion.component';
 import { SesionesListaComponent } from './entrenamientos/sesiones-lista/sesiones-lista.component';
@@ -22,10 +21,6 @@ export const routes: Routes = [
   {
     path: 'detalles',
     component: DetallesSesionComponent
-  },
-  {
-    path: 'contacto',
-    component: ContactoSesionComponent
   },
   {
     path: 'tabla',

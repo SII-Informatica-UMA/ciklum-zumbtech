@@ -2,6 +2,10 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.mensaje {
+    margin-bottom: 5px; /* Ajusta el valor según el espacio de separación deseado */
+  }
+
 .seccion {
     display: flex;
     padding-top: 20px;

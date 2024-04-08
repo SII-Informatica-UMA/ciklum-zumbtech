@@ -3,7 +3,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/contacto-sesion.component';
 import { UsuariosService } from '../services/usuarios.service';
 import { Sesion } from '../entities/sesion';
 import { Plan } from '../entities/sesion';
