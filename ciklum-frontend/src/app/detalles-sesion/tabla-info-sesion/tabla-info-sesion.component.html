@@ -22,7 +22,7 @@
                 </div>
                 <div *ngFor="let link of sesion.multimedia">
                     <b>Multimedia:</b>
-                    {{link}}
+                    <a [href]="link"><img [src]="link" alt="Vista previa del video"></a>
                 </div>
             </div>
         </div>

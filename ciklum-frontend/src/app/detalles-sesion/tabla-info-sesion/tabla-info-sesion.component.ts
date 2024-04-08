@@ -23,18 +23,35 @@ export class TablaInfoSesionComponent {
     datosSalud: [],
     id: 0
   };
+  link_video: string[] = [];
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
     const sesiones = localStorage.getItem('sesion');
     this.sesion = sesiones ? JSON.parse(sesiones) : undefined;
+    for (let i = 0; i < this.sesion.multimedia.length; i++) {
+      let id = this.obtenerIdVideoYoutube(this.sesion.multimedia[i]);
+      this.link_video[i] = 'https://img.youtube.com/vi/' +id + '/0.jpg';
+    }
   }
 
   /* Constructor */
   constructor(private userService: UsuariosService) {}
 
   /* Funciones */
-  getDate(dia: Date): number {
-    return dia.getTime();
-  }
+  private obtenerIdVideoYoutube(url: string): string | null {
+    // Expresión regular para buscar el ID del video en la URL de YouTube
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/reels\/)([a-zA-Z0-9_-]{11})/;
+    
+    // Realizar la búsqueda del ID del video en la URL
+    const match = url.match(regex);
+
+    // Si se encuentra el ID del video, devolverlo
+    if (match && match[1]) {
+        return match[1];
+    } else {
+        // Si no se encuentra el ID del video, devolver null
+        return null;
+    }
+}
 }
