@@ -34,6 +34,7 @@ export class SesionesListaComponent {
     const aux: Plan = sesiones ? JSON.parse(sesiones) : undefined;
     this.idPlan = aux.planId;
     this.sesiones = aux.sesiones;
+    this.actualizarSesiones();
   }
 
   verSesion(sId: Number) {
