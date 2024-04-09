@@ -52,4 +52,17 @@ export class PlanService {
   deletePlan(idP: number) {
     this.backend.deletePlan(idP);
   }
+
+  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion[]> {
+    return this.backend.postSesion(sesion,idPlan);
+  }
+
+  deleteSesion(idP: Number, idSesion: Number) {
+    this.backend.deleteSesion(idP, idSesion);
+  }
+
+  getSesiones(idPlan: Number): Observable<Sesion[]> {
+    return this.backend.getSesiones(idPlan)
+  }
+
 }

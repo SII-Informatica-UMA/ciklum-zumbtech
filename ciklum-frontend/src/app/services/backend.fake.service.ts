@@ -119,6 +119,16 @@ export class BackendFakeService {
     return of(planesUser);
   }
 
+  getSesiones(idPlan: Number): Observable<Sesion[]> {
+    let aux: Sesion[] = [];
+    for(const plan of this.planes) {
+      if(plan.planId === idPlan) {
+        aux = plan.sesiones;
+      }
+    }
+    return of(aux);
+  }
+
   postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
     this.planes.push({
       planId: this.númeroPlanesUser(idE),
@@ -144,6 +154,19 @@ export class BackendFakeService {
       }
     }
     return res;
+  }
+
+  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion[]> {
+    let aux: Sesion[] = [];
+    for (const plan of this.planes) {
+      if (plan.planId === idPlan) {
+          aux = plan.sesiones;
+          sesion.id = aux.length;
+          sesion.idPlan = idPlan;
+          plan.sesiones.push(sesion);
+      }
+    }
+    return of(aux);
   }
 
   getSesionesPlan(idPlan: Number): Observable<Sesion[]> {
@@ -206,6 +229,20 @@ export class BackendFakeService {
       if (this.planes[i].planId === idP) {
           // Agregar las sesiones de este plan al arreglo de sesiones si coincide con el idPlan deseado
           this.planes.splice(i, 1);
+      }
+    }
+    this.guardarPlanesEnLocalStorage();
+  }
+
+  deleteSesion(idP: Number, idSesion: Number) {
+    let aux: Sesion[] = [];
+    for(const plan of this.planes) {
+      if(plan.planId === idP) {
+        for(let i = 0; i < plan.sesiones.length; ++i) {
+          if(plan.sesiones[i].id === idSesion) {
+            plan.sesiones.splice(i,1);
+          }
+        }
       }
     }
     this.guardarPlanesEnLocalStorage();

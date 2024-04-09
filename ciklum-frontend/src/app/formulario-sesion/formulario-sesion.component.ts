@@ -1,0 +1,24 @@
+import { Component, OnInit } from '@angular/core';
+import { Sesion, SesionImpl } from '../entities/sesion';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-formulario-sesion',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
+  templateUrl: './formulario-sesion.component.html',
+  styleUrls: ['./formulario-sesion.component.css']
+})
+export class FormularioSesionComponent {
+  accion?: 'Añadir' | 'Editar';
+  sesion: Sesion = new SesionImpl();
+
+  constructor(public modal: NgbActiveModal) { }
+
+  guardarSesion(): void {
+    this.modal.close(this.sesion);
+  }
+
+}

@@ -9,6 +9,29 @@ export interface Sesion {
     datosSalud: string[],
     id: Number
 }
+export class SesionImpl implements Sesion {
+    idPlan: Number;
+    inicio: Date;
+    fin: Date;
+    trabajoRealizado: string;
+    multimedia: string[];
+    decripcion: string;
+    presencial: boolean;
+    datosSalud: string[];
+    id: Number;
+
+    constructor() {
+        this.idPlan = 0;
+        this.inicio = new Date();
+        this.fin = new Date();
+        this.trabajoRealizado = "";
+        this.multimedia = [];
+        this.decripcion = "";
+        this.presencial = true;
+        this.datosSalud = [];
+        this.id = 0;
+    }
+}
 
 export interface SesionP {
     idPlan: Number,

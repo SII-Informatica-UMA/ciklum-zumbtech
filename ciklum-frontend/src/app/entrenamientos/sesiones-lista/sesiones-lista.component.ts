@@ -3,8 +3,9 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { Plan, Sesion } from '../../entities/sesion';
+import { Plan, Sesion, SesionImpl } from '../../entities/sesion';
 import { UsuariosService } from '../../services/usuarios.service';
+import { PlanService } from '../../services/plan.service';
 
 @Component({
   selector: 'app-sesiones-lista',
@@ -15,8 +16,9 @@ import { UsuariosService } from '../../services/usuarios.service';
 })
 export class SesionesListaComponent {
   sesiones: Sesion[] = [];
+  idPlan: Number = 0;
 
-  constructor(private router: Router, private userService: UsuariosService) {
+  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService) {
   }
 
   
@@ -30,6 +32,7 @@ export class SesionesListaComponent {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
     const sesiones = localStorage.getItem('plan');
     const aux: Plan = sesiones ? JSON.parse(sesiones) : undefined;
+    this.idPlan = aux.planId;
     this.sesiones = aux.sesiones;
   }
 
@@ -46,14 +49,26 @@ export class SesionesListaComponent {
     console.log('Editar sesión:', sesion);
   }
 
-  eliminarSesion(sesion: any) {
+  eliminarSesion(sesion: Sesion) {
     // Lógica para eliminar la sesión
+    this.planService.deleteSesion(this.idPlan,sesion.id);
+    this.actualizarSesiones();
     console.log('Eliminar sesión:', sesion);
   }
 
   agregarSesion() {
     // Lógica para añadir una nueva sesión
     console.log('Añadir nueva sesión');
+    this.planService.postSesion(new SesionImpl(),this.idPlan).subscribe(() => {
+      this.actualizarSesiones();
+    })
     // Aquí podrías abrir un formulario para añadir una nueva sesión
   }
+
+  actualizarSesiones() {
+    this.planService.getSesiones(this.idPlan).subscribe(sesion => {
+      this.sesiones = sesion;
+    });
+  }
+
 }
