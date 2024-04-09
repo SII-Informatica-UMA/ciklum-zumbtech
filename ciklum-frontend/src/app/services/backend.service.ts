@@ -21,6 +21,7 @@ export class BackendService {
   }
 
   postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
+      console.log("entrena " + idE);
     return this.httpClient.post<Rutina>(BACKEND_URI + '/plan?entrena=' + idE, 
     {fechaIncio: fInicio, fechaFin: fFinal, reglaRecurrencia: rRecurrencia, idRutina: 0});
   }

@@ -6,6 +6,7 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { UsuariosService } from '../services/usuarios.service';
 import { Sesion } from '../entities/sesion';
 import { Plan } from '../entities/sesion';
+import { PlanService } from '../services/plan.service';
 
 @Component({
   selector: 'app-entrenamiento',
@@ -18,7 +19,7 @@ export class Entrenamiento implements OnInit {
   planes: Plan[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
 
-  constructor(private router: Router, private userService: UsuariosService) {
+  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService) {
   }
 
   
@@ -47,20 +48,22 @@ export class Entrenamiento implements OnInit {
     // Lógica para editar la sesión
   }
 
-  eliminarPlan(planes: any) {
+  eliminarPlan(plan: Plan) {
     // Lógica para eliminar la sesión
+    this.planService.deletePlan(plan.planId.valueOf());
+    this.actualizarPlanes();
   }
 
   agregarPlan() {
     // Lógica para añadir una nueva sesión
     // Aquí podrías abrir un formulario para añadir una nueva sesión
-    this.userService.postPlan(new Date(), new Date(), "Caca", this.idUser).subscribe(() => {
+    this.planService.postPlan(new Date(), new Date(), "Caca", this.idUser).subscribe(() => {
       this.actualizarPlanes();
     });
   }
 
   actualizarPlanes() {
-    this.userService.getPlanes(this.idUser).subscribe(planes => {
+    this.planService.getPlanes(this.idUser).subscribe(planes => {
       this.planes = planes;
     });
   }

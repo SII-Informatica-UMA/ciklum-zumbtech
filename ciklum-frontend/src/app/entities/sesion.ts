@@ -23,21 +23,22 @@ export interface SesionP {
 
 export interface Plan {
     planId: Number,
+    userId: Number | undefined,
     sesiones: Sesion[]
 }
 
 export interface entrenadorCliente {
     idEntrenador: Number,
     idCliente: Number, 
-    especialida: string, 
+    especialidad: string, 
     id: Number,
     planes: Plan[]
 }
 
-export interface Rutina{
+export interface Rutina {
     fechaInicio: Date,
     fechaFin: Date,
     reglaRecurrencia: string,
-    idRutina: number,
+    idRutina: number | undefined,
     id: number
   }

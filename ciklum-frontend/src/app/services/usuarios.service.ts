@@ -16,7 +16,7 @@ import { Plan, Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
 export class UsuariosService {
   _rolCentro?: RolCentro;
 
-  constructor(private backend: BackendService) {}
+  constructor(private backend: BackendFakeService) {}
 
   doLogin(login: Login): Observable<UsuarioSesion> {
     let jwtObs = this.backend.login(login.email, login.password);
@@ -98,49 +98,16 @@ export class UsuariosService {
   }
 
   eliminarUsuario(id: number): Observable<void> {
+    const user: UsuarioSesion | undefined = this.getUsuarioSesion();
+    if(id === user?.id) {
+      return new Observable<void>(observer => {
+        observer.error('Estás usando este usuario');
+      });
+    }
     return this.backend.deleteUsuario(id);
   }
 
   aniadirUsuario(usuario: Usuario): Observable<Usuario> {
-    this.postEntrena(usuario.id, "Entrenador").subscribe(info => {
-      console.log(info.idCliente + "   " + info.idEntrenador);
-    });
     return this.backend.postUsuario(usuario);
-  }
-
-  getSesion(id: number): Observable<Sesion> {
-    return this.backend.getSesion(id);
-  }
-
-  getSesiones(id: number): Observable<Sesion[]> {
-    return this.backend.getSesiones(id);
-  }
-
-  putSesion(id: number, sesion: Sesion): Observable<Sesion> {
-    return this.backend.putSesion(id, sesion);
-  }
-
-  deleteSesion(id: number): Observable<void> {
-    return this.backend.deleteSesion(id);
-  }
-
-  postSesion(id: number, sesion: Sesion) {
-    return this.backend.postSesion(id, sesion);
-  }
-
-  /*getPlanes() {
-    return this.backend.getPlanes();
-  }*/
-
-  postEntrena(idClienteEntrenador: number, especialidad: string): Observable<entrenadorCliente> {
-    return this.backend.postEntrena(idClienteEntrenador, especialidad);
-  }
-
-  getPlanes(idE: number | undefined): Observable<Plan[]> {
-    return this.backend.getPlanes(idE);
-  }
-
-  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
-    return this.backend.postPlan(fInicio, fFinal, rRecurrencia, idE);
   }
 }

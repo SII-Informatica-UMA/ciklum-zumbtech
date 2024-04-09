@@ -5,7 +5,7 @@ import { SECRET_JWT } from "../config/config";
 import { from } from "rxjs";
 import * as jose from 'jose';
 import { FRONTEND_URI } from "../config/config";
-import { Sesion } from "../entities/sesion";
+import { Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
 import { Plan } from "../entities/sesion";
 
 // Este servicio imita al backend pero utiliza localStorage para almacenar los datos
@@ -71,10 +71,12 @@ const Sesiones: Sesion[] = [
   const Planes: Plan[] = [ 
     {
       planId: 0,
+      userId: 1,
       sesiones: [Sesiones[0], Sesiones[1]]
     }, 
     {
       planId: 1,
+      userId: 2,
       sesiones: [Sesiones[2]]
     }
   ]
@@ -89,38 +91,59 @@ export class BackendFakeService {
   private planes: Plan[];
 
   constructor() {
-    let _usuarios = localStorage.getItem('usuarios');
-    if (_usuarios) {
-      this.usuarios = JSON.parse(_usuarios);
-    } else {
-      this.usuarios = [...usuariosC];
-    }
+    this.usuarios = [...usuariosC];
+    this.forgottenPasswordTokens = new Map();
+    this.planes = [...Planes];
+    localStorage.clear();
+    this.actualizarLocalStorage();
+  }
 
-    let _forgottenPasswordTokens = localStorage.getItem('forgottenPasswordTokens');
-    if (_forgottenPasswordTokens) {
-      this.forgottenPasswordTokens = new Map(JSON.parse(_forgottenPasswordTokens));
-    } else {
-      this.forgottenPasswordTokens = new Map();
-    }
-    
-    localStorage.removeItem('planes');
-    let _planes = localStorage.getItem('planes');
-    if (_planes) {
-      this.planes = JSON.parse(_planes);
-      this.guardarPlanesEnLocalStorage();
-    } else {
-      this.planes = [...Planes];
-      this.guardarPlanesEnLocalStorage();
-    }
+  actualizarLocalStorage() {
+    this.guardarForgottenPasswordTokensEnLocalStorage();
+    this.guardarPlanesEnLocalStorage();
+    this.guardarUsuariosEnLocalStorage();
   }
 
   getUsuarios(): Observable<Usuario[]> {
     return of(this.usuarios);
   }
 
-  getPlanes(): Observable<Plan[]> {
-    console.log(this.planes);
-    return of(this.planes);
+  getPlanes(idE: number | undefined): Observable<Plan[]> {
+    const planesUser: Plan[] = [];
+    // Iterar sobre cada plan
+    for (const plan of this.planes) {
+      if(plan.userId === idE) {
+        planesUser.push(plan);
+      }
+    }
+    return of(planesUser);
+  }
+
+  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
+    this.planes.push({
+      planId: this.númeroPlanesUser(idE),
+      userId: idE,
+      sesiones: []
+    },);
+    this.guardarPlanesEnLocalStorage();
+    const rutinaRes: Rutina = {
+      fechaInicio: fInicio,
+      fechaFin: fFinal,
+      reglaRecurrencia: rRecurrencia,
+      idRutina: idE,
+      id: this.planes.length
+    };
+    return of(rutinaRes);
+  }
+
+  númeroPlanesUser(id: number | undefined): number {
+    let res = 0;
+    for (const plan of this.planes) {
+      if (plan.userId === id) {
+          ++res;
+      }
+    }
+    return res;
   }
 
   getSesionesPlan(idPlan: Number): Observable<Sesion[]> {
@@ -163,6 +186,7 @@ export class BackendFakeService {
   }
 
   private guardarUsuariosEnLocalStorage() {
+    localStorage.removeItem('usuarios');
     localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
   }
 
@@ -172,7 +196,19 @@ export class BackendFakeService {
   }
 
   private guardarForgottenPasswordTokensEnLocalStorage() {
+    localStorage.removeItem('forgottenPasswordTokens');
     localStorage.setItem('forgottenPasswordTokens', JSON.stringify(Array.from(this.forgottenPasswordTokens.entries())));
+  }
+
+  deletePlan(idP: number) {
+    for (let i = 0; i < this.planes.length; ++i) {
+      // Verificar si el plan tiene el idPlan deseado
+      if (this.planes[i].planId === idP) {
+          // Agregar las sesiones de este plan al arreglo de sesiones si coincide con el idPlan deseado
+          this.planes.splice(i, 1);
+      }
+    }
+    this.guardarPlanesEnLocalStorage();
   }
 
   putUsuario(usuario: Usuario): Observable<Usuario> {
@@ -199,7 +235,13 @@ export class BackendFakeService {
         observer.error('El usuario no existe');
       });
     }
+    for(const plan of this.planes) {
+      if(plan.userId === id) {
+        this.deletePlan(plan.planId.valueOf());
+      }
+    }
     this.usuarios.splice(i, 1);
+
     this.guardarUsuariosEnLocalStorage();
     return of();
   }
@@ -248,9 +290,7 @@ export class BackendFakeService {
     }
     u.password = password;
     this.forgottenPasswordTokens.delete(token);
-
-    this.guardarUsuariosEnLocalStorage();
-    this.guardarForgottenPasswordTokensEnLocalStorage();
+    this.actualizarLocalStorage();
     return of();
   }
 

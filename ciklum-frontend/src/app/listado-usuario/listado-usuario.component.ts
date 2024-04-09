@@ -68,6 +68,9 @@ export class ListadoUsuarioComponent {
   eliminarUsuario(id: number): void {
     this.usuariosService.eliminarUsuario(id).subscribe(() => {
       this.actualizarUsuarios();
+    },
+    error => {
+      alert(error);
     });
   }
 
