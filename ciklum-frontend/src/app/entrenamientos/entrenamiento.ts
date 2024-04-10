@@ -4,7 +4,7 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { UsuariosService } from '../services/usuarios.service';
-import { Sesion } from '../entities/sesion';
+import { Rutina, Sesion } from '../entities/sesion';
 import { Plan } from '../entities/sesion';
 import { PlanService } from '../services/plan.service';
 import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.component';
@@ -50,8 +50,19 @@ export class Entrenamiento implements OnInit {
     this.router.navigate(['sesiones']);
   }
 
-  editarPlan(planes: any) {
+  editarPlan(plan: Plan) {
     // Lógica para editar la sesión
+    let ref = this.modalService.open(FormularioPlanComponent);
+    ref.componentInstance.accion = "Editar";
+    ref.componentInstance.rutina = {fechaInicio: new Date(), fechaFin: new Date(),
+      reglaRecurrencia: "", idRutina: 0, id: 0};
+    ref.result.then((rutina: Rutina) => {
+      console.log(rutina);
+      this.planService.putPlan(rutina, plan.planId.valueOf()).subscribe(() => {
+        this.actualizarPlanes();
+      })
+    });
+
   }
 
   eliminarPlan(plan: Plan) {

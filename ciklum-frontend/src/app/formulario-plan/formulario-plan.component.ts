@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Plan, Sesion, SesionImpl } from '../entities/sesion';
+import { Plan, Rutina, Sesion, SesionImpl } from '../entities/sesion';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ export class FormularioPlanComponent {
   accion?: 'Añadir' | 'Editar';
   plan: Plan = {fechaInicio: new Date(), fechaFin: new Date(),
     reglaRecurrencia: "", idRutina: 0, planId: 0, userId: 0, sesiones: []};
+  rutina: Rutina = {fechaInicio: new Date(), fechaFin: new Date(), reglaRecurrencia: "", idRutina: 0, id: 0}
 
   constructor(public modal: NgbActiveModal) { }
 

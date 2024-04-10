@@ -137,6 +137,18 @@ export class BackendFakeService {
     return of(aux);
   }
 
+  putPlan(rutina: Rutina, idP: number): Observable<Rutina> {
+    for(let i = 0; i < this.planes.length; ++i) {
+      if(this.planes[i].planId === idP) {
+        this.planes[i].fechaInicio = rutina.fechaInicio;
+        this.planes[i].fechaFin = rutina.fechaFin;
+        this.planes[i].reglaRecurrencia = rutina.reglaRecurrencia;
+      }
+    }
+    this.guardarPlanesEnLocalStorage();
+    return of(rutina);
+  }
+
   postPlan(plan:Plan, idE: number | undefined): Observable<Rutina> {
     plan.planId = this.númeroPlanesUser(idE);
     plan.userId = idE;
