@@ -1,0 +1,5 @@
+/* Redondear los bordes de la tabla */
+.table {
+    border-radius: 10px; /* Puedes ajustar este valor según tus preferencias */
+    overflow: hidden; /* Evita que los bordes redondeados sean cortados */
+  }
