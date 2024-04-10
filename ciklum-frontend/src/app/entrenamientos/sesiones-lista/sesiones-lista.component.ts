@@ -71,7 +71,6 @@ export class SesionesListaComponent {
       })
     });
     // Aquí podrías abrir un formulario para añadir una nueva sesión
-    console.log('Añadir nueva sesión');
   }
 
   actualizarSesiones() {

@@ -174,16 +174,17 @@ export class BackendFakeService {
     return res;
   }
 
-  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion[]> {
-    let aux: Sesion[] = [];
+  postSesion(sesion: Sesion, idPlan: Number): Observable<Plan> {
+    let aux: Plan = {planId: 0, userId: 0, sesiones: []};
     for (const plan of this.planes) {
       if (plan.planId === idPlan) {
-          aux = plan.sesiones;
-          sesion.id = this.numeroSesionUser(aux);
+          aux = plan;
+          sesion.id = this.numeroSesionUser(aux.sesiones);
           sesion.idPlan = idPlan;
           plan.sesiones.push(sesion);
       }
     }
+    this.guardarPlanesEnLocalStorage();
     return of(aux);
   }
 

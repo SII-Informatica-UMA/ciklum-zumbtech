@@ -47,7 +47,7 @@ export interface SesionP {
 export interface Plan {
     planId: Number,
     userId: Number | undefined,
-    sesiones: Sesion[]
+    sesiones: Sesion[],
 }
 
 export interface entrenadorCliente {
