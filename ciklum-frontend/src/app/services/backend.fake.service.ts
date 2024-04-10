@@ -150,7 +150,25 @@ export class BackendFakeService {
     let res = 0;
     for (const plan of this.planes) {
       if (plan.userId === id) {
-          ++res;
+          if(plan.planId.valueOf() > res) {
+            res = plan.planId.valueOf() + 1;
+          }
+          else {
+            ++res;
+          }
+      }
+    }
+    return res;
+  }
+
+  numeroSesionUser(sesiones: Sesion[]): number {
+    let res = 0;
+    for(let i = 0; i < sesiones.length; ++i) {
+      if(sesiones[i].id.valueOf() > res) {
+        res = sesiones[i].id.valueOf() + 1;
+      }
+      else {
+        ++res;
       }
     }
     return res;
@@ -161,7 +179,7 @@ export class BackendFakeService {
     for (const plan of this.planes) {
       if (plan.planId === idPlan) {
           aux = plan.sesiones;
-          sesion.id = aux.length;
+          sesion.id = this.numeroSesionUser(aux);
           sesion.idPlan = idPlan;
           plan.sesiones.push(sesion);
       }
