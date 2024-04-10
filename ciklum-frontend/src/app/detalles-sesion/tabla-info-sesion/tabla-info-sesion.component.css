@@ -3,8 +3,8 @@ body {
 }
 
 .mensaje {
-    margin-bottom: 5px; /* Ajusta el valor según el espacio de separación deseado */
-  }
+    margin-bottom: 5px; /* Separacion entre mensajes enviados */
+  } 
 
 .seccion {
     display: flex;
