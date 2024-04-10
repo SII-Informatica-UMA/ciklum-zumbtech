@@ -29,7 +29,7 @@ export class UsuariosService {
         apellido1: obj.usuario.apellido1,
         apellido2: obj.usuario.apellido2,
         email: obj.usuario.email,
-        roles: obj.usuario.administrador?[{rol: Rol.ADMINISTRADOR}]:[],
+        roles: obj.usuario.administrador?[{rol: Rol.ADMINISTRADOR}]:[{rol: Rol.CLIENTE}],
         jwt: obj.jwt
       };
     }));
