@@ -49,6 +49,10 @@ export class PlanService {
     return this.backend.postPlan(plan, idE);
   }
 
+  putPlan(rutina: Rutina, idP: number): Observable<Rutina> {
+    return this.backend.putPlan(rutina, idP);
+  }
+
   deletePlan(idP: number) {
     this.backend.deletePlan(idP);
   }

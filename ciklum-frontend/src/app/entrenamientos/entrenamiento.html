@@ -7,12 +7,14 @@
               <thead>
                 <tr>
                   <th>Id del Plan</th>
+                  <th>Fecha de Inico del Plan</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let plan of planes">
                   <td>Plan número {{ plan.planId }}</td>
+                  <td>Inicio {{ plan.fechaInicio }}</td>
                   <td>
                     <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan(plan.planId)">
                       <i class="bi bi-eye-fill"></i>
