@@ -174,18 +174,36 @@ export class BackendFakeService {
     return res;
   }
 
-  postSesion(sesion: Sesion, idPlan: Number): Observable<Plan> {
-    let aux: Plan = {planId: 0, userId: 0, sesiones: []};
+  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion> {
     for (const plan of this.planes) {
       if (plan.planId === idPlan) {
-          aux = plan;
-          sesion.id = this.numeroSesionUser(aux.sesiones);
+          sesion.id = this.numeroSesionUser(plan.sesiones);
           sesion.idPlan = idPlan;
           plan.sesiones.push(sesion);
       }
     }
     this.guardarPlanesEnLocalStorage();
-    return of(aux);
+    return of(sesion);
+  }
+
+  putSesion(sesion: Sesion, idPlan: Number): Observable<Sesion> {
+    for (const plan of this.planes) {
+      if (plan.planId === idPlan) {
+          for(let i = 0; i < plan.sesiones.length; ++i) {
+            if(plan.sesiones[i].id === sesion.id) {
+              plan.sesiones[i].datosSalud = sesion.datosSalud;
+              plan.sesiones[i].decripcion = sesion.decripcion;
+              plan.sesiones[i].fin = sesion.fin;
+              plan.sesiones[i].inicio = sesion.inicio;
+              plan.sesiones[i].multimedia = sesion.multimedia;
+              plan.sesiones[i].presencial = sesion.presencial;
+              plan.sesiones[i].trabajoRealizado = sesion.trabajoRealizado;
+            }
+          }
+      }
+    }
+    this.guardarPlanesEnLocalStorage();
+    return of(sesion);
   }
 
   getSesionesPlan(idPlan: Number): Observable<Sesion[]> {

@@ -50,14 +50,20 @@ export class SesionesListaComponent {
 
   editarSesion(sesion: Sesion) {
     // Lógica para editar la sesión
-    console.log('Editar sesión:', sesion);
+    let ref = this.modalService.open(FormularioSesionComponent);
+    ref.componentInstance.accion = "Editar";
+    ref.componentInstance.sesion = new SesionImpl();
+    ref.result.then((sesion: Sesion) => {
+      this.planService.putSesion(sesion,this.idPlan).subscribe(() => {
+        this.actualizarSesiones();
+      })
+    });
   }
 
   eliminarSesion(sesion: Sesion) {
     // Lógica para eliminar la sesión
     this.planService.deleteSesion(this.idPlan,sesion.id);
     this.actualizarSesiones();
-    console.log('Eliminar sesión:', sesion);
   }
 
   agregarSesion() {
