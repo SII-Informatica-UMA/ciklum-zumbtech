@@ -45,6 +45,10 @@ export interface SesionP {
 }
 
 export interface Plan {
+    fechaInicio: Date,
+    fechaFin: Date,
+    reglaRecurrencia: string,
+    idRutina: number,
     planId: Number,
     userId: Number | undefined,
     sesiones: Sesion[],

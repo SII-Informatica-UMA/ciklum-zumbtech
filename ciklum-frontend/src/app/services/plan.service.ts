@@ -45,8 +45,8 @@ export class PlanService {
     return this.backend.getPlanes(idE);
   }
 
-  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
-    return this.backend.postPlan(fInicio, fFinal, rRecurrencia, idE);
+  postPlan(plan:Plan, idE: number | undefined): Observable<Rutina> {
+    return this.backend.postPlan(plan, idE);
   }
 
   deletePlan(idP: number) {

@@ -7,6 +7,8 @@ import { UsuariosService } from '../services/usuarios.service';
 import { Sesion } from '../entities/sesion';
 import { Plan } from '../entities/sesion';
 import { PlanService } from '../services/plan.service';
+import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.component';
+
 
 @Component({
   selector: 'app-entrenamiento',
@@ -19,7 +21,7 @@ export class Entrenamiento implements OnInit {
   planes: Plan[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
 
-  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService) {
+  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService, private modalService: NgbModal) {
   }
 
   
@@ -60,8 +62,18 @@ export class Entrenamiento implements OnInit {
   agregarPlan() {
     // Lógica para añadir una nueva sesión
     // Aquí podrías abrir un formulario para añadir una nueva sesión
-    this.planService.postPlan(new Date(), new Date(), "Caca", this.idUser).subscribe(() => {
-      this.actualizarPlanes();
+  
+
+
+    let ref = this.modalService.open(FormularioPlanComponent);
+    ref.componentInstance.accion = "Añadir";
+    ref.componentInstance.plan = {fechaInicio: new Date(), fechaFin: new Date(),
+      reglaRecurrencia: "", idRutina: 0, planId: 0, userId: 0, sesiones: []};
+    ref.result.then((plan: Plan) => {
+      console.log(plan);
+      this.planService.postPlan(plan,this.idUser).subscribe(() => {
+        this.actualizarPlanes();
+      })
     });
   }
 

@@ -70,11 +70,19 @@ const Sesiones: Sesion[] = [
 
   const Planes: Plan[] = [ 
     {
+      fechaInicio: new Date(),
+      fechaFin: new Date(),
+      reglaRecurrencia: "perros",
+      idRutina: 0,
       planId: 0,
       userId: 1,
       sesiones: [Sesiones[0], Sesiones[1]]
     }, 
     {
+      fechaInicio: new Date(),
+      fechaFin: new Date(),
+      reglaRecurrencia: "perros",
+      idRutina: 0,
       planId: 1,
       userId: 2,
       sesiones: [Sesiones[2]]
@@ -129,17 +137,15 @@ export class BackendFakeService {
     return of(aux);
   }
 
-  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
-    this.planes.push({
-      planId: this.númeroPlanesUser(idE),
-      userId: idE,
-      sesiones: []
-    },);
+  postPlan(plan:Plan, idE: number | undefined): Observable<Rutina> {
+    plan.planId = this.númeroPlanesUser(idE);
+    plan.userId = idE;
+    this.planes.push(plan);
     this.guardarPlanesEnLocalStorage();
     const rutinaRes: Rutina = {
-      fechaInicio: fInicio,
-      fechaFin: fFinal,
-      reglaRecurrencia: rRecurrencia,
+      fechaInicio: plan.fechaInicio,
+      fechaFin: plan.fechaFin,
+      reglaRecurrencia: plan.reglaRecurrencia,
       idRutina: idE,
       id: this.planes.length
     };
