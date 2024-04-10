@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, numberAttribute } from "@angular/core";
 import { Login, UsuarioSesion, Rol, RolCentro } from "../entities/login";
 import { Observable, of, forkJoin, concatMap, lastValueFrom } from "rxjs";
 import {map} from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { Usuario } from "../entities/usuario";
 import { BackendFakeService } from "./backend.fake.service";
 import { BackendService } from "./backend.service";
 import { LoginComponent } from "../login/login.component";
+import { Plan, Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { LoginComponent } from "../login/login.component";
 export class UsuariosService {
   _rolCentro?: RolCentro;
 
-  constructor(private backend: BackendService) {}
+  constructor(private backend: BackendFakeService) {}
 
   doLogin(login: Login): Observable<UsuarioSesion> {
     let jwtObs = this.backend.login(login.email, login.password);
@@ -28,7 +29,7 @@ export class UsuariosService {
         apellido1: obj.usuario.apellido1,
         apellido2: obj.usuario.apellido2,
         email: obj.usuario.email,
-        roles: obj.usuario.administrador?[{rol: Rol.ADMINISTRADOR}]:[],
+        roles: obj.usuario.administrador?[{rol: Rol.ADMINISTRADOR}]:[{rol: Rol.CLIENTE}],
         jwt: obj.jwt
       };
     }));
@@ -39,6 +40,7 @@ export class UsuariosService {
       if (usuarioSesion.roles.length > 0) {
         this.rolCentro = usuarioSesion.roles[0];
       } else {
+        //this.rolCentro = {rol:Rol.CLIENTE, centro:0, nombreCentro:""};
         this.rolCentro = undefined;
       }
       return usuarioSesion;
@@ -90,19 +92,26 @@ export class UsuariosService {
   getUsuarios(): Observable<Usuario[]> {
     return this.backend.getUsuarios();
   }
+  
+  getUsuario(id: number): Observable<Usuario> {
+    return this.backend.getUsuario(id);
+  }
 
   editarUsuario(usuario: Usuario): Observable<Usuario> {
     return this.backend.putUsuario(usuario);
   }
 
   eliminarUsuario(id: number): Observable<void> {
+    const user: UsuarioSesion | undefined = this.getUsuarioSesion();
+    if(id === user?.id) {
+      return new Observable<void>(observer => {
+        observer.error('Estás usando este usuario');
+      });
+    }
     return this.backend.deleteUsuario(id);
   }
 
   aniadirUsuario(usuario: Usuario): Observable<Usuario> {
     return this.backend.postUsuario(usuario);
   }
-
-
-
 }

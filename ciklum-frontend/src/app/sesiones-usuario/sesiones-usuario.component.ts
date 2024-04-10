@@ -2,7 +2,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EstadoPestanaService } from '../entrenamientos/estado-pestana.service';
 
 
 @Component({
@@ -14,7 +13,7 @@ export class SesionesUsuarioComponent implements OnInit {
   sesiones: any[] = []; // Debes inicializar esta variable con tus sesiones reales
 
 
-  constructor(private router: Router, private estadoPestanaService: EstadoPestanaService) { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
@@ -28,7 +27,6 @@ export class SesionesUsuarioComponent implements OnInit {
   verSesion() {
     // Navegar a la ruta 'contacto-sesion'
     this.router.navigate(['detalles']);
-    this.estadoPestanaService.cambiarMostrarPestana(false);
     
   }
 

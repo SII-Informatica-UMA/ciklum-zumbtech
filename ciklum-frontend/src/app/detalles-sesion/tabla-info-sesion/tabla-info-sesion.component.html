@@ -1,81 +1,56 @@
-<h3>Tabla de Información de la sesión</h3>
+<div class="container">
+    <h4 class="mt-4">SESIÓN {{sesion.id}}</h4>
 
-<div class="seccion">
-    <div class="usuario">
-        <h2 style="text-align: center;">Información del usuario</h2>
-        <p>
-            <b>Nombre:</b>
-            {{sesion.usuario.nombre}}
-        <p>
-            <b>Apellidos:</b>
-            {{sesion.usuario.apellidos}}
-        <p>
-            <b>Peso:</b>
-            {{sesion.usuario.peso}}
-        <p>
-            <b>Altura:</b>
-            {{sesion.usuario.altura}}
+    <div class="seccion">
+        <div class="usuario">
+            <h2 style="text-align: center;">Información de la sesión</h2>
+                <b>Inicio:</b>
+                {{sesion.inicio}} <br>
+                <b>Fin:</b>
+                {{sesion.fin}} <br>
+                <b>Actividad realizada:</b>
+                {{sesion.decripcion}} <br>
+                <b>Tipo de sesión: </b>
+                {{sesion.presencial ? "Presencial" : "Online"}}
+        </div>
+        <div class="ejercicio">
+            <h2 style="text-align: center;">Informe general</h2>
+            <div>
+                <b>Salud:</b>
+                <div *ngFor="let dato of sesion.datosSalud">
+                    {{dato}}
+                </div>
+                <div *ngFor="let link of sesion.multimedia">
+                    <b>Multimedia:</b>
+                    <a [href]="link"><img [src]="link" alt="Vista previa del video"></a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="ejercicio">
-        <h2 style="text-align: center;">Información de la sesión</h2>
-        <p>
-            <b>Latidos por minuto:</b>
-            {{sesion.lpm}}
-        <p>
-            <b>Calorias consumidas:</b>
-            {{sesion.cal_consumidas}}
-        <p>
-            <b>Tiempo de ejercicio:</b>
-            {{sesion.tiempo_ejercicio}}
+    <div class="comentarios">
+        <h4 class="mt-4">CONTACTO</h4>
+        <div class="card">
+          <div class="card-body">
+            
+            <!-- Formulario de envío de mensajes -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Escríbele algo a tu entrenador"
+              aria-label="Escribe tu mensaje aquí" [(ngModel)]="nuevoMensaje" (keyup.enter)="enviarMensaje()">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary btn-enviar-mensaje" type="button" (click)="enviarMensaje()">
+                  <i class="bi bi-envelope-fill"></i> Enviar
+                </button>
+              </div>
+            </div>
+      
+            <!-- Sección para mostrar mensajes enviados -->
+            <div *ngFor="let mensaje of mensajes" class="mensaje">
+              <div class="mensaje-enviado">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9Pw6wxK-ziVr6gRjpZbINehT4GTFNi5FbJ6F-radiSw&s"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario">
+                <span class="nombre-usuario"> {{ username }}: </span> 
+                <span [innerHTML]="formatearEnlaces(mensaje.mensajeEnviado)"></span>
+              </div>
+            </div>
     </div>
 </div>
-<div class="entrenador">
-    <p>
-        <b>Ha sido entrenado por:</b> 
-        {{sesion.entrenador.nombre}}
-        {{sesion.entrenador.apellidos}}
-    </p>
-</div>
-
- <!--
-<table>
-    <div class="usuario">
-        <tr>
-            <th>Nombre:</th>
-            <td>{{sesion.usuario.nombre}}</td>
-        </tr>
-        <tr>
-            <th>Apellidos:</th>
-            <td>{{sesion.usuario.apellidos}}</td>
-        </tr>
-        <tr>
-            <th>Peso:</th>
-            <td>{{sesion.usuario.peso}}</td>
-        </tr>
-        <tr>
-            <th>Altura:</th>
-            <td>{{sesion.usuario.altura}}</td>
-        </tr>
-    </div>
-    <div class="ejercicio">
-        <tr>
-            <th>Latidos por minuto:</th>
-            <td>{{sesion.lpm}}</td>
-        </tr>
-        <tr>
-            <th>Calorias consumidas:</th>
-            <td>{{sesion.cal_consumidas}}</td>
-        </tr>
-        <tr>
-            <th>Tiempo de ejercicio:</th>
-            <td>{{sesion.tiempo_ejercicio}}</td>
-        </tr>
-    </div>
-</table>
--->
-<!-- 
-
-    AQUI VAN LOS DETALLES DE LA TABLA
-
-
- -->

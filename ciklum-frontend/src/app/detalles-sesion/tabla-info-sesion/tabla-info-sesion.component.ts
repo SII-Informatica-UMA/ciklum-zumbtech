@@ -1,24 +1,78 @@
 import { Component } from '@angular/core';
-import { sesion_user } from './sesion-usuario';
+import { UsuariosService } from '../../services/usuarios.service';
+import { Sesion } from '../../entities/sesion';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
 
 @Component({
   selector: 'app-tabla-info-sesion',
   templateUrl: './tabla-info-sesion.component.html',
+  styleUrls: ['./tabla-info-sesion.component.css'],
   standalone: true,
-  styleUrls: ['./tabla-info-sesion.component.css']
+  imports: [CommonModule, FormsModule]
 })
 export class TablaInfoSesionComponent {
   /* Variables */
-  sesion: sesion_user = {
-    usuario: {id: 0, nombre: 'Pedro', apellidos: 'Armario', altura: 180, peso: 83, email: 'si@g.es', tlf: '666776677'},
-    entrenador: {id: 1, nombre: 'Paco', apellidos: 'Torres', altura: 150, peso: 183, email: 'no@g.es', tlf: '888998899'},
-    lpm: 80,
-    cal_consumidas: 400,
-    tiempo_ejercicio: 60
+  sesion: Sesion = {
+    idPlan: 0,
+    inicio: new Date(),
+    fin: new Date(),
+    trabajoRealizado: "",
+    multimedia: [],
+    decripcion: "",
+    presencial: false,
+    datosSalud: [],
+    id: 0
   };
+  link_video: string[] = []; 
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
+  mensajes: { username: string, mensajeEnviado: string }[] = []; // Array para almacenar los mensajes enviados
+  nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
+
+  ngOnInit(): void {
+    // Aquí podrías cargar las sesiones desde algún servicio o una API
+    const sesiones = localStorage.getItem('sesion');
+    this.sesion = sesiones ? JSON.parse(sesiones) : undefined;
+    for (let i = 0; i < this.sesion.multimedia.length; i++) {
+      let id = this.obtenerIdVideoYoutube(this.sesion.multimedia[i]);
+      this.link_video[i] = 'https://img.youtube.com/vi/' +id + '/0.jpg';
+    }
+  }
 
   /* Constructor */
-  constructor() {}
+  constructor(private userService: UsuariosService, public modalService: NgbModal) {}
 
   /* Funciones */
+  private obtenerIdVideoYoutube(url: string): string | null {
+    // Expresión regular para buscar el ID del video en la URL de YouTube
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/reels\/)([a-zA-Z0-9_-]{11})/;
+    
+    // Realizar la búsqueda del ID del video en la URL
+    const match = url.match(regex);
+
+    // Si se encuentra el ID del video, devolverlo
+    if (match && match[1]) {
+        return match[1];
+    } else {
+        // Si no se encuentra el ID del video, devolver null
+        return null;
+    }
+}
+  // Función para formatear los enlaces en el mensaje de texto
+  formatearEnlaces(mensaje: string): string {
+    const regex = /(https?:\/\/[^\s]+)/g;
+    // Reemplazar cada enlace encontrado con un enlace HTML
+    return mensaje.replace(regex, '<a href="$1" target="_blank">$1</a>');
+  }
+
+  enviarMensaje() {
+    if (this.nuevoMensaje.trim() !== '') { // Verificar que el mensaje no esté vacío
+      // Agregar el mensaje al array de mensajes
+      this.mensajes.push({ username: this.username, mensajeEnviado: this.nuevoMensaje });
+      // Limpiar el campo de nuevo mensaje
+      this.nuevoMensaje = '';
+    }
+  }
+  
 }

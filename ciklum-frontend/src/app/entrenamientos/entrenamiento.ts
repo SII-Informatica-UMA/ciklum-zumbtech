@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { EstadoPestanaService } from './estado-pestana.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/contacto-sesion.component';
+import { UsuariosService } from '../services/usuarios.service';
+import { Rutina, Sesion } from '../entities/sesion';
+import { Plan } from '../entities/sesion';
+import { PlanService } from '../services/plan.service';
+import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.component';
+
 
 @Component({
   selector: 'app-entrenamiento',
@@ -14,16 +18,14 @@ import { ContactoSesionComponent } from '../detalles-sesion/contacto-sesion/cont
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
 })
 export class Entrenamiento implements OnInit {
-  mostrarPestana: boolean; // Definir la propiedad mostrarPestana
-  sesiones: any[] = [];
+  planes: Plan[] = [];
+  idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
 
-  constructor(private estadoPestanaService: EstadoPestanaService, private router: Router) {
-    this.mostrarPestana = estadoPestanaService.mostrarEstadoPestana();
+  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService, private modalService: NgbModal) {
   }
 
-  mostrarEstadoPesatana(): boolean {
-    return this.estadoPestanaService.mostrarEstadoPestana();
-  }
+  
 
   vueltaAlHome(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);
@@ -32,34 +34,64 @@ export class Entrenamiento implements OnInit {
 
   ngOnInit(): void {
     // Aquí podrías cargar las sesiones desde algún servicio o una API
-    this.sesiones = [
-      { nombre: 'Sesión 1', descripcion: 'Descripción de la sesión 1' },
-      { nombre: 'Sesión 2', descripcion: 'Descripción de la sesión 2' },
-      // Agrega más sesiones si es necesario
-    ];
+    this.actualizarPlanes();
+    console.log(this.idUser);
+  
   }
 
-  verSesion() {
+  verPlan(idPlan: Number) {
     // Navegar a la ruta 'contacto-sesion'
-    this.router.navigate(['detalle']);
-    this.estadoPestanaService.cambiarMostrarPestana(false);
-    
+    localStorage.removeItem('plan');
+    for(const plan of this.planes) {
+      if(plan.planId === idPlan) {
+        localStorage.setItem('plan', JSON.stringify(plan));
+      }
+    }
+    this.router.navigate(['sesiones']);
   }
 
-  editarSesion(sesion: any) {
+  editarPlan(plan: Plan) {
     // Lógica para editar la sesión
-    console.log('Editar sesión:', sesion);
+    let ref = this.modalService.open(FormularioPlanComponent);
+    ref.componentInstance.accion = "Editar";
+    ref.componentInstance.rutina = {fechaInicio: new Date(), fechaFin: new Date(),
+      reglaRecurrencia: "", idRutina: 0, id: 0};
+    ref.result.then((rutina: Rutina) => {
+      console.log(rutina);
+      this.planService.putPlan(rutina, plan.planId.valueOf()).subscribe(() => {
+        this.actualizarPlanes();
+      })
+    });
+
   }
 
-  eliminarSesion(sesion: any) {
+  eliminarPlan(plan: Plan) {
     // Lógica para eliminar la sesión
-    console.log('Eliminar sesión:', sesion);
+    this.planService.deletePlan(plan.planId.valueOf());
+    this.actualizarPlanes();
   }
 
-  agregarSesion() {
+  agregarPlan() {
     // Lógica para añadir una nueva sesión
-    console.log('Añadir nueva sesión');
     // Aquí podrías abrir un formulario para añadir una nueva sesión
+  
+
+
+    let ref = this.modalService.open(FormularioPlanComponent);
+    ref.componentInstance.accion = "Añadir";
+    ref.componentInstance.plan = {fechaInicio: new Date(), fechaFin: new Date(),
+      reglaRecurrencia: "", idRutina: 0, planId: 0, userId: 0, sesiones: []};
+    ref.result.then((plan: Plan) => {
+      console.log(plan);
+      this.planService.postPlan(plan,this.idUser).subscribe(() => {
+        this.actualizarPlanes();
+      })
+    });
   }
 
+  actualizarPlanes() {
+    this.planService.getPlanes(this.idUser).subscribe(planes => {
+      this.planes = planes;
+    });
+  }
 }

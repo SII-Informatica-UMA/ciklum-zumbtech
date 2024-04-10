@@ -1,0 +1,76 @@
+import { Injectable, numberAttribute } from "@angular/core";
+import { Login, UsuarioSesion, Rol, RolCentro } from "../entities/login";
+import { Observable, of, forkJoin, concatMap, lastValueFrom } from "rxjs";
+import {map} from 'rxjs/operators';
+import * as jose from 'jose';
+
+import { Usuario } from "../entities/usuario";
+import { BackendFakeService } from "./backend.fake.service";
+import { BackendService } from "./backend.service";
+import { LoginComponent } from "../login/login.component";
+import { Plan, Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PlanService {
+
+  constructor(private backend: BackendFakeService) {}
+
+  /*getSesion(id: number): Observable<Sesion> {
+    return this.backend.getSesion(id);
+  }
+
+  getSesiones(id: number): Observable<Sesion[]> {
+    return this.backend.getSesiones(id);
+  }
+
+  putSesion(id: number, sesion: Sesion): Observable<Sesion> {
+    return this.backend.putSesion(id, sesion);
+  }
+
+  deleteSesion(id: number): Observable<void> {
+    return this.backend.deleteSesion(id);
+  }
+
+  postSesion(id: number, sesion: Sesion) {
+    return this.backend.postSesion(id, sesion);
+  }
+
+  postEntrena(idClienteEntrenador: number, especialidad: string): Observable<entrenadorCliente> {
+    return this.backend.postEntrena(idClienteEntrenador, especialidad);
+  }*/
+
+  getPlanes(idE: number | undefined): Observable<Plan[]> {
+    return this.backend.getPlanes(idE);
+  }
+
+  postPlan(plan:Plan, idE: number | undefined): Observable<Rutina> {
+    return this.backend.postPlan(plan, idE);
+  }
+
+  putPlan(rutina: Rutina, idP: number): Observable<Rutina> {
+    return this.backend.putPlan(rutina, idP);
+  }
+
+  deletePlan(idP: number) {
+    this.backend.deletePlan(idP);
+  }
+
+  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion> {
+    return this.backend.postSesion(sesion,idPlan);
+  }
+
+  putSesion(sesion: Sesion, idPlan: Number): Observable<Sesion> {
+    return this.backend.putSesion(sesion,idPlan);
+  }
+
+  deleteSesion(idP: Number, idSesion: Number) {
+    this.backend.deleteSesion(idP, idSesion);
+  }
+
+  getSesiones(idPlan: Number): Observable<Sesion[]> {
+    return this.backend.getSesiones(idPlan)
+  }
+
+}

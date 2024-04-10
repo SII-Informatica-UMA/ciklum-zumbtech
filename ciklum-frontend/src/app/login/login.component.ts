@@ -49,6 +49,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Usuario } from '../entities/usuario';
 import { Login } from '../entities/login';
 import { UsuariosService } from '../services/usuarios.service';
+import { PlanService } from '../services/plan.service';
 
 @Component({
   selector: 'app-login',
@@ -80,7 +81,8 @@ export class LoginComponent {
     this.successMessageI = "";
   }
 
-  constructor(private usuarioService: UsuariosService, private router: Router) {}
+  constructor(private usuarioService: UsuariosService, private router: Router,
+    private planService: PlanService) {}
 
   registrarUsuario(user: Usuario) {
     this.successMessageR = "";
@@ -103,6 +105,7 @@ export class LoginComponent {
   iniciarSesionUsuario(log: Login) {
     this.usuarioService.doLogin(log).subscribe({
       next: (usuario) => {
+        console.log(usuario.id);
         this.router.navigateByUrl('principal');
       },
       error: (error) => {
