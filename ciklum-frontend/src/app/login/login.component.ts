@@ -108,6 +108,11 @@ export class LoginComponent {
   iniciarSesionUsuario(log: Login) {
     this.usuarioService.doLogin(log).subscribe({
       next: (usuario) => {
+        const idEntrenador: string = JSON.parse(localStorage.getItem('IdEntrenador') || "");
+        if(parseInt(idEntrenador) ===usuario.id) {
+         alert("No te puedes loggear como entrenador");
+          return;
+        }
         //const Entrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
         this.planService.getAsociaciones(usuario.id).subscribe({
           next: (asociacion) => {

@@ -5,7 +5,7 @@ body .row {
     align-items: flex-start; /* Alinea los elementos arriba */
     height: 100px; /* Altura del div contenedor */
     padding: 20px; /* Añade un poco de espacio interno al div */
-    background-color: lightgray;
+    background-color: lightgreen;
 }
 
 body div h3 {
