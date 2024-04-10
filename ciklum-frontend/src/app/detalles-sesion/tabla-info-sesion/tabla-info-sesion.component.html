@@ -46,9 +46,9 @@
             <!-- Sección para mostrar mensajes enviados -->
             <div *ngFor="let mensaje of mensajes" class="mensaje">
               <div class="mensaje-enviado">
-                <img src="https://media.licdn.com/dms/image/D4D03AQFse8YRcdyW4A/profile-displayphoto-shrink_800_800/0/1687380299542?e=1717027200&v=beta&t=jUL42TEch0Y18Isk7ecFHn23TPSAPuId8SpCLNYYcC8"
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9Pw6wxK-ziVr6gRjpZbINehT4GTFNi5FbJ6F-radiSw&s"
                   width="25" height="25" alt="Foto de usuario" class="foto-usuario">
-                <span class="nombre-usuario"> {{ usuario.nombre }}: </span> 
+                <span class="nombre-usuario"> {{ username }}: </span> 
                 <span [innerHTML]="formatearEnlaces(mensaje.mensajeEnviado)"></span>
               </div>
             </div>

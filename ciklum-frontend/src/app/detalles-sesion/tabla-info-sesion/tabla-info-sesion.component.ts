@@ -3,7 +3,6 @@ import { UsuariosService } from '../../services/usuarios.service';
 import { Sesion } from '../../entities/sesion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UsuarioD, usuarioDummy } from '../../entities/usuarioD';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
 
 @Component({
@@ -26,9 +25,9 @@ export class TablaInfoSesionComponent {
     datosSalud: [],
     id: 0
   };
-  link_video: string[] = [];
-  usuario: UsuarioD = usuarioDummy; // Utilizar la instancia usuarioDummy como usuario
-  mensajes: { usuario: string, mensajeEnviado: string }[] = []; // Array para almacenar los mensajes enviados
+  link_video: string[] = []; 
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
+  mensajes: { username: string, mensajeEnviado: string }[] = []; // Array para almacenar los mensajes enviados
   nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
 
   ngOnInit(): void {
@@ -70,7 +69,7 @@ export class TablaInfoSesionComponent {
   enviarMensaje() {
     if (this.nuevoMensaje.trim() !== '') { // Verificar que el mensaje no esté vacío
       // Agregar el mensaje al array de mensajes
-      this.mensajes.push({ usuario: this.usuario.nombre, mensajeEnviado: this.nuevoMensaje });
+      this.mensajes.push({ username: this.username, mensajeEnviado: this.nuevoMensaje });
       // Limpiar el campo de nuevo mensaje
       this.nuevoMensaje = '';
     }

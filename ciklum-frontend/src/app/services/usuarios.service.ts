@@ -92,6 +92,10 @@ export class UsuariosService {
   getUsuarios(): Observable<Usuario[]> {
     return this.backend.getUsuarios();
   }
+  
+  getUsuario(id: number): Observable<Usuario> {
+    return this.backend.getUsuario(id);
+  }
 
   editarUsuario(usuario: Usuario): Observable<Usuario> {
     return this.backend.putUsuario(usuario);
