@@ -4,17 +4,16 @@
         <form action="#">
           <h1>Crea tu Cuenta</h1>
           <div class="social-container">
-            <a href="#" class="social">
+            <a href="https://www.facebook.com/CiklumSpain/?locale=es_ES" class="social">
               <i class="bi bi-facebook"></i>
             </a>
-            <a href="#" class="social">
+            <a href="https://www.ciklum.com/about-ciklum" class="social">
               <i class="bi bi-google" id="red"></i>
             </a>
-            <a href="#" class="social">
+            <a href="https://www.linkedin.com/company/ciklum/" class="social">
               <i class="bi bi-linkedin"></i>
             </a>
           </div>
-          <span>o usa tu email como registro</span>
           <input type="text" id="nameR" placeholder="Name" [(ngModel)]="user.nombre" name="nombre" />
           <input type="text" id="surname1R" placeholder="First Surname" [(ngModel)]="user.apellido1" name="apellido1" />
           <input type="text" id="surname2R" placeholder="Second Surname" [(ngModel)]="user.apellido2" name="apellido2" />
@@ -30,17 +29,16 @@
         <form action="#">
           <h1>Iniciar Sesión</h1>
           <div class="social-container">
-            <a href="#" class="social">
+            <a href="https://www.facebook.com/CiklumSpain/?locale=es_ES" class="social">
               <i class="bi bi-facebook"></i>
             </a>
-            <a href="#" class="social">
+            <a href="https://www.ciklum.com/about-ciklum" class="social">
               <i class="bi bi-google" id="red"></i>
             </a>
-            <a href="#" class="social">
+            <a href="https://www.linkedin.com/company/ciklum/" class="social">
               <i class="bi bi-linkedin"></i>
             </a>
           </div>
-          <span>o usa tu email</span>
           <input type="email" id="emailL" placeholder="Email" [(ngModel)]="login.email" name="email" />
           <input type="password" id="passwordL" placeholder="Password" [(ngModel)]="login.password" name="password" />
           <a class="link-primary float-end" [routerLink]="'/forgotten-password'">Olvidaste tu contraseña?</a>
