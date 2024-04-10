@@ -39,9 +39,12 @@ export class Entrenamiento implements OnInit {
   verPlan(idPlan: Number) {
     // Navegar a la ruta 'contacto-sesion'
     localStorage.removeItem('plan');
-    localStorage.setItem('plan', JSON.stringify(this.planes[idPlan.valueOf()]));
+    for(const plan of this.planes) {
+      if(plan.planId === idPlan) {
+        localStorage.setItem('plan', JSON.stringify(plan));
+      }
+    }
     this.router.navigate(['sesiones']);
-    
   }
 
   editarPlan(planes: any) {
