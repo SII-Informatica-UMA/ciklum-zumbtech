@@ -17,6 +17,7 @@ import { FormularioSesionComponent } from '../../formulario-sesion/formulario-se
 })
 export class SesionesListaComponent {
   sesiones: Sesion[] = [];
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
   idPlan: Number = 0;
 
   constructor(private router: Router, private userService: UsuariosService, private planService: PlanService,

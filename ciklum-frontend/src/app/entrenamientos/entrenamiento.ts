@@ -18,6 +18,7 @@ import { PlanService } from '../services/plan.service';
 export class Entrenamiento implements OnInit {
   planes: Plan[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
 
   constructor(private router: Router, private userService: UsuariosService, private planService: PlanService) {
   }
