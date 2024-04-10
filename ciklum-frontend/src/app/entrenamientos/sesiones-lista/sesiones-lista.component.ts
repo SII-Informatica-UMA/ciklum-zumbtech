@@ -6,6 +6,7 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { Plan, Sesion, SesionImpl } from '../../entities/sesion';
 import { UsuariosService } from '../../services/usuarios.service';
 import { PlanService } from '../../services/plan.service';
+import { FormularioSesionComponent } from '../../formulario-sesion/formulario-sesion.component';
 
 @Component({
   selector: 'app-sesiones-lista',
@@ -18,7 +19,9 @@ export class SesionesListaComponent {
   sesiones: Sesion[] = [];
   idPlan: Number = 0;
 
-  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService) {
+  constructor(private router: Router, private userService: UsuariosService, private planService: PlanService,
+    private modalService: NgbModal
+  ) {
   }
 
   
@@ -45,7 +48,7 @@ export class SesionesListaComponent {
     
   }
 
-  editarSesion(sesion: any) {
+  editarSesion(sesion: Sesion) {
     // Lógica para editar la sesión
     console.log('Editar sesión:', sesion);
   }
@@ -59,11 +62,16 @@ export class SesionesListaComponent {
 
   agregarSesion() {
     // Lógica para añadir una nueva sesión
-    console.log('Añadir nueva sesión');
-    this.planService.postSesion(new SesionImpl(),this.idPlan).subscribe(() => {
-      this.actualizarSesiones();
-    })
+    let ref = this.modalService.open(FormularioSesionComponent);
+    ref.componentInstance.accion = "Añadir";
+    ref.componentInstance.sesion = new SesionImpl();
+    ref.result.then((sesion: Sesion) => {
+      this.planService.postSesion(sesion,this.idPlan).subscribe(() => {
+        this.actualizarSesiones();
+      })
+    });
     // Aquí podrías abrir un formulario para añadir una nueva sesión
+    console.log('Añadir nueva sesión');
   }
 
   actualizarSesiones() {
