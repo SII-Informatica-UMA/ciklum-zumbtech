@@ -54,12 +54,19 @@ export interface Plan {
     sesiones: Sesion[],
 }
 
-export interface entrenadorCliente {
-    idEntrenador: Number,
-    idCliente: Number, 
-    especialidad: string, 
-    id: Number,
-    planes: Plan[]
+export interface PlanD {
+    fechaInicio: Date,
+    fechaFin: Date,
+    reglaRecurrencia: string,
+    idRutina: number,
+    id: number
+}
+
+export interface PlanE {
+    fechaInicio: Date,
+    fechaFin: Date,
+    reglaRecurrencia: string,
+    idRutina: number,
 }
 
 export interface Rutina {
@@ -68,4 +75,47 @@ export interface Rutina {
     reglaRecurrencia: string,
     idRutina: number | undefined,
     id: number
+}
+
+export interface asociacion {
+    idEntrenador: number,
+    idCliente: number,
+    especialidad: string,
+    id: number,
+    planes: Plan[]
+}
+
+export interface EntrenadorP {
+    idUsuario: number,
+    telefono: string,
+    direccion: string,
+    dni: string,
+    fechaNacimiento: Date,
+    fechaAlta: Date,
+    fechaBaja: Date,
+    especialidad: string,
+    titulacion: string,
+    experiencia: string,
+    observaciones: string,
   }
+
+export interface Entrenador {
+    idUsuario: number,
+    telefono: string,
+    direccion: string,
+    dni: string,
+    fechaNacimiento: Date,
+    fechaAlta: Date,
+    fechaBaja: Date,
+    especialidad: string,
+    titulacion: string,
+    experiencia: string,
+    observaciones: string,
+    id: number
+  }
+
+export interface Centro {
+    nombre: string,
+    direccion: string,
+    idCentro: number
+}

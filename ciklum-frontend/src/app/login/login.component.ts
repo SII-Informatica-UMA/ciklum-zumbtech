@@ -50,6 +50,7 @@ import { Usuario } from '../entities/usuario';
 import { Login } from '../entities/login';
 import { UsuariosService } from '../services/usuarios.service';
 import { PlanService } from '../services/plan.service';
+import { EntrenadorP } from '../entities/sesion';
 
 @Component({
   selector: 'app-login',
@@ -89,6 +90,8 @@ export class LoginComponent {
     this.errorMessageR = "";
     this.usuarioService.aniadirUsuario(user).subscribe({
       next: (usuario) => {
+        const idEntrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
+        this.planService.postAsociación(usuario.id, parseInt(idEntrenador), "comer moscas").subscribe({});
         this.successMessageI = "Usuario registrado";
         this.isRightPanelActive = !this.isRightPanelActive;
       },
@@ -105,6 +108,12 @@ export class LoginComponent {
   iniciarSesionUsuario(log: Login) {
     this.usuarioService.doLogin(log).subscribe({
       next: (usuario) => {
+        //const Entrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
+        this.planService.getAsociaciones(usuario.id).subscribe({
+          next: (asociacion) => {
+            localStorage.setItem('Asociacion', JSON.stringify(asociacion[0].id));
+          }
+        });
         console.log(usuario.id);
         this.router.navigateByUrl('principal');
       },

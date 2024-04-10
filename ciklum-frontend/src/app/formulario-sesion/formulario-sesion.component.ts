@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Sesion, SesionImpl } from '../entities/sesion';
+import { Sesion, SesionImpl, SesionP } from '../entities/sesion';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,14 @@ import { CommonModule } from '@angular/common';
 })
 export class FormularioSesionComponent {
   accion?: 'Añadir' | 'Editar';
-  sesion: Sesion = new SesionImpl();
+  sesion: SesionP = {idPlan: 0,
+    inicio: new Date(),
+    fin: new Date(),
+    trabajoRealizado: "",
+    multimedia: [],
+    decripcion: "",
+    presencial: false,
+    datosSalud: [],}
 
   constructor(public modal: NgbActiveModal) { }
 

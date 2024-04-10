@@ -5,7 +5,7 @@ import { SECRET_JWT } from "../config/config";
 import { from } from "rxjs";
 import * as jose from 'jose';
 import { FRONTEND_URI } from "../config/config";
-import { Rutina, Sesion, entrenadorCliente } from "../entities/sesion";
+import { Rutina, Sesion } from "../entities/sesion";
 import { Plan } from "../entities/sesion";
 
 // Este servicio imita al backend pero utiliza localStorage para almacenar los datos

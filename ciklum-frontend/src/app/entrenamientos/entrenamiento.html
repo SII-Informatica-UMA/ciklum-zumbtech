@@ -13,10 +13,10 @@
               </thead>
               <tbody>
                 <tr *ngFor="let plan of planes">
-                  <td>Plan número {{ plan.planId }}</td>
+                  <td>Plan número {{ plan.id }}</td>
                   <td>Inicio {{ plan.fechaInicio }}</td>
                   <td>
-                    <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan(plan.planId)">
+                    <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan(plan.id)">
                       <i class="bi bi-eye-fill"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-primary m-1" (click)="editarPlan(plan)">

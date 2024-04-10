@@ -4,7 +4,7 @@ import { Usuario } from "../entities/usuario";
 import { HttpClient } from "@angular/common/http";
 import { BACKEND_URI } from "../config/config";
 import { JwtResponse } from "../entities/login";
-import { Plan, Rutina, Sesion, SesionP, entrenadorCliente } from "../entities/sesion";
+import { Centro, Entrenador, EntrenadorP, Plan, PlanD, PlanE, Rutina, Sesion, SesionP, asociacion } from "../entities/sesion";
 
 // Este servicio usa el backend real
 
@@ -15,19 +15,42 @@ export class BackendService {
 
   constructor(private httpClient: HttpClient) {}
 
-  postEntrena(idClienteEntrenador: number, especialidad: string): Observable<entrenadorCliente> {
-    return this.httpClient.post<entrenadorCliente>(BACKEND_URI + '/entrena?entrenador=' + idClienteEntrenador, 
-      {idEntrenador: idClienteEntrenador, idCliente: idClienteEntrenador, especialidad: especialidad});
+  getEntrenador(idEntrenador: number): Observable<Entrenador> {
+    return this.httpClient.get<Entrenador>(BACKEND_URI + '/entrenador/' + idEntrenador);
   }
 
-  postPlan(fInicio: Date, fFinal: Date, rRecurrencia: string, idE: number | undefined): Observable<Rutina> {
-      console.log("entrena " + idE);
-    return this.httpClient.post<Rutina>(BACKEND_URI + '/plan?entrena=' + idE, 
-    {fechaIncio: fInicio, fechaFin: fFinal, reglaRecurrencia: rRecurrencia, idRutina: 0});
+  postCentro(nombre:string, direccion:string): Observable<Centro> {
+    return this.httpClient.post<Centro>(BACKEND_URI + '/centro', {nombre: nombre, direccion: direccion});
   }
 
-  getPlanes(idE: number | undefined): Observable<Plan[]> {
-    return this.httpClient.get<Plan[]>(BACKEND_URI + '/plan?entrena=' + idE);
+  postEntrenador(entrenador: EntrenadorP, idCentro: number): Observable<Entrenador> {
+    return this.httpClient.post<Entrenador>(BACKEND_URI + '/entrenador?centro=' + idCentro, entrenador);
+  }
+
+  postAsociación(idCliente: number, idEntrenador: number, especialidad: string): Observable<asociacion> {
+    return this.httpClient.post<asociacion>(BACKEND_URI + '/entrena?entrenador=' + idEntrenador, 
+      {idEntrenador: idEntrenador, idCliente: idCliente, especialidad: especialidad});
+  }
+
+  getAsociaciones(idCliente: number): Observable<asociacion[]> {
+    return this.httpClient.get<asociacion[]>(BACKEND_URI + "/entrena?cliente=" + idCliente)
+  }
+
+  putPlan(rutina: Rutina, idP: number): Observable<Rutina> {
+    return this.httpClient.put<Rutina>(BACKEND_URI + "/plan/" + idP, rutina);
+  }
+
+  deletePlan(idP: number): Observable<void> {
+    return this.httpClient.delete<void>(BACKEND_URI + "/plan/" + idP);
+  }
+
+  postPlan(plan:PlanE, idAsociación: number | undefined): Observable<Rutina> {
+    return this.httpClient.post<Rutina>(BACKEND_URI + '/plan?entrena=' + idAsociación, 
+    plan);
+  }
+
+  getPlanes(idE: number | undefined): Observable<PlanD[]> {
+    return this.httpClient.get<PlanD[]>(BACKEND_URI + '/plan?entrena=' + idE);
   }
 
   getSesion(id: number): Observable<Sesion> {
@@ -35,7 +58,7 @@ export class BackendService {
   }
 
   getSesiones(id: number): Observable<Sesion[]> {
-    return this.httpClient.get<Sesion[]>(BACKEND_URI + '/sesion/?plan=' + id); 
+    return this.httpClient.get<Sesion[]>(BACKEND_URI + '/sesion?plan=' + id); 
   }
 
   putSesion(id: number, sesion: SesionP): Observable<Sesion> {
@@ -46,7 +69,7 @@ export class BackendService {
     return this.httpClient.delete<void>(BACKEND_URI + '/sesion/' + id);
   }
 
-  postSesion(id: number, sesion: Sesion) {
+  postSesion(id: number, sesion: SesionP) {
     return this.httpClient.post<Sesion>(BACKEND_URI + '/sesion?plan=' + id, sesion);
   }
 
