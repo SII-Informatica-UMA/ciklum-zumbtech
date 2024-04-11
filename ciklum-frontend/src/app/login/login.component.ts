@@ -47,7 +47,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Usuario } from '../entities/usuario';
-import { Login } from '../entities/login';
+import { Login, Rol } from '../entities/login';
 import { UsuariosService } from '../services/usuarios.service';
 import { PlanService } from '../services/plan.service';
 import { EntrenadorP } from '../entities/sesion';
@@ -90,8 +90,22 @@ export class LoginComponent {
     this.errorMessageR = "";
     this.usuarioService.aniadirUsuario(user).subscribe({
       next: (usuario) => {
-        const idEntrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
-        this.planService.postAsociación(usuario.id, parseInt(idEntrenador), "comer moscas").subscribe({});
+        //const idEntrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
+        const entrenador: Usuario = { id: 0, nombre: usuario.nombre + "-Entrenador", apellido1: 'Paco', apellido2:'Gutierrez', email:"paco"+usuario.id+"@uma.es", password: '1234', administrador: true };
+        this.usuarioService.aniadirUsuario(entrenador).subscribe({
+          next: (userEntrenador) => {
+            this.planService.postCentro("UMA", "Málaga").subscribe({
+              next: (centro) => {
+                const entrenadorP: EntrenadorP = { idUsuario: userEntrenador.id, telefono: "111111111", direccion: "Málaga", dni: "56565656T", fechaNacimiento: new Date(), fechaAlta: new Date(), fechaBaja: new Date(), especialidad: "Pesas", titulacion: "Pesas", experiencia: "Ninguna", observaciones: "Ninguna", }
+                this.planService.postEntrenador(entrenadorP, centro.idCentro).subscribe({
+                  next: (userEntrenadorRes) => {
+                    this.planService.postAsociación(usuario.id, userEntrenador.id, "comer moscas").subscribe({});
+                  }
+                })
+              }
+            })
+          }
+        })
         this.successMessageI = "Usuario registrado";
         this.isRightPanelActive = !this.isRightPanelActive;
       },
@@ -108,15 +122,17 @@ export class LoginComponent {
   iniciarSesionUsuario(log: Login) {
     this.usuarioService.doLogin(log).subscribe({
       next: (usuario) => {
-        const idEntrenador: string = JSON.parse(localStorage.getItem('IdEntrenador') || "");
-        if(parseInt(idEntrenador) ===usuario.id) {
-         alert("No te puedes loggear como entrenador");
-          return;
+        if(usuario.roles.length != 0 && usuario.roles[0].rol === Rol.ADMINISTRADOR) {
+          if(!(usuario.email === "admin@uma.es")) {
+            alert("No te puedes loguear como entrenador");
+            return;
+          }
         }
-        //const Entrenador: string = JSON.parse(localStorage.getItem('Entrenador') || "");
         this.planService.getAsociaciones(usuario.id).subscribe({
           next: (asociacion) => {
-            localStorage.setItem('Asociacion', JSON.stringify(asociacion[0].id));
+            if(!(usuario.email === "admin@uma.es")) {
+              localStorage.setItem('Asociacion', JSON.stringify(asociacion[0].id));
+            }
           }
         });
         console.log(usuario.id);

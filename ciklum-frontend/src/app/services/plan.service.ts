@@ -8,7 +8,7 @@ import { Usuario } from "../entities/usuario";
 import { BackendFakeService } from "./backend.fake.service";
 import { BackendService } from "./backend.service";
 import { LoginComponent } from "../login/login.component";
-import { Centro, Entrenador, EntrenadorP, Plan, PlanD, PlanE, Rutina, Sesion, asociacion } from "../entities/sesion";
+import { Centro, Entrenador, EntrenadorP, Plan, PlanD, PlanE, Rutina, Sesion, SesionP, asociacion } from "../entities/sesion";
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +65,7 @@ export class PlanService {
     return this.backend.getAsociaciones(idCliente);
   }
 
-  postSesion(sesion: Sesion, idPlan: Number): Observable<Sesion> {
+  postSesion(sesion: SesionP, idPlan: Number): Observable<Sesion> {
     return this.backend.postSesion(idPlan.valueOf(), sesion);
   }
 
