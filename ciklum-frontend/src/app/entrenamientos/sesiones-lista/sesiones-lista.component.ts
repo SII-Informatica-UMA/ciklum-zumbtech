@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { Plan, PlanD, Sesion, SesionImpl, SesionP } from '../../entities/sesion';
+import { PlanD, Sesion } from '../../entities/sesion';
 import { UsuariosService } from '../../services/usuarios.service';
 import { PlanService } from '../../services/plan.service';
 import { FormularioSesionComponent } from '../../formulario-sesion/formulario-sesion.component';
@@ -42,10 +42,7 @@ export class SesionesListaComponent {
     this.idPlan = this.plan.id;
     //this.sesiones = aux.sesiones;
     this.actualizarSesiones();
-    console.log(this.plan);
-    console.log(this.idPlan);
-    console.log(this.sesiones);
-    console.log(this.userService);
+
   }
 
   verSesion(sId: Number) {
@@ -73,16 +70,6 @@ export class SesionesListaComponent {
         })
       })
     });
-
-    // Lógica para editar la sesión
-    /*let ref = this.modalService.open(FormularioSesionComponent);
-    ref.componentInstance.accion = "Editar";
-    ref.componentInstance.sesion = new SesionImpl();
-    ref.result.then((sesion: Sesion) => {
-      this.planService.putSesion(sesion,this.idPlan).subscribe(() => {
-        this.actualizarSesiones();
-      })
-    });*/
   }
 
   eliminarSesion(sesion: Sesion) {
@@ -109,7 +96,6 @@ export class SesionesListaComponent {
   actualizarSesiones() {
     this.planService.getSesiones(this.idPlan).subscribe(sesiones => {
       this.sesiones = sesiones;
-      console.log(sesiones);
     });
   }
 

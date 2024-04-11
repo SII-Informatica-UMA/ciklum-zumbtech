@@ -5,8 +5,6 @@ import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { UsuariosService } from './services/usuarios.service';
 import { Usuario } from './entities/usuario';
 import { PlanService } from './services/plan.service';
-import { EntrenadorP } from './entities/sesion';
-import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',

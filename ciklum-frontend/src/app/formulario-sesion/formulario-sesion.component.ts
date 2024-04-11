@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Sesion, SesionImpl, SesionP } from '../entities/sesion';
+import { Component } from '@angular/core';
+import { SesionP } from '../entities/sesion';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
