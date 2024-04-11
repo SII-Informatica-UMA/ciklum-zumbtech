@@ -18,7 +18,7 @@ import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.comp
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
 })
 export class Entrenamiento implements OnInit {
-  asociacion: string = JSON.parse(localStorage.getItem('Asociacion') || "");
+  asociacion: string = this.userService.getUsuarioSesion()?.email ? "" : JSON.parse(localStorage.getItem('Asociacion') || "");
   planes: PlanD[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
   username: string = JSON.parse(localStorage.getItem('usuario') || "")?.email; // Nombre de usuario  
@@ -27,14 +27,8 @@ export class Entrenamiento implements OnInit {
   }
 
   isAdministrador() {
-    const email: string = JSON.parse(localStorage.getItem('usuario') || "")?.email;
-    //alert("Zona solo de usuarios");
-    return (email === "admin@uma.es");
+    return (this.userService.getUsuarioSesion()?.email === "admin@uma.es");
   }
-
-
-
-  
 
   vueltaAlHome(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);

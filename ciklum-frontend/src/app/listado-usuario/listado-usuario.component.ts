@@ -66,11 +66,6 @@ export class ListadoUsuarioComponent {
   }
 
   eliminarUsuario(id: number): void {
-    const idEntrenador: string = JSON.parse(localStorage.getItem('IdEntrenador') || "");
-    if(parseInt(idEntrenador) ===id) {
-      alert("No se pueden eliminar a los entrenadores");
-      return;
-    }
     this.usuariosService.eliminarUsuario(id).subscribe(() => {
       this.actualizarUsuarios();
     },
