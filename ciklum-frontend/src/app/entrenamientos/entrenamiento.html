@@ -5,19 +5,21 @@
       <div class="col-12" *ngIf="!isAdministrador()">
           <div class="row">
               <div class="container">
-                  <h4> Plan de entremiento de {{username}}</h4>
+                  <h4> Planes de entremiento de {{username}}</h4>
                   <table class="table table-striped table-hover">
                       <thead>
                           <tr>
                               <th>Id del Plan</th>
                               <th>Fecha de Inico del Plan</th>
+                              <th>Fecha de Fin del Plan</th>
                               <th>Acciones</th>
                           </tr>
                       </thead>
                       <tbody>
                           <tr *ngFor="let plan of planes">
                               <td>Plan número {{ plan.id }}</td>
-                              <td>Inicio {{ plan.fechaInicio }}</td>
+                              <td>Inicio: {{ plan.fechaInicio }}</td>
+                              <td>Fin: {{ plan.fechaFin }}</td>
                               <td>
                                   <button class="btn btn-sm btn-outline-info m-1" (click)="verPlan(plan.id)">
                                       <i class="bi bi-eye-fill"></i>

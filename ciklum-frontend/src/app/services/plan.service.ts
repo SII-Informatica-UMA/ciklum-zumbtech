@@ -70,7 +70,7 @@ export class PlanService {
   }
 
   putSesion(sesion: Sesion, idSesion: Number): Observable<Sesion> {
-    return this.backend.putSesion(sesion.id.valueOf(), sesion);
+    return this.backend.putSesion(idSesion.valueOf(), sesion);
   }
 
   deleteSesion(idSesion: Number): Observable<void> {

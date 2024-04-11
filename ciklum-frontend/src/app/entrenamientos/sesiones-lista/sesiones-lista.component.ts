@@ -62,15 +62,27 @@ export class SesionesListaComponent {
   }
 
   editarSesion(sesion: Sesion) {
-    // Lógica para editar la sesión
     let ref = this.modalService.open(FormularioSesionComponent);
+    ref.componentInstance.accion = "editar";
+    ref.componentInstance.sesion = {idPlan: 0, inicio: new Date(), fin: new Date(), trabajoRealizado: "", multimedia: [], decripcion: "", presencial: false,datosSalud: [],}
+    ref.result.then((sesionAux) => {
+      this.planService.putSesion(sesionAux,sesion.id).subscribe((sesionRes) => {
+        this.planService.postSesion(sesionRes,this.idPlan).subscribe((sesionAux) => {
+          //console.log(sesion);
+          this.actualizarSesiones();
+        })
+      })
+    });
+
+    // Lógica para editar la sesión
+    /*let ref = this.modalService.open(FormularioSesionComponent);
     ref.componentInstance.accion = "Editar";
     ref.componentInstance.sesion = new SesionImpl();
     ref.result.then((sesion: Sesion) => {
       this.planService.putSesion(sesion,this.idPlan).subscribe(() => {
         this.actualizarSesiones();
       })
-    });
+    });*/
   }
 
   eliminarSesion(sesion: Sesion) {
