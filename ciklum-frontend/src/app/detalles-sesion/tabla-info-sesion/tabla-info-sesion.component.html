@@ -46,8 +46,13 @@
             <!-- Sección para mostrar mensajes enviados -->
             <div *ngFor="let mensaje of mensajes" class="mensaje">
               <div class="mensaje-enviado">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9Pw6wxK-ziVr6gRjpZbINehT4GTFNi5FbJ6F-radiSw&s"
-                  width="25" height="25" alt="Foto de usuario" class="foto-usuario">
+                
+                <img src="https://media.licdn.com/dms/image/D4D35AQFTaXlrzU8GLw/profile-framedphoto-shrink_400_400/0/1687380301723?e=1713456000&v=beta&t=B6z5ahXh1gD5bsuzt-qsuK3Q69cfYcCE-JEnGXDWyH4"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 1">
+                <img src="https://media.licdn.com/dms/image/D4D35AQEmlvqfLAIAUw/profile-framedphoto-shrink_400_400/0/1711989106737?e=1713456000&v=beta&t=uAhID4cKEiGCasno3V22hbrXDrOhrDykgp6yzikOPbA"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 2">
+                <img src="https://raw.githubusercontent.com/rorro6787/rorro6787/main/Images/Images/ra.jpg"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 3">
                 <span class="nombre-usuario"> {{ username }}: </span> 
                 <span [innerHTML]="mensaje.mensajeEnviado"></span>
               </div>

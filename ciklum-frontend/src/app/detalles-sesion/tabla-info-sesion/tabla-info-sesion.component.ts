@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   imports: [CommonModule, FormsModule]
 })
 export class TablaInfoSesionComponent {
+  rodrigoIvan: number = 1;
   /* Variables */
   sesion: Sesion = {
     idPlan: 0,
@@ -31,6 +32,7 @@ export class TablaInfoSesionComponent {
   nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
 
   ngOnInit(): void {
+    this.rodrigoIvan = Math.floor(Math.random() * 3) + 1;
     // Cargar sesiones y mensajes almacenados en localStorage si existen
     const sesionGuardada = localStorage.getItem('sesion');
     if (sesionGuardada) {
