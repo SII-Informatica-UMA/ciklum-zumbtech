@@ -3,6 +3,10 @@
     animation-duration: 2s;
 }
 
+.boton {
+    margin-left: 12px;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
