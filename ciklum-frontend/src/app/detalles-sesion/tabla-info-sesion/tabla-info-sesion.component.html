@@ -1,6 +1,6 @@
 <div class="container">
     <h4 class="mt-4">SESIÓN {{sesion.id}}</h4>
-
+    <!-- Seccion con las tablas-->
     <div class="seccion">
         <div class="usuario">
             <h2 style="text-align: center;">Información de la sesión</h2>
@@ -27,6 +27,7 @@
             </div>
         </div>
     </div>
+    <!-- Seccion de comentarios al entrenador -->
     <div class="comentarios">
         <h4 class="mt-4">CONTACTO</h4>
         <div class="card">
@@ -44,7 +45,7 @@
             </div>
       
             <!-- Sección para mostrar mensajes enviados -->
-            <div *ngFor="let mensaje of mensajes" class="mensaje">
+            <div *ngFor="let mensaje of mensajes; let i = index" class="mensaje">
               <div class="mensaje-enviado">
                 
                 <img src="https://media.licdn.com/dms/image/D4D35AQFTaXlrzU8GLw/profile-framedphoto-shrink_400_400/0/1687380301723?e=1713456000&v=beta&t=B6z5ahXh1gD5bsuzt-qsuK3Q69cfYcCE-JEnGXDWyH4"
@@ -55,6 +56,10 @@
                   width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 3">
                 <span class="nombre-usuario"> {{ username }}: </span> 
                 <span [innerHTML]="mensaje.mensajeEnviado"></span>
+                <!-- Botón para eliminar mensaje -->
+                <button type="button" class="btn btn-danger btn-sm btn-eliminar" (click)="borrarMensaje(i, mensaje.mensajeEnviado)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
               </div>
             </div>
     </div>

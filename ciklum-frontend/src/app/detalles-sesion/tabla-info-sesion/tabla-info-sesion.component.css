@@ -6,6 +6,15 @@ body {
     margin-bottom: 5px; /* Separacion entre mensajes enviados */
   } 
 
+  .btn-eliminar {
+    width: 20px; /* Ancho del botón */
+    height: 20px; /* Alto del botón */
+    margin-left: 5px;
+    padding: 0; /* Eliminar padding para que el botón sea del tamaño especificado */
+    font-size: 12px; /* Tamaño del texto dentro del botón */
+  }
+  
+
 .seccion {
     display: flex;
     padding-top: 20px;

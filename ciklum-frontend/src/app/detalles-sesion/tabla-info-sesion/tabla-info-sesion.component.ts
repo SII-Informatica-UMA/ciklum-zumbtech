@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UsuariosService } from '../../services/usuarios.service';
 import { Sesion } from '../../entities/sesion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,6 +32,7 @@ export class TablaInfoSesionComponent {
   nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
 
   ngOnInit(): void {
+    // console.log(this.mensajes);
     this.rodrigoIvan = Math.floor(Math.random() * 3) + 1;
     // Cargar sesiones y mensajes almacenados en localStorage si existen
     const sesionGuardada = localStorage.getItem('sesion');
@@ -41,7 +41,7 @@ export class TablaInfoSesionComponent {
       // Separar los mensajes guardados en la descripción y agregarlos al array de mensajes
       if (this.sesion.descripcion) {
         const mensajesSeparados = this.sesion.descripcion.split('\n');
-        //console.log(mensajesSeparados);
+        console.log(mensajesSeparados);
         //console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
         for (let i = 0; i < mensajesSeparados.length; ++i) {
           this.mensajes.push({ username: this.username, mensajeEnviado: mensajesSeparados[i] });
@@ -99,5 +99,28 @@ export class TablaInfoSesionComponent {
       this.nuevoMensaje = '';
     }
   }
+  borrarMensaje(i: number, mensaje: string): void {
+    // Verificar que el índice esté dentro del rango del array de mensajes
+    /*for(let i = 0; i < this.mensajes.length; i++) {
+      console.log(this.mensajes[i]);
+    }*/
+    if (i >= 0 && i < this.mensajes.length) {
+      // Eliminar el mensaje en el índice i del array de mensajes
+      this.mensajes.splice(i, 1);
+      // Buscar el mensaje en la descripción de la sesión y eliminarlo
+      const mensajesSeparados = this.sesion.descripcion.split('\n');
+      const mensajeIndex = mensajesSeparados.indexOf(mensaje);
+      if (mensajeIndex !== -1) {
+        mensajesSeparados.splice(mensajeIndex, 1);
+        // Actualizar la descripción en la sesión con los mensajes actualizados
+        this.sesion.descripcion = mensajesSeparados.join('\n');
+        // Guardar la sesión actualizada en el servicio PlanService
+        this.planService.putSesion(this.sesion, this.sesion.id).subscribe(() => {
+          this.sesion;
+        });
+      }
+    }
+  }
+  
   
 }
