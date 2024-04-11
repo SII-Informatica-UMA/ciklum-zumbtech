@@ -22,10 +22,9 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    /*if(localStorage.getItem('Entrenador')) {
-
+    if(localStorage.getItem('Entrenador')) {
       return;
-    }*/
+    }
     const entrenador: Usuario = { id: 0, nombre: 'Entrenador', apellido1: 'Paco', apellido2:'Gutierrez', email:'paco@uma.es', password: '1234', administrador: true };
     this.usuarioService.aniadirUsuario(entrenador).subscribe({
           next: (userEntrenador) => {
