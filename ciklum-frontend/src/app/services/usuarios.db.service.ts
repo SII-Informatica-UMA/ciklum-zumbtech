@@ -1,4 +1,4 @@
-import {UsuarioSesion, Rol, MapaCentros} from '../entities/login';
+import {UsuarioSesion, Rol} from '../entities/login';
 
 export const usuarios: UsuarioSesion [] = [
   {

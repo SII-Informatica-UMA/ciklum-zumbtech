@@ -1,5 +1,0 @@
-/* Esto redondea los bordes de la tabla */
-.table {
-    border-radius: 10px;
-    overflow: hidden; /* Evita que los bordes redondeados sean cortados */
-  }

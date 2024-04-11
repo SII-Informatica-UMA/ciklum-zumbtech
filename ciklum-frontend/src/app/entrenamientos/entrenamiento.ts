@@ -4,11 +4,9 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { UsuariosService } from '../services/usuarios.service';
-import { PlanD, PlanE, Rutina, Sesion } from '../entities/sesion';
-import { Plan } from '../entities/sesion';
+import { PlanD} from '../entities/sesion';
 import { PlanService } from '../services/plan.service';
 import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.component';
-
 
 @Component({
   selector: 'app-entrenamiento',
@@ -62,7 +60,6 @@ export class Entrenamiento implements OnInit {
 
   eliminarPlan(plan: PlanD) {
     // Lógica para eliminar la sesión
-    console.log(plan.id);
     this.planService.deletePlan(plan.id.valueOf()).subscribe(() => {
       this.actualizarPlanes();
     });
@@ -71,9 +68,6 @@ export class Entrenamiento implements OnInit {
   agregarPlan() {
     // Lógica para añadir una nueva sesión
     // Aquí podrías abrir un formulario para añadir una nueva sesión
-  
-
-
     let ref = this.modalService.open(FormularioPlanComponent);
     ref.componentInstance.accion = "Añadir";
     ref.componentInstance.plan = {fechaInicio: new Date(), fechaFin: new Date(),

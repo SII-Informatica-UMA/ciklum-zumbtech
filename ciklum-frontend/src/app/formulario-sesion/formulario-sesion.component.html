@@ -5,20 +5,20 @@
 <div class="modal-body">
   <div class="form-group">
     <label for="inicio">Fecha inicio:</label>
-    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio">
+    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio" required>
     <label for="fin">Fecha inicio:</label>
-    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin">
+    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin" required>
     <label for="trabajoRealizado">Trabajo realizado:</label>
-    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio">
+    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio" required>
     <label for="multimedia">Contenido multimedia:</label>
-    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="text">
+    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="text" required>
     <label for="descripcion">Descripcion:</label>
-    <input type="text" class="form-control" id="descripcion" [(ngModel)]="sesion.descripcion" placeholder="descripcion">
+    <input type="text" class="form-control" id="descripcion" [(ngModel)]="sesion.descripcion" placeholder="descripcion" required>
     <label for="presencial">Sesion presencial: </label>
     <input type="radio" [(ngModel)]="sesion.presencial" [value]="true"> Si
     <input type="radio" [(ngModel)]="sesion.presencial" [value]="false"> No <br>
     <label for="datosSalud">Datos de la salud:</label>
-    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="salud">
+    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="salud" required>
   </div>
 </div>
 <div class="modal-footer">
