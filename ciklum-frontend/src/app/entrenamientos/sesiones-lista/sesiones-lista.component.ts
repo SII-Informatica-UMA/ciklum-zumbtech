@@ -61,9 +61,10 @@ export class SesionesListaComponent {
   editarSesion(sesion: Sesion) {
     let ref = this.modalService.open(FormularioSesionComponent);
     ref.componentInstance.accion = "editar";
-    ref.componentInstance.sesion = {idPlan: 0, inicio: new Date(), fin: new Date(), trabajoRealizado: "", multimedia: [], decripcion: "", presencial: false,datosSalud: [],}
+    ref.componentInstance.sesion = {idPlan: 0, inicio: new Date(), fin: new Date(), trabajoRealizado: "", multimedia: [], decripcion: sesion.descripcion, presencial: false,datosSalud: [],}
     ref.result.then((sesionAux) => {
       this.planService.putSesion(sesionAux,sesion.id).subscribe((sesionRes) => {
+        sesionRes.descripcion = sesion.descripcion;
         this.planService.postSesion(sesionRes,this.idPlan).subscribe((sesionAux) => {
           //console.log(sesion);
           this.actualizarSesiones();

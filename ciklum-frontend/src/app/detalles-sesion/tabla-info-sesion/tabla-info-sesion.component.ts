@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { UsuariosService } from '../../services/usuarios.service';
 import { Sesion } from '../../entities/sesion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
+import { PlanService } from '../../services/plan.service';
 
 @Component({
   selector: 'app-tabla-info-sesion',
@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   imports: [CommonModule, FormsModule]
 })
 export class TablaInfoSesionComponent {
+  rodrigoIvan: number = 1;
   /* Variables */
   sesion: Sesion = {
     idPlan: 0,
@@ -31,24 +32,21 @@ export class TablaInfoSesionComponent {
   nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
 
   ngOnInit(): void {
+    // console.log(this.mensajes);
+    this.rodrigoIvan = Math.floor(Math.random() * 3) + 1;
     // Cargar sesiones y mensajes almacenados en localStorage si existen
     const sesionGuardada = localStorage.getItem('sesion');
     if (sesionGuardada) {
       this.sesion = JSON.parse(sesionGuardada);
-    }
-
-    // Cargar el array de mensajes desde la primera descripción en localStorage
-    const primerDescripcion = this.sesion.descripcion.split('\n')[0];
-    if (primerDescripcion) {
-      const primerMensajeSeparado = primerDescripcion.split(':');
-      this.mensajes.push({ username: primerMensajeSeparado[0], mensajeEnviado: primerMensajeSeparado[1] });
-    }
-
-    // Cargar mensajes adicionales desde las descripciones en localStorage
-    const descripcionesRestantes = this.sesion.descripcion.split('\n').slice(1);
-    for (const descripcion of descripcionesRestantes) {
-      const mensajeSeparado = descripcion.split(':');
-      this.mensajes.push({ username: mensajeSeparado[0], mensajeEnviado: mensajeSeparado[1] });
+      // Separar los mensajes guardados en la descripción y agregarlos al array de mensajes
+      if (this.sesion.descripcion) {
+        const mensajesSeparados = this.sesion.descripcion.split('\n');
+        console.log(mensajesSeparados);
+        //console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
+        for (let i = 0; i < mensajesSeparados.length; ++i) {
+          this.mensajes.push({ username: this.username, mensajeEnviado: mensajesSeparados[i] });
+        }        
+      }
     }
 
     for (let i = 0; i < this.sesion.multimedia.length; i++) {
@@ -58,7 +56,7 @@ export class TablaInfoSesionComponent {
   }
 
   /* Constructor */
-  constructor(private userService: UsuariosService, public modalService: NgbModal) {}
+  constructor(private planService: PlanService, public modalService: NgbModal) {}
 
   /* Funciones */
   private obtenerIdVideoYoutube(url: string): string | null {
@@ -86,16 +84,43 @@ export class TablaInfoSesionComponent {
   enviarMensaje() {
     if (this.nuevoMensaje.trim() !== '') { // Verificar que el mensaje no esté vacío
       // Agregar el nuevo mensaje a la descripción de la sesión
-      this.sesion.descripcion = (this.sesion.descripcion ? this.sesion.descripcion + '\n' : '') + `${this.nuevoMensaje}`;
-      // Actualizar el array de mensajes
-      const mensajeSeparado = this.nuevoMensaje.split(':');
-      this.mensajes.push({ username: this.username, mensajeEnviado: mensajeSeparado[1] });
-      console.log(this.mensajes);
-      // Guardar la sesión en localStorage
-      localStorage.setItem('sesion', JSON.stringify(this.sesion));
+      //console.log(JSON.stringify(this.sesion)); // antes de modificar
+      this.sesion.descripcion = (this.sesion.descripcion ? this.sesion.descripcion + '\n' : '') + this.nuevoMensaje;
+      // Agregar el nuevo mensaje al array de mensajes
+      this.mensajes.push({ username: this.username, mensajeEnviado: this.nuevoMensaje });
+      // Guardar la sesión en localStorage y actualiza todo
+      this.planService.putSesion(this.sesion, this.sesion.id).subscribe(() => {
+        this.sesion;
+      });
+      //this.planService.postSesion(this.sesion, this.sesion.idPlan);
+      //localStorage.setItem('sesion', JSON.stringify(this.sesion));
+      //console.log(JSON.stringify(this.sesion)); // despues de modificar
       // Limpiar el campo de nuevo mensaje
       this.nuevoMensaje = '';
     }
   }
+  borrarMensaje(i: number, mensaje: string): void {
+    // Verificar que el índice esté dentro del rango del array de mensajes
+    /*for(let i = 0; i < this.mensajes.length; i++) {
+      console.log(this.mensajes[i]);
+    }*/
+    if (i >= 0 && i < this.mensajes.length) {
+      // Eliminar el mensaje en el índice i del array de mensajes
+      this.mensajes.splice(i, 1);
+      // Buscar el mensaje en la descripción de la sesión y eliminarlo
+      const mensajesSeparados = this.sesion.descripcion.split('\n');
+      const mensajeIndex = mensajesSeparados.indexOf(mensaje);
+      if (mensajeIndex !== -1) {
+        mensajesSeparados.splice(mensajeIndex, 1);
+        // Actualizar la descripción en la sesión con los mensajes actualizados
+        this.sesion.descripcion = mensajesSeparados.join('\n');
+        // Guardar la sesión actualizada en el servicio PlanService
+        this.planService.putSesion(this.sesion, this.sesion.id).subscribe(() => {
+          this.sesion;
+        });
+      }
+    }
+  }
+  
   
 }

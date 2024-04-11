@@ -1,13 +1,13 @@
 <div class="container">
     <h4 class="mt-4">SESIÓN {{sesion.id}}</h4>
-
+    <!-- Seccion con las tablas-->
     <div class="seccion">
         <div class="usuario">
             <h2 style="text-align: center;">Información de la sesión</h2>
                 <b>Inicio:</b>
-                {{sesion.inicio}} <br>
+                {{sesion.inicio | date: "shortDate"}} <br>
                 <b>Fin:</b>
-                {{sesion.fin}} <br>
+                {{sesion.fin | date: "shortDate"}} <br>
                 <b>Actividad realizada:</b>
                 {{sesion.trabajoRealizado}} <br>
                 <b>Tipo de sesión: </b>
@@ -22,11 +22,12 @@
                 </div>
                 <div *ngFor="let link of sesion.multimedia">
                     <b>Multimedia: </b>
-                    <a [href]="link"><img [src]="link" alt="Vista previa del video"></a>
+                    <a [href]="link"><img [src]="link" alt={{link}}></a> 
                 </div>
             </div>
         </div>
     </div>
+    <!-- Seccion de comentarios al entrenador -->
     <div class="comentarios">
         <h4 class="mt-4">CONTACTO</h4>
         <div class="card">
@@ -44,12 +45,21 @@
             </div>
       
             <!-- Sección para mostrar mensajes enviados -->
-            <div *ngFor="let mensaje of mensajes" class="mensaje">
+            <div *ngFor="let mensaje of mensajes; let i = index" class="mensaje">
               <div class="mensaje-enviado">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9Pw6wxK-ziVr6gRjpZbINehT4GTFNi5FbJ6F-radiSw&s"
-                  width="25" height="25" alt="Foto de usuario" class="foto-usuario">
+                
+                <img src="https://media.licdn.com/dms/image/D4D35AQFTaXlrzU8GLw/profile-framedphoto-shrink_400_400/0/1687380301723?e=1713456000&v=beta&t=B6z5ahXh1gD5bsuzt-qsuK3Q69cfYcCE-JEnGXDWyH4"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 1">
+                <img src="https://media.licdn.com/dms/image/D4D35AQEmlvqfLAIAUw/profile-framedphoto-shrink_400_400/0/1711989106737?e=1713456000&v=beta&t=uAhID4cKEiGCasno3V22hbrXDrOhrDykgp6yzikOPbA"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 2">
+                <img src="https://raw.githubusercontent.com/rorro6787/rorro6787/main/Images/Images/ra.jpg"
+                  width="25" height="25" alt="Foto de usuario" class="foto-usuario" *ngIf="rodrigoIvan === 3">
                 <span class="nombre-usuario"> {{ username }}: </span> 
                 <span [innerHTML]="mensaje.mensajeEnviado"></span>
+                <!-- Botón para eliminar mensaje -->
+                <button type="button" class="btn btn-danger btn-sm btn-eliminar" (click)="borrarMensaje(i, mensaje.mensajeEnviado)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
               </div>
             </div>
     </div>

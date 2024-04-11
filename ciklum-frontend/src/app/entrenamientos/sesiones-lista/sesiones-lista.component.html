@@ -15,8 +15,8 @@
               <tbody>
                 <tr *ngFor="let sesion of sesiones">
                   <td>Sesion de {{ sesion.trabajoRealizado }}</td>
-                  <td>Inicio: {{ sesion.inicio}}</td>
-                  <td>Fin: {{ sesion.fin}}</td>
+                  <td>Inicio: {{ sesion.inicio | date: "shortDate"}}</td>
+                  <td>Fin: {{ sesion.fin | date: "shortDate"}}</td>
                   <td>
                     <button class="btn btn-sm btn-outline-info m-1" (click)="verSesion(sesion.id)">
                       <i class="bi bi-eye-fill"></i>

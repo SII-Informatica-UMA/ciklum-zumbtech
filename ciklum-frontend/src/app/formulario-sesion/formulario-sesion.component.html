@@ -5,22 +5,35 @@
 <div class="modal-body">
   <div class="form-group">
     <label for="inicio">Fecha inicio:</label>
-    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio" required>
+    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio">
     <label for="fin">Fecha inicio:</label>
-    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin" required>
+    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin">
     <label for="trabajoRealizado">Trabajo realizado:</label>
-    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio" required>
+    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio">
+    
     <label for="multimedia">Contenido multimedia:</label>
-    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="text" required>
-    <label for="descripcion">Descripcion:</label>
-    <input type="text" class="form-control" id="descripcion" [(ngModel)]="sesion.descripcion" placeholder="descripcion" required>
+    <!--<button type="button" (click)="agregarInputMulti()">Nuevo enlace</button>-->
+    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="enlace 1">
+    <div *ngFor="let item1 of sesion.multimedia; let i = index">
+      <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[i+1]" placeholder="enlace {{i+2}}">
+    </div>
+    
     <label for="presencial">Sesion presencial: </label>
-    <input type="radio" [(ngModel)]="sesion.presencial" [value]="true"> Si
+    <input type="radio" [(ngModel)]="sesion.presencial" [value]="true" checked> Si
     <input type="radio" [(ngModel)]="sesion.presencial" [value]="false"> No <br>
+
     <label for="datosSalud">Datos de la salud:</label>
-    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="salud" required>
+    <!--<button type="button" (click)="agregarInputSalud()">Nuevo dato</button>-->
+    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="dato 1">
+    <div *ngFor="let item2 of sesion.datosSalud; let j = index">
+      <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[j+1]" placeholder="dato {{j+2}}">
+    </div>
+    
+
   </div>
 </div>
 <div class="modal-footer">
+  <div class="error-message" [ngClass]="{ 'red-text': errorMensaje }" *ngIf="errorMensaje"
+  style="color: red; position: relative;">{{ errorMensaje }}</div>
   <button type="button" class="btn btn-outline-dark" (click)="guardarSesion()">Guardar</button>
 </div>
