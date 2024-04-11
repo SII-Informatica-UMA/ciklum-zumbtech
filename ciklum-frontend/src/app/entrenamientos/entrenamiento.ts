@@ -21,10 +21,18 @@ export class Entrenamiento implements OnInit {
   asociacion: string = JSON.parse(localStorage.getItem('Asociacion') || "");
   planes: PlanD[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
-  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.nombre; // Nombre de usuario
+  username: string = JSON.parse(localStorage.getItem('usuario') || "")?.email; // Nombre de usuario  
 
   constructor(private router: Router, private userService: UsuariosService, private planService: PlanService, private modalService: NgbModal) {
   }
+
+  isAdministrador() {
+    const email: string = JSON.parse(localStorage.getItem('usuario') || "")?.email;
+    //alert("Zona solo de usuarios");
+    return (email === "admin@uma.es");
+  }
+
+
 
   
 

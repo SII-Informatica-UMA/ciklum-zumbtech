@@ -1,5 +1,9 @@
+
+
 <div class="container">
     <button class="btn btn-primary mb-3" (click)="vueltaAlHome()">Back</button>
+    <div>
+      <div class="col-12" *ngIf="!isAdministrador()">
     <div class="row">
         <div class="container">
             <h4> Plan de entremiento de {{username}}</h4>
@@ -37,6 +41,11 @@
               </div>
             </div>
           </div>
-          
+          <div class="col-12" *ngIf="isAdministrador()">
+            <p class="alert alert-danger">No tiene permisos para ver este contenido.</p>
+          </div>
     </div>
 </div>
+
+
+
