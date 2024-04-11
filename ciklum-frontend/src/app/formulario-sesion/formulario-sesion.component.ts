@@ -18,7 +18,7 @@ export class FormularioSesionComponent {
     fin: new Date(),
     trabajoRealizado: "",
     multimedia: [],
-    decripcion: "",
+    descripcion: "",
     presencial: false,
     datosSalud: [],}
 

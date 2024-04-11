@@ -20,7 +20,7 @@ export class TablaInfoSesionComponent {
     fin: new Date(),
     trabajoRealizado: "",
     multimedia: [],
-    decripcion: "",
+    descripcion: "",
     presencial: false,
     datosSalud: [],
     id: 0

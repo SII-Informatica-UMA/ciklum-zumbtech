@@ -4,7 +4,7 @@ export interface Sesion {
     fin: Date,
     trabajoRealizado: string,
     multimedia: string[],
-    decripcion: string,
+    descripcion: string,
     presencial: boolean,
     datosSalud: string[],
     id: Number
@@ -15,7 +15,7 @@ export class SesionImpl implements Sesion {
     fin: Date;
     trabajoRealizado: string;
     multimedia: string[];
-    decripcion: string;
+    descripcion: string;
     presencial: boolean;
     datosSalud: string[];
     id: Number;
@@ -26,7 +26,7 @@ export class SesionImpl implements Sesion {
         this.fin = new Date();
         this.trabajoRealizado = "";
         this.multimedia = [];
-        this.decripcion = "";
+        this.descripcion = "";
         this.presencial = true;
         this.datosSalud = [];
         this.id = 0;
@@ -39,7 +39,7 @@ export interface SesionP {
     fin: Date,
     trabajoRealizado: string,
     multimedia: string[],
-    decripcion: string,
+    descripcion: string,
     presencial: boolean,
     datosSalud: string[],
 }

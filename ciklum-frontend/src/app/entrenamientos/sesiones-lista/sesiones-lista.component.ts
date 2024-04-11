@@ -52,8 +52,12 @@ export class SesionesListaComponent {
     // Navegar a la ruta 'contacto-sesion'
     localStorage.removeItem('sesion');
     this.planService.getSesiones(this.idPlan).subscribe(sesiones => {
-      localStorage.setItem('sesion', JSON.stringify(sesiones[sId.valueOf()]));
-      this.router.navigate(['detalles']);
+      for(const sesion of sesiones) {
+        if(sesion.id === sId) {
+          localStorage.setItem('sesion', JSON.stringify(sesion));
+          this.router.navigate(['detalles']);
+        }
+      } 
     });
   }
 

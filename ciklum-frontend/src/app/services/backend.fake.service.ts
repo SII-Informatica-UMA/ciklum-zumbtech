@@ -39,7 +39,7 @@ const Sesiones: Sesion[] = [
       fin: new Date(),
       trabajoRealizado: "jugué a las palas en la playa",
       multimedia: ["https://www.youtube.com/shorts/-Tj9Ka6CEJw", "https://www.youtube.com/watch?v=xrUVWk5shXo"],
-      decripcion: "soy muy malo y enano",
+      descripcion: "soy muy malo y enano",
       presencial: true,
       datosSalud: ["tengo asma"],
       id: 0
@@ -50,7 +50,7 @@ const Sesiones: Sesion[] = [
       fin: new Date(),
       trabajoRealizado: "dominó con papi",
       multimedia: ["https://www.youtube.com/watch?v=xrUVWk5shXo"],
-      decripcion: "hamuc",
+      descripcion: "hamuc",
       presencial: true,
       datosSalud: ["ujaja"],
       id: 1
@@ -61,7 +61,7 @@ const Sesiones: Sesion[] = [
       fin: new Date(),
       trabajoRealizado: "haciendo press de banca con 500kg",
       multimedia: ["https://www.youtube.com/watch?v=iu5G37fyyAg"],
-      decripcion: "trembo",
+      descripcion: "trembo",
       presencial: true,
       datosSalud: ["zoyfuerte"],
       id: 0
@@ -210,7 +210,7 @@ export class BackendFakeService {
           for(let i = 0; i < plan.sesiones.length; ++i) {
             if(plan.sesiones[i].id === sesion.id) {
               plan.sesiones[i].datosSalud = sesion.datosSalud;
-              plan.sesiones[i].decripcion = sesion.decripcion;
+              plan.sesiones[i].descripcion = sesion.descripcion;
               plan.sesiones[i].fin = sesion.fin;
               plan.sesiones[i].inicio = sesion.inicio;
               plan.sesiones[i].multimedia = sesion.multimedia;
