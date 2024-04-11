@@ -36,7 +36,7 @@ export class Entrenamiento implements OnInit {
   }
 
   ngOnInit(): void {
-    this.asociacion = this.userService.getUsuarioSesion()?.email === "admin" ? "" : JSON.parse(localStorage.getItem('Asociacion') || "");
+    this.asociacion = this.userService.getUsuarioSesion()?.email === "admin@uma.es" ? "" : JSON.parse(localStorage.getItem('Asociacion') || "");
     // Aquí podrías cargar las sesiones desde algún servicio o una API
     this.actualizarPlanes();
   
