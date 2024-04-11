@@ -20,9 +20,9 @@
                   <b>Salud:</b>
                     {{dato}}
                 </div>
-                <div *ngFor="let link of sesion.multimedia; let x = index">
+                <div *ngFor="let link of sesion.multimedia">
                     <b>Multimedia: </b>
-                    <a [href]="link">Enlace a video {{x+1}}</a>
+                    <a [href]="link"><img [src]="link" alt={{link}}></a> 
                 </div>
             </div>
         </div>
