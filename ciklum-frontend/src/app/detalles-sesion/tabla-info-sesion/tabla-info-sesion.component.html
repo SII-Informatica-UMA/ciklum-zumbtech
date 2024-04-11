@@ -16,12 +16,12 @@
         <div class="ejercicio">
             <h2 style="text-align: center;">Informe general</h2>
             <div>
-                <b>Salud:</b>
                 <div *ngFor="let dato of sesion.datosSalud">
+                  <b>Salud:</b>
                     {{dato}}
                 </div>
                 <div *ngFor="let link of sesion.multimedia">
-                    <b>Multimedia:</b>
+                    <b>Multimedia: </b>
                     <a [href]="link"><img [src]="link" alt="Vista previa del video"></a>
                 </div>
             </div>
