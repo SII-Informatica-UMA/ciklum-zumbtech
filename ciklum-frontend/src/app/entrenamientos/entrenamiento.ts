@@ -18,7 +18,7 @@ import { FormularioPlanComponent } from '../formulario-plan/formulario-plan.comp
   imports: [RouterOutlet, CommonModule, RouterLink, FormsModule, TitleCasePipe],
 })
 export class Entrenamiento implements OnInit {
-  asociacion: string = this.userService.getUsuarioSesion()?.email ? "" : JSON.parse(localStorage.getItem('Asociacion') || "");
+  asociacion: string = "";
   planes: PlanD[] = [];
   idUser: number | undefined = this.userService.getUsuarioSesion()?.id;
   username: string = JSON.parse(localStorage.getItem('usuario') || "")?.email; // Nombre de usuario  
@@ -36,6 +36,7 @@ export class Entrenamiento implements OnInit {
   }
 
   ngOnInit(): void {
+    this.asociacion = this.userService.getUsuarioSesion()?.email === "admin" ? "" : JSON.parse(localStorage.getItem('Asociacion') || "");
     // Aquí podrías cargar las sesiones desde algún servicio o una API
     this.actualizarPlanes();
   
