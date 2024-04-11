@@ -9,7 +9,7 @@ body {
   .btn-eliminar {
     width: 20px; /* Ancho del botón */
     height: 20px; /* Alto del botón */
-    margin-left: 5px;
+    margin-left: 30px;
     padding: 0; /* Eliminar padding para que el botón sea del tamaño especificado */
     font-size: 12px; /* Tamaño del texto dentro del botón */
   }
