@@ -18,8 +18,6 @@
       <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[i+1]" placeholder="enlace {{i+2}}">
     </div>
     
-    <label for="descripcion">Descripcion:</label>
-    <input type="text" class="form-control" id="descripcion" [(ngModel)]="sesion.descripcion" placeholder="descripcion">
     <label for="presencial">Sesion presencial: </label>
     <input type="radio" [(ngModel)]="sesion.presencial" [value]="true" checked> Si
     <input type="radio" [(ngModel)]="sesion.presencial" [value]="false"> No <br>

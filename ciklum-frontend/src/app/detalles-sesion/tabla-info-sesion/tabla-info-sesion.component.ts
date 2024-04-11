@@ -41,8 +41,6 @@ export class TablaInfoSesionComponent {
       // Separar los mensajes guardados en la descripción y agregarlos al array de mensajes
       if (this.sesion.descripcion) {
         const mensajesSeparados = this.sesion.descripcion.split('\n');
-        console.log(mensajesSeparados);
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
         for (let i = 0; i < mensajesSeparados.length; ++i) {
           this.mensajes.push({ username: this.username, mensajeEnviado: mensajesSeparados[i] });
         }        
