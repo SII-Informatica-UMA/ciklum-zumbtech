@@ -31,9 +31,26 @@ export class TablaInfoSesionComponent {
   nuevoMensaje: string = ''; // Variable para almacenar el nuevo mensaje a enviar
 
   ngOnInit(): void {
-    // Aquí podrías cargar las sesiones desde algún servicio o una API
-    const sesiones = localStorage.getItem('sesion');
-    this.sesion = sesiones ? JSON.parse(sesiones) : undefined;
+    // Cargar sesiones y mensajes almacenados en localStorage si existen
+    const sesionGuardada = localStorage.getItem('sesion');
+    if (sesionGuardada) {
+      this.sesion = JSON.parse(sesionGuardada);
+    }
+
+    // Cargar el array de mensajes desde la primera descripción en localStorage
+    const primerDescripcion = this.sesion.descripcion.split('\n')[0];
+    if (primerDescripcion) {
+      const primerMensajeSeparado = primerDescripcion.split(':');
+      this.mensajes.push({ username: primerMensajeSeparado[0], mensajeEnviado: primerMensajeSeparado[1] });
+    }
+
+    // Cargar mensajes adicionales desde las descripciones en localStorage
+    const descripcionesRestantes = this.sesion.descripcion.split('\n').slice(1);
+    for (const descripcion of descripcionesRestantes) {
+      const mensajeSeparado = descripcion.split(':');
+      this.mensajes.push({ username: mensajeSeparado[0], mensajeEnviado: mensajeSeparado[1] });
+    }
+
     for (let i = 0; i < this.sesion.multimedia.length; i++) {
       let id = this.obtenerIdVideoYoutube(this.sesion.multimedia[i]);
       this.link_video[i] = 'https://img.youtube.com/vi/' +id + '/0.jpg';
@@ -68,8 +85,14 @@ export class TablaInfoSesionComponent {
 
   enviarMensaje() {
     if (this.nuevoMensaje.trim() !== '') { // Verificar que el mensaje no esté vacío
-      // Agregar el mensaje al array de mensajes
-      this.mensajes.push({ username: this.username, mensajeEnviado: this.nuevoMensaje });
+      // Agregar el nuevo mensaje a la descripción de la sesión
+      this.sesion.descripcion = (this.sesion.descripcion ? this.sesion.descripcion + '\n' : '') + `${this.nuevoMensaje}`;
+      // Actualizar el array de mensajes
+      const mensajeSeparado = this.nuevoMensaje.split(':');
+      this.mensajes.push({ username: this.username, mensajeEnviado: mensajeSeparado[1] });
+      console.log(this.mensajes);
+      // Guardar la sesión en localStorage
+      localStorage.setItem('sesion', JSON.stringify(this.sesion));
       // Limpiar el campo de nuevo mensaje
       this.nuevoMensaje = '';
     }

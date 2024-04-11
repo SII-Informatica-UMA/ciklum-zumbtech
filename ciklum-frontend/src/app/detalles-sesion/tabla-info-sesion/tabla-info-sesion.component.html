@@ -9,7 +9,7 @@
                 <b>Fin:</b>
                 {{sesion.fin}} <br>
                 <b>Actividad realizada:</b>
-                {{sesion.descripcion}} <br>
+                {{sesion.trabajoRealizado}} <br>
                 <b>Tipo de sesión: </b>
                 {{sesion.presencial ? "Presencial" : "Online"}}
         </div>
@@ -49,7 +49,7 @@
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9Pw6wxK-ziVr6gRjpZbINehT4GTFNi5FbJ6F-radiSw&s"
                   width="25" height="25" alt="Foto de usuario" class="foto-usuario">
                 <span class="nombre-usuario"> {{ username }}: </span> 
-                <span [innerHTML]="formatearEnlaces(mensaje.mensajeEnviado)"></span>
+                <span [innerHTML]="mensaje.mensajeEnviado"></span>
               </div>
             </div>
     </div>
