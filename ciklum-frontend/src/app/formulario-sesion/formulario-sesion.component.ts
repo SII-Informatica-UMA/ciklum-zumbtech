@@ -28,7 +28,7 @@ export class FormularioSesionComponent {
   guardarSesion(): void {
     this.limpiarMensajes();
     if(!this.sesion.trabajoRealizado || this.sesion.multimedia.length == 0 
-      || !this.sesion.descripcion || this.sesion.datosSalud.length == 0) {
+       || this.sesion.datosSalud.length == 0) {
         this.errorMensaje = 'Por favor, complete todos los campos';
         return;
       }
