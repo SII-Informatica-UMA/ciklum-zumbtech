@@ -5,11 +5,11 @@
 <div class="modal-body">
   <div class="form-group">
     <label for="inicio">Fecha de inicio:</label>
-    <input type="date" class="form-control" id="inicio" [(ngModel)] = "plan.fechaInicio" placeholder="inicio">
+    <input type="date" class="form-control" id="inicio" [(ngModel)] = "plan.fechaInicio" placeholder="inicio" (keyup.enter)="guardarPlan()">
     <label for="fin">Fecha de fin:</label>
-    <input type="date" class="form-control" id="fin" [(ngModel)] = "plan.fechaFin" placeholder="fin">
+    <input type="date" class="form-control" id="fin" [(ngModel)] = "plan.fechaFin" placeholder="fin" (keyup.enter)="guardarPlan()">
     <label for="trabajoRealizado">Regla de Recurrencia:</label>
-    <input type="text" class="form-control" id="rRecurrencia" [(ngModel)]="plan.reglaRecurrencia" placeholder="Mucho ejercicio">
+    <input type="text" class="form-control" id="rRecurrencia" [(ngModel)]="plan.reglaRecurrencia" placeholder="Mucho ejercicio" (keyup.enter)="guardarPlan()">
   </div>
 </div>
 <div class="modal-footer">

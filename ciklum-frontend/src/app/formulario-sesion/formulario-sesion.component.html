@@ -5,17 +5,17 @@
 <div class="modal-body">
   <div class="form-group">
     <label for="inicio">Fecha inicio:</label>
-    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio">
-    <label for="fin">Fecha inicio:</label>
-    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin">
+    <input type="date" class="form-control" id="inicio" [(ngModel)] = "sesion.inicio" placeholder="inicio" (keyup.enter)="guardarSesion()">
+    <label for="fin">Fecha fin:</label>
+    <input type="date" class="form-control" id="fin" [(ngModel)] = "sesion.fin" placeholder="fin" (keyup.enter)="guardarSesion()">
     <label for="trabajoRealizado">Trabajo realizado:</label>
-    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio">
+    <input type="text" class="form-control" id="trabajoRealizado" [(ngModel)]="sesion.trabajoRealizado" placeholder="Mucho ejercicio" (keyup.enter)="guardarSesion()">
     
     <label for="multimedia">Contenido multimedia:</label>
     <!--<button type="button" (click)="agregarInputMulti()">Nuevo enlace</button>-->
-    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="enlace 1">
+    <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[0]" placeholder="enlace 1" (keyup.enter)="guardarSesion()">
     <div *ngFor="let item1 of sesion.multimedia; let i = index">
-      <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[i+1]" placeholder="enlace {{i+2}}">
+      <input type="text" class="form-control" id="multimedia" [(ngModel)]="sesion.multimedia[i+1]" placeholder="enlace {{i+2}}" (keyup.enter)="guardarSesion()">
     </div>
     
     <label for="presencial">Sesion presencial: </label>
@@ -24,9 +24,9 @@
 
     <label for="datosSalud">Datos de la salud:</label>
     <!--<button type="button" (click)="agregarInputSalud()">Nuevo dato</button>-->
-    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="dato 1">
+    <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[0]" placeholder="dato 1" (keyup.enter)="guardarSesion()">
     <div *ngFor="let item2 of sesion.datosSalud; let j = index">
-      <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[j+1]" placeholder="dato {{j+2}}">
+      <input type="text" class="form-control" id="datosSalud" [(ngModel)]="sesion.datosSalud[j+1]" placeholder="dato {{j+2}}" (keyup.enter)="guardarSesion()">
     </div>
     
 
