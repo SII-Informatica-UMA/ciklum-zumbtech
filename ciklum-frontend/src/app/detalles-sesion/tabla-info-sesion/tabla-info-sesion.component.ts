@@ -4,6 +4,7 @@ import { Sesion } from '../../entities/sesion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
+import { PlanService } from '../../services/plan.service';
 
 @Component({
   selector: 'app-tabla-info-sesion',
@@ -37,20 +38,15 @@ export class TablaInfoSesionComponent {
     const sesionGuardada = localStorage.getItem('sesion');
     if (sesionGuardada) {
       this.sesion = JSON.parse(sesionGuardada);
-    }
-
-    // Cargar el array de mensajes desde la primera descripción en localStorage
-    const primerDescripcion = this.sesion.descripcion.split('\n')[0];
-    if (primerDescripcion) {
-      const primerMensajeSeparado = primerDescripcion.split(':');
-      this.mensajes.push({ username: primerMensajeSeparado[0], mensajeEnviado: primerMensajeSeparado[1] });
-    }
-
-    // Cargar mensajes adicionales desde las descripciones en localStorage
-    const descripcionesRestantes = this.sesion.descripcion.split('\n').slice(1);
-    for (const descripcion of descripcionesRestantes) {
-      const mensajeSeparado = descripcion.split(':');
-      this.mensajes.push({ username: mensajeSeparado[0], mensajeEnviado: mensajeSeparado[1] });
+      // Separar los mensajes guardados en la descripción y agregarlos al array de mensajes
+      if (this.sesion.descripcion) {
+        const mensajesSeparados = this.sesion.descripcion.split('\n');
+        console.log(mensajesSeparados);
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
+        for (let i = 0; i < mensajesSeparados.length; ++i) {
+          this.mensajes.push({ username: this.username, mensajeEnviado: mensajesSeparados[i] });
+        }        
+      }
     }
 
     for (let i = 0; i < this.sesion.multimedia.length; i++) {
@@ -60,7 +56,7 @@ export class TablaInfoSesionComponent {
   }
 
   /* Constructor */
-  constructor(private userService: UsuariosService, public modalService: NgbModal) {}
+  constructor(private planService: PlanService, public modalService: NgbModal) {}
 
   /* Funciones */
   private obtenerIdVideoYoutube(url: string): string | null {
@@ -88,13 +84,17 @@ export class TablaInfoSesionComponent {
   enviarMensaje() {
     if (this.nuevoMensaje.trim() !== '') { // Verificar que el mensaje no esté vacío
       // Agregar el nuevo mensaje a la descripción de la sesión
-      this.sesion.descripcion = (this.sesion.descripcion ? this.sesion.descripcion + '\n' : '') + `${this.nuevoMensaje}`;
-      // Actualizar el array de mensajes
-      const mensajeSeparado = this.nuevoMensaje.split(':');
-      this.mensajes.push({ username: this.username, mensajeEnviado: mensajeSeparado[1] });
-      console.log(this.mensajes);
+      console.log(JSON.stringify(this.sesion));
+      this.sesion.descripcion = (this.sesion.descripcion ? this.sesion.descripcion + '\n' : '') + this.nuevoMensaje;
+      // Agregar el nuevo mensaje al array de mensajes
+      this.mensajes.push({ username: this.username, mensajeEnviado: this.nuevoMensaje });
       // Guardar la sesión en localStorage
-      localStorage.setItem('sesion', JSON.stringify(this.sesion));
+      this.planService.putSesion(this.sesion, this.sesion.id).subscribe(() => {
+        this.sesion;
+      });
+      //this.planService.postSesion(this.sesion, this.sesion.idPlan);
+      //localStorage.setItem('sesion', JSON.stringify(this.sesion));
+      console.log(JSON.stringify(this.sesion));
       // Limpiar el campo de nuevo mensaje
       this.nuevoMensaje = '';
     }
