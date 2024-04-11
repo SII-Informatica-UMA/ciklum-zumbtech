@@ -13,5 +13,7 @@
   </div>
 </div>
 <div class="modal-footer">
+  <div class="error-message" [ngClass]="{ 'red-text': errorMensaje }" *ngIf="errorMensaje"
+  style="color: red; position: relative;">{{ errorMensaje }}</div>
   <button type="button" class="btn btn-outline-dark" (click)="guardarPlan()">Guardar</button>
 </div>

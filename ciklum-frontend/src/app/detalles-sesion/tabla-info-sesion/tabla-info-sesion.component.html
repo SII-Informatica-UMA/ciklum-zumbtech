@@ -5,9 +5,9 @@
         <div class="usuario">
             <h2 style="text-align: center;">Información de la sesión</h2>
                 <b>Inicio:</b>
-                {{sesion.inicio}} <br>
+                {{sesion.inicio | date: "shortDate"}} <br>
                 <b>Fin:</b>
-                {{sesion.fin}} <br>
+                {{sesion.fin | date: "shortDate"}} <br>
                 <b>Actividad realizada:</b>
                 {{sesion.trabajoRealizado}} <br>
                 <b>Tipo de sesión: </b>
@@ -20,9 +20,9 @@
                   <b>Salud:</b>
                     {{dato}}
                 </div>
-                <div *ngFor="let link of sesion.multimedia">
+                <div *ngFor="let link of sesion.multimedia; let x = index">
                     <b>Multimedia: </b>
-                    <a [href]="link"><img [src]="link" alt="Vista previa del video"></a>
+                    <a [href]="link">Enlace a video {{x+1}}</a>
                 </div>
             </div>
         </div>

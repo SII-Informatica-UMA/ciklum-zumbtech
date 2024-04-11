@@ -16,11 +16,21 @@ export class FormularioPlanComponent {
   plan: PlanE = {fechaInicio: new Date(), fechaFin: new Date(),
     reglaRecurrencia: "", idRutina: 0};
   rutina: Rutina = {fechaInicio: new Date(), fechaFin: new Date(), reglaRecurrencia: "", idRutina: 0, id: 0}
+  errorMensaje: string = '';
 
   constructor(public modal: NgbActiveModal) { }
 
   guardarPlan(): void {
+    this.limpiarMensajes();
+    if(!this.plan.reglaRecurrencia) {
+      this.errorMensaje = 'Por favor, complete todos los campos';
+      return;
+    }
     this.modal.close(this.plan);
+  }
+
+  limpiarMensajes() {
+    this.errorMensaje = '';
   }
 
 }
