@@ -22,13 +22,13 @@ public class Sesion {
     private Timestamp fechaInicio;
     private Timestamp fechaFin;
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "link_multimedia")
+    @CollectionTable(name = "link_multimedia", foreignKey = @ForeignKey(name = "fk_sesion_multimedia"))
     @Column(name = "link")
     private List<String> multimedia;
     private String descripcion;
     private boolean presencial;
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "dato_salud")
+    @CollectionTable(name = "dato_salud", foreignKey = @ForeignKey(name = "fk_sesion_datoSalud"))
     @Column(name = "dato")
     private List<String> datosSalud;
 }

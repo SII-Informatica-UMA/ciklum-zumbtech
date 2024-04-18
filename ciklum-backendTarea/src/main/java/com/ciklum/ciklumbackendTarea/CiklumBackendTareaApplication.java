@@ -10,7 +10,7 @@ import java.io.File;
 public class CiklumBackendTareaApplication {
 
 	public static void main(String[] args) {
-		String filePath = "C:\\Users\\emili\\OneDrive\\Escritorio\\Universidad\\3 Carrera\\2º Semestre\\Sistemas Información Internet\\Proyecto_Zumbtech\\ciklum-zumbtech\\esquema.sql";
+		String filePath = "C:\\Users\\emili\\OneDrive\\Escritorio\\Universidad\\3 Carrera\\2º Semestre\\Sistemas Información Internet\\Proyecto_Zumbtech\\ciklum-zumbtech\\ciklum-backendTarea\\schema.sql";
 		File file = new File(filePath);
 		if(file.exists()) { file.delete(); }
 
