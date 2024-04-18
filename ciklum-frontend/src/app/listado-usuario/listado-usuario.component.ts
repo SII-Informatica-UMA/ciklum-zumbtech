@@ -1,4 +1,3 @@
-import { UsuarioSesion } from './../entities/login';
 import { Component } from '@angular/core';
 import { UsuariosService } from '../services/usuarios.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,8 +20,6 @@ export class ListadoUsuarioComponent {
   constructor(private usuariosService: UsuariosService, private modalService: NgbModal, private router: Router) {
     this.actualizarUsuarios();
    }
-
-
 
   vueltaAlHome(): void {
     //this.estadoPestanaService.cambiarMostrarPestana(true);
