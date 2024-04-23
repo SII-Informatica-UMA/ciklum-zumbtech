@@ -30,9 +30,9 @@ Este proyecto hace uso de las siguientes tecnologías:
 
 
 ## Instalación y Uso
+### Para el proyecto de front-end
 
 1. Clona este repositorio a tu máquina local utilizando el siguiente comando:
-
    ```bash
    git clone https://github.com/tu_usuario/nombre_del_repositorio.git
 2. Navega hasta el directorio del proyecto:
@@ -45,6 +45,27 @@ Este proyecto hace uso de las siguientes tecnologías:
    ```bash
    ng serve -o
 5. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
+   
+### Para el proyecto de back-end
+1. Clona el directorio en tu máquina local:
+```bash
+git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+```
+2. Ve a un directorio donde haya aun proyecto Maven, por ejemplo, desde la carpeta ciklum-zumbtech:
+```bash
+cd ciklum-backendTarea
+```
+3. Haz la instalación de tu proyecto Maven, tienes dos formas de hacerlo:   
+   3.1. Si es la primera vez que instalas y compilas el proyecto, puedes hacer:
+   ```bash
+   mvn install
+   ```
+   3.2. Si el proyecto ya ha sido compilado otras veces y quieres eliminar los archivos generados en compilaciones anteriores:
+   ```bash
+   mvn clean install
+   ```
+5. Ya podrás ejecutar tu "SpringBootApplication" correctamente
+   
 ## Información para Colaboradores
 
 
