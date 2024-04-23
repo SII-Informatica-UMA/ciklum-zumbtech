@@ -6,7 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @SpringBootApplication
@@ -15,9 +18,15 @@ public class CiklumBackendTareaApplication implements CommandLineRunner {
 			.getLogger(CiklumBackendTareaApplication.class);
 
 	public static void main(String[] args) {
-		String filePath = "C:\\Users\\emili\\OneDrive\\Escritorio\\Universidad\\3 Carrera\\2º Semestre\\Sistemas Información Internet\\Proyecto_Zumbtech\\ciklum-zumbtech\\ciklum-backendTarea\\schema.sql";
-		File file = new File(filePath);
-		if(file.exists()) { file.delete(); }
+		// Directorio donde quiero que se me genere el schema.sql
+		Path filePath = Paths.get("ciklum-backendTarea", "schema.sql");
+
+		// Control de errores
+		try {
+			Files.deleteIfExists(filePath);
+		} catch (IOException e) {
+			LOG.error("Failed to delete existing schema.sql file", e);
+		}
 
 		SpringApplication.run(CiklumBackendTareaApplication.class, args);
 	}
