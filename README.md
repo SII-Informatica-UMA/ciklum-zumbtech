@@ -30,6 +30,7 @@ Este proyecto hace uso de las siguientes tecnologías:
 
 
 ## Instalación y Uso
+### Para el proyecto de front-end
 
 1. Clona este repositorio a tu máquina local utilizando el siguiente comando:
 
