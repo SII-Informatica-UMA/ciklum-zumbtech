@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SesionRepository extends JpaRepository<Sesion, Long> {
-    Optional<Sesion> findById(Long id);
-    void deleteById(Long id);
     @Query("SELECT S FROM Sesion S WHERE :idPlan = S.idPlan")
     List<Sesion> findAllByPlanId(Long idPlan);
-    Sesion save(Sesion sesion);
 }
