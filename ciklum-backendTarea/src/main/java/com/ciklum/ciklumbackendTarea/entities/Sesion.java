@@ -13,10 +13,11 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 public class Sesion {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private Timestamp fechaInicio;
     private Timestamp fechaFin;
     @ElementCollection(fetch = FetchType.LAZY)
@@ -24,17 +25,18 @@ public class Sesion {
     @Column(name = "link")
     private List<String> multimedia;
     private String descripcion;
-    private boolean presencial;
+    private Boolean presencial;
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "dato_salud", foreignKey = @ForeignKey(name = "fk_sesion_datoSalud"))
     @Column(name = "dato")
     private List<String> datosSalud;
+    private String trabajoRealizado;
 
     /*@ManyToOne
     @JoinColumn(name = "plan_id", foreignKey = @ForeignKey(name = "fk_sesion_plan")) // Nombre de la columna en la tabla Sesion que referencia al Plan
     private Plan plan;*/
 
-    private int idPlan;
+    private Long idPlan;
 }
 
 
