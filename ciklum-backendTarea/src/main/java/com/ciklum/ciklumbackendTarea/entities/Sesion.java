@@ -32,40 +32,11 @@ public class Sesion {
     private List<String> datosSalud;
     private String trabajoRealizado;
 
-    /*@ManyToOne
-    @JoinColumn(name = "plan_id", foreignKey = @ForeignKey(name = "fk_sesion_plan")) // Nombre de la columna en la tabla Sesion que referencia al Plan
-    private Plan plan;*/
+    /*
+    @ManyToOne
+    @JoinColumn(name = "plan_id", foreignKey = @ForeignKey(name = "fk_sesion_plan"))
+    private Plan plan;
+    */
 
     private Long idPlan;
 }
-
-
-/*
-package com.ciklum.ciklumbackendTarea.entities;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
-import java.sql.*;
-
-@Entity
-@Table(name = "Plan")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-
-public class Plan {
-    @Id
-    @GeneratedValue
-    private int id;
-    private Timestamp fechaInicio;
-    private Timestamp fechaFin;
-    private String reglaRecurrencia;
-    private int idRutina;
-}
-
- */
