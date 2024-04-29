@@ -23,18 +23,14 @@ public class LogicSesion {
     }
 
     public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
-        if(sesionRepo.existsById(idSesion)) {
-            Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
-            return Optional.of(Mapper.toSesionNuevaDTO(sesion));
-        } else {
-            throw new SesionNoEncontradaException();
-        }
+        if(!sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
+        Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
+        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 
     public Optional<SesionDTO> getSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
-        return Optional.of(Mapper.toSesionDTO(sesionRepo.findById(id).get()));
+        Sesion sesion = sesionRepo.findById(id).get();
+        return Optional.of(Mapper.toSesionDTO(sesion);
     }
-
-
 }
