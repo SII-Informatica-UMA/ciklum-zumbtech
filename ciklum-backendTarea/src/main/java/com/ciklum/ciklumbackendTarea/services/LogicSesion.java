@@ -47,7 +47,6 @@ public class LogicSesion {
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
-        SesionNuevaDTO.setIdPlan(idPlan);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
