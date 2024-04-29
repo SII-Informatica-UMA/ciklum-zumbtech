@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/sesion")
@@ -24,6 +26,12 @@ public class ControladorSesion {
     @PutMapping("{id}")
     public ResponseEntity<SesionNuevaDTO> putSesion(@PathVariable Long id, @RequestBody SesionDTO sesionDTO) {
         return ResponseEntity.of(sesionService.putSesion(id, sesionDTO));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<SesionDTO> getSesion(@PathVariable(name = "id") Long id) {
+        // el ResponseEntity.of(), si el Optional está vacío te devuelve NOT FOUD sólo.
+        return ResponseEntity.of(sesionService.getSesion(id));
     }
 
     @ExceptionHandler(SesionNoEncontradaException.class)

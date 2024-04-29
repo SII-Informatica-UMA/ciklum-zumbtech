@@ -30,4 +30,11 @@ public class LogicSesion {
             throw new SesionNoEncontradaException();
         }
     }
+
+    public Optional<SesionDTO> getSesion(Long id) {
+        if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
+        return Optional.of(Mapper.toSesionDTO(sesionRepo.findById(id).get()));
+    }
+
+
 }

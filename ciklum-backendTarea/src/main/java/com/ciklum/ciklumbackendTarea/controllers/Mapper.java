@@ -4,6 +4,8 @@ import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 
+import java.util.Optional;
+
 public class Mapper {
     public static SesionNuevaDTO toSesionNuevaDTO(Sesion sesion) {
         return SesionNuevaDTO.builder()
@@ -29,6 +31,20 @@ public class Mapper {
                 .multimedia(sesionDTO.getMultimedia())
                 .trabajoRealizado(sesionDTO.getTrabajoRealizado())
                 .id(sesionDTO.getId())
+                .build();
+    }
+
+    public static SesionDTO toSesionDTO(Sesion sesion) {
+        return SesionDTO.builder()
+                .id(sesion.getId())
+                .inicio(sesion.getFechaInicio())
+                .fin(sesion.getFechaFin())
+                .multimedia(sesion.getMultimedia())
+                .descripcion(sesion.getDescripcion())
+                .presencial(sesion.getPresencial())
+                .datosSalud(sesion.getDatosSalud())
+                .trabajoRealizado(sesion.getTrabajoRealizado())
+                .idPlan(sesion.getIdPlan())
                 .build();
     }
 }
