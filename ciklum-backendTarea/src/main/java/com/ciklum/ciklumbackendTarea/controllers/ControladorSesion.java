@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -30,9 +31,14 @@ public class ControladorSesion {
 
     @GetMapping("{id}")
     public ResponseEntity<SesionDTO> getSesion(@PathVariable(name = "id") Long id) {
-        // el ResponseEntity.of(), si el Optional está vacío te devuelve NOT FOUD sólo.
         return ResponseEntity.of(sesionService.getSesion(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<Sesion>> getAllSesions(@RequestParam(name = "plan") Long idPlan) {
+        return ResponseEntity.of(sesionService.getAllSesions(idPlan));
+    }
+
 
     @ExceptionHandler(SesionNoEncontradaException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)

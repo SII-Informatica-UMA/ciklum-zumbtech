@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +33,12 @@ public class LogicSesion {
     public Optional<SesionDTO> getSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
-        return Optional.of(Mapper.toSesionDTO(sesion);
+        return Optional.of(Mapper.toSesionDTO(sesion));
+    }
+
+    public Optional<List<Sesion>> getAllSesions(Long planId) {
+        List<Sesion> sesiones = sesionRepo.findAllByPlanId(planId);
+        if(sesiones.isEmpty()) throw new SesionNoEncontradaException();
+        return Optional.of(sesiones);
     }
 }
