@@ -40,6 +40,11 @@ public class ControladorSesion {
     }
 
 
+    @DeleteMapping("{id}")
+    public void eliminarSesion(@PathVariable(name = "id") Long id) {
+        sesionService.eliminarSesion(id);
+    }
+
     @ExceptionHandler(SesionNoEncontradaException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public void sesionNotFoundException() {}

@@ -38,7 +38,11 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long planId) {
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(planId);
-        if(sesiones.isEmpty()) throw new SesionNoEncontradaException();
+        if (sesiones.isEmpty()) throw new SesionNoEncontradaException();
         return Optional.of(sesiones);
+    }
+    public void eliminarSesion(Long id) {
+        if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
+        sesionRepo.deleteById(id);
     }
 }
