@@ -18,16 +18,17 @@ public class Mapper {
                 .build();
     }
 
-    public static Sesion toSesion(SesionNuevaDTO sesionNuevaDTO) {
-        return com.ciklum.ciklumbackendTarea.entities.Sesion.builder()
-                .idPlan(sesionNuevaDTO.getIdPlan())
-                .fechaInicio(sesionNuevaDTO.getInicio())
-                .fechaFin(sesionNuevaDTO.getFin())
-                .datosSalud(sesionNuevaDTO.getDatosSalud())
-                .descripcion(sesionNuevaDTO.getDescripcion())
-                .presencial(sesionNuevaDTO.getPresencial())
-                .multimedia(sesionNuevaDTO.getMultimedia())
-                .trabajoRealizado(sesionNuevaDTO.getTrabajoRealizado())
+    public static Sesion toSesion(SesionDTO sesionDTO) {
+        return Sesion.builder()
+                .idPlan(sesionDTO.getIdPlan())
+                .fechaInicio(sesionDTO.getInicio())
+                .fechaFin(sesionDTO.getFin())
+                .datosSalud(sesionDTO.getDatosSalud())
+                .descripcion(sesionDTO.getDescripcion())
+                .presencial(sesionDTO.getPresencial())
+                .multimedia(sesionDTO.getMultimedia())
+                .trabajoRealizado(sesionDTO.getTrabajoRealizado())
+                .id(sesionDTO.getId())
                 .build();
     }
 }

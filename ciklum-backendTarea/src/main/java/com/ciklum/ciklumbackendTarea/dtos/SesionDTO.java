@@ -1,5 +1,6 @@
 package com.ciklum.ciklumbackendTarea.dtos;
 
+import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import lombok.*;
 
 import java.sql.Timestamp;
