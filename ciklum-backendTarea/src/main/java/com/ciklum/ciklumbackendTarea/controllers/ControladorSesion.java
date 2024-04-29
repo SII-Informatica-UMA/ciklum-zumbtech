@@ -39,6 +39,10 @@ public class ControladorSesion {
         return ResponseEntity.of(sesionService.getAllSesions(idPlan));
     }
 
+    @PostMapping
+    public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO){
+         return ResponseEntity.of(sesionService.postSesion(idPlan, sesionNuevaDTO));
+    }
 
     @DeleteMapping("{id}")
     public void eliminarSesion(@PathVariable(name = "id") Long id) {
