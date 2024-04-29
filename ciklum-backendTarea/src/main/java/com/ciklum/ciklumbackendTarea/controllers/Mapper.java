@@ -5,7 +5,7 @@ import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 
 public class Mapper {
-    public static SesionNuevaDTO toUsuarioDTO(Sesion sesion) {
+    public static SesionNuevaDTO toSesionNuevaDTO(Sesion sesion) {
         return SesionNuevaDTO.builder()
                 .idPlan(sesion.getIdPlan())
                 .presencial(sesion.getPresencial())
@@ -18,7 +18,7 @@ public class Mapper {
                 .build();
     }
 
-    public static Sesion toUsuario(SesionNuevaDTO sesionNuevaDTO) {
+    public static Sesion toSesion(SesionNuevaDTO sesionNuevaDTO) {
         return com.ciklum.ciklumbackendTarea.entities.Sesion.builder()
                 .idPlan(sesionNuevaDTO.getIdPlan())
                 .fechaInicio(sesionNuevaDTO.getInicio())

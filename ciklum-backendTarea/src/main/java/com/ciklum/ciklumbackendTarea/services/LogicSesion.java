@@ -24,17 +24,17 @@ public class LogicSesion {
 
     public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
         if(sesionRepo.existsById(idSesion)) {
-            Optional<Sesion> listaCompra = sesionRepo.findById(idSesion);
-            listaCompra.ifPresent(l -> {
-                l.setDatosSalud(sesionDTO.getDatosSalud());
-                l.setFechaInicio(sesionDTO.getInicio());
-                l.setFechaFin(sesionDTO.getFin());
-                l.setDescripcion(sesionDTO.getDescripcion());
-                l.setMultimedia(sesionDTO.getMultimedia());
-                l.setPresencial(sesionDTO.getPresencial());
-                l.setTrabajoRealizado(sesionDTO.getTrabajoRealizado());
+            Optional<Sesion> sesion = sesionRepo.findById(idSesion);
+            sesion.ifPresent(s -> {
+                s.setDatosSalud(sesionDTO.getDatosSalud());
+                s.setFechaInicio(sesionDTO.getInicio());
+                s.setFechaFin(sesionDTO.getFin());
+                s.setDescripcion(sesionDTO.getDescripcion());
+                s.setMultimedia(sesionDTO.getMultimedia());
+                s.setPresencial(sesionDTO.getPresencial());
+                s.setTrabajoRealizado(sesionDTO.getTrabajoRealizado());
             });
-            return listaCompra.map(Mapper::toUsuarioDTO);
+            return sesion.map(Mapper::toSesionNuevaDTO);
         } else {
             throw new SesionNoEncontradaException();
         }
