@@ -34,6 +34,11 @@ public class ControladorSesion {
         return ResponseEntity.of(sesionService.getSesion(id));
     }
 
+    @DeleteMapping("{id}")
+    public void eliminarSesion(@PathVariable(name = "id")Long id) {
+        sesionService.eliminarSesion(id);
+    }
+
     @ExceptionHandler(SesionNoEncontradaException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public void sesionNotFoundException() {}
