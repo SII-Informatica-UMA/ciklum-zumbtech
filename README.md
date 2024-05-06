@@ -64,6 +64,7 @@ cd ciklum-backendTarea
    ```bash
    mvn clean install
    ```
+4. Importante, si estás en IntelliJ darle a click derecho a la carpeta del proyecto -> Maven -> Recargar como Maven  (SI NO NO TE VA A DEJAR CORRER LA APLICACIÓN)
 5. Ya podrás ejecutar tu "SpringBootApplication" correctamente
    
 ## Información para Colaboradores
