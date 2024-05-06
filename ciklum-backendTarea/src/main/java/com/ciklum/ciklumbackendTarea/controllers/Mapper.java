@@ -34,6 +34,19 @@ public class Mapper {
                 .build();
     }
 
+    public static Sesion SesionNuevaDTOtoSesion(SesionNuevaDTO SesionNuevaDTO) {
+        return Sesion.builder()
+                .idPlan(SesionNuevaDTO.getIdPlan())
+                .fechaInicio(SesionNuevaDTO.getInicio())
+                .fechaFin(SesionNuevaDTO.getFin())
+                .datosSalud(SesionNuevaDTO.getDatosSalud())
+                .descripcion(SesionNuevaDTO.getDescripcion())
+                .presencial(SesionNuevaDTO.getPresencial())
+                .multimedia(SesionNuevaDTO.getMultimedia())
+                .trabajoRealizado(SesionNuevaDTO.getTrabajoRealizado())
+                .build();
+    }
+
     public static SesionDTO toSesionDTO(Sesion sesion) {
         return SesionDTO.builder()
                 .id(sesion.getId())

@@ -45,4 +45,9 @@ public class LogicSesion {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         sesionRepo.deleteById(id);
     }
+
+    public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
+        Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
+        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
+    }
 }
