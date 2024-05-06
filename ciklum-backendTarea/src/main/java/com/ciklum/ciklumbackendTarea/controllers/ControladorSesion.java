@@ -45,8 +45,8 @@ public class ControladorSesion {
     }
 
     @DeleteMapping("{id}")
-    public void eliminarSesion(@PathVariable(name = "id") Long id) {
-        sesionService.eliminarSesion(id);
+    public void deleteSesion(@PathVariable(name = "id") Long id) {
+        sesionService.deleteSesion(id);
     }
 
     @ExceptionHandler(SesionNoEncontradaException.class)

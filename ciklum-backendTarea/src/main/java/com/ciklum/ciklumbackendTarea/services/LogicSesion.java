@@ -41,7 +41,7 @@ public class LogicSesion {
         if (sesiones.isEmpty()) throw new SesionNoEncontradaException();
         return Optional.of(sesiones);
     }
-    public void eliminarSesion(Long id) {
+    public void deleteSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         sesionRepo.deleteById(id);
     }
