@@ -24,26 +24,27 @@ public class LogicSesion {
         this.sesionRepo = repo;
     }
 
-    public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
-        if(!sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
-        Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
-        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
-    }
-
     public Optional<SesionDTO> getSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
         return Optional.of(Mapper.toSesionDTO(sesion));
     }
 
+    public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
+        if(!sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
+        Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
+        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
+    }
+
+    public void eliminarSesion(Long id) {
+        if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
+        sesionRepo.deleteById(id);
+    }
+
     public Optional<List<Sesion>> getAllSesions(Long planId) {
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(planId);
         if (sesiones.isEmpty()) throw new SesionNoEncontradaException();
         return Optional.of(sesiones);
-    }
-    public void eliminarSesion(Long id) {
-        if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
-        sesionRepo.deleteById(id);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {

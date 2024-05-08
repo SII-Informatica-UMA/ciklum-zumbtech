@@ -24,14 +24,24 @@ public class ControladorSesion {
         this.sesionService = sesionService;
     }
 
+    /**
+     * Lista de todos los endpoints de 'Gestión de información de sesiones de los clientes
+     * siguiendo el mismo orden que en la API
+     * **/
+
+    @GetMapping("{id}")
+    public ResponseEntity<SesionDTO> getSesion(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.of(sesionService.getSesion(id));
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<SesionNuevaDTO> putSesion(@PathVariable Long id, @RequestBody SesionDTO sesionDTO) {
         return ResponseEntity.of(sesionService.putSesion(id, sesionDTO));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<SesionDTO> getSesion(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.of(sesionService.getSesion(id));
+    @DeleteMapping("{id}")
+    public void eliminarSesion(@PathVariable(name = "id") Long id) {
+        sesionService.eliminarSesion(id);
     }
 
     @GetMapping
@@ -42,11 +52,6 @@ public class ControladorSesion {
     @PostMapping
     public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO){
          return ResponseEntity.of(sesionService.postSesion(idPlan, sesionNuevaDTO));
-    }
-
-    @DeleteMapping("{id}")
-    public void eliminarSesion(@PathVariable(name = "id") Long id) {
-        sesionService.eliminarSesion(id);
     }
 
     @ExceptionHandler(SesionNoEncontradaException.class)
