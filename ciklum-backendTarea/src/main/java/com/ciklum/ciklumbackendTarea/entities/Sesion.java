@@ -30,11 +30,6 @@ public class Sesion {
     @Column(name = "dato")
     private List<String> datosSalud;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    /*
-    @ManyToOne
-    @JoinColumn(name = "plan_id", foreignKey = @ForeignKey(name = "fk_sesion_plan"))
-    private Plan plan;
-    */
 }

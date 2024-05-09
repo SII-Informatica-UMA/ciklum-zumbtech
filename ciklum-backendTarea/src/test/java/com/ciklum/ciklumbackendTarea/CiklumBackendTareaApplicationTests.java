@@ -88,7 +88,7 @@ class CiklumBackendTareaApplicationTests {
 	@DisplayName("cuando la base de datos esta vacia")
 	public class BaseDatosVacia {
 
-		@Test // Delete - sesion
+		@Test
 		@DisplayName("lanza error cuando elimina una sesion concreta")
 		public void errorConSesionConcreta() {
 			var peticion = delete("http","localhost",port,"/sesion/1");
@@ -104,10 +104,11 @@ class CiklumBackendTareaApplicationTests {
 		@BeforeEach
 		public void insertarDatos() {
 			Sesion sesion = Sesion.builder().id(1L).build();
+			sesion.setId(1L);
 			sesionRepo.save(sesion);
 		}
 
-		@Test // Delete - sesion
+		@Test
 		@DisplayName("el servicio de getSesion devuelve una sesion ya existente")
 		public void getSesion() {
 			var peticion = get("http","localhost",port,"/sesion/1");
