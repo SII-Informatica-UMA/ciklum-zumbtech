@@ -2,6 +2,8 @@ package com.ciklum.ciklumbackendTarea;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
+import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
@@ -20,7 +24,8 @@ import org.springframework.web.util.UriBuilderFactory;
 import java.net.URI;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("Test para servicios")
+@DisplayName("En el controlador de sesiones")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CiklumBackendTareaApplicationTests {
 
 	@Autowired
@@ -32,6 +37,10 @@ class CiklumBackendTareaApplicationTests {
 	@Autowired
 	private SesionRepository sesionRepo;
 
+	@BeforeEach
+	public void initializeDatabase() {
+		sesionRepo.deleteAll();
+	}
 
 	private URI uri(String scheme, String host, int port, String ...paths) {
 		UriBuilderFactory ubf = new DefaultUriBuilderFactory();
@@ -75,37 +84,35 @@ class CiklumBackendTareaApplicationTests {
 		return peticion;
 	}
 
-
-	@Test
-	void contextLoads() {
-	}
-
 	@Nested
-	@DisplayName("Cuando la base de datos está vacía")
+	@DisplayName("cuando la base de datos esta vacia")
 	public class BaseDatosVacia {
 
 		@Test // Delete - sesion
-		@DisplayName("Lanza error cuando elimina una sesion concreta")
+		@DisplayName("lanza error cuando elimina una sesion concreta")
 		public void errorConSesionConcreta() {
-			var peticion = delete("http","localhost",port,"/sesion1");
-
+			var peticion = delete("http","localhost",port,"/sesion/1");
 			var respuesta = restTemplate.exchange(peticion, Void.class);
-
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
-
 	}
 
 	@Nested
-	@DisplayName("Cuando la base de datos está llena")
+	@DisplayName("cuando la base de datos esta llena")
 	public class BaseDatosLlena {
 
 		@BeforeEach
-		public void introduceDatos() {
-
+		public void insertarDatos() {
+			Sesion sesion = Sesion.builder().id(1L).build();
+			sesionRepo.save(sesion);
 		}
 
-
+		@Test // Delete - sesion
+		@DisplayName("el servicio de getSesion devuelve una sesion ya existente")
+		public void getSesion() {
+			var peticion = get("http","localhost",port,"/sesion/1");
+			var respuesta = restTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+		}
 	}
-
 }
