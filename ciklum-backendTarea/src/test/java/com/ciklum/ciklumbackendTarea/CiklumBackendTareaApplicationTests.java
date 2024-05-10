@@ -22,6 +22,7 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("En el controlador de sesiones")
@@ -95,6 +96,14 @@ class CiklumBackendTareaApplicationTests {
 			var respuesta = restTemplate.exchange(peticion, Void.class);
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
+
+		@Test
+		@DisplayName("lanza error cuando la lista de sesiones asociada a un plan esta vacia")
+		public void errorlistSesionesVacia() {
+			var peticion = get("http","localhost",port,"/sesion");
+			var respuesta = restTemplate.exchange(peticion, Void.class);
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
+		}
 	}
 
 	@Nested
@@ -103,8 +112,7 @@ class CiklumBackendTareaApplicationTests {
 
 		@BeforeEach
 		public void insertarDatos() {
-			Sesion sesion = Sesion.builder().id(1L).build();
-			sesion.setId(1L);
+			Sesion sesion = Sesion.builder().descripcion("trabajar").build();
 			sesionRepo.save(sesion);
 		}
 
@@ -114,6 +122,7 @@ class CiklumBackendTareaApplicationTests {
 			var peticion = get("http","localhost",port,"/sesion/1");
 			var respuesta = restTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+			assertThat(respuesta.getBody().getDescripcion().equals("trabajar"));
 		}
 	}
 }
