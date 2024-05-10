@@ -36,7 +36,7 @@ public class LogicSesion {
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 
-    public void eliminarSesion(Long id) {
+    public void deleteSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         sesionRepo.deleteById(id);
     }

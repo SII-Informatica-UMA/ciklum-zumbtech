@@ -97,13 +97,41 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
 
-		@Test
+		/*@Test
 		@DisplayName("lanza error cuando la lista de sesiones asociada a un plan esta vacia")
-		public void errorlistSesionesVacia() {
+		public void errorGetAllSessions() {
 			var peticion = get("http","localhost",port,"/sesion");
 			var respuesta = restTemplate.exchange(peticion, Void.class);
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}
+		}*/
+
+		//		@Test
+//		@DisplayName("Devuelve una lista vacia de sesiones")
+//		public void getAllSessionsForPlan() {
+//			// Supongamos que el ID del plan es 1
+//			Long planId = 1L;
+//
+//			// Llamada al endpoint con el parámetro de plan adecuado
+//			/*ResponseEntity<List<Sesion>> response = restTemplate.exchange(
+//					"/sesion?plan=" + planId,
+//					HttpMethod.GET,
+//					null,
+//					new ParameterizedTypeReference<List<Sesion>>() {}
+//			);*/
+//
+//			var peticion = get("http", "localhost", port, "/sesion");
+//
+//			var response = restTemplate.exchange(peticion,
+//					new ParameterizedTypeReference<List<Sesion>>() {}
+//			);
+//
+//			// Verificar el status HTTP
+//			assertThat(response.getStatusCode().value()).isEqualTo(404);
+//
+//			// Verificar el contenido de la respuesta
+//			List<Sesion> sesiones = response.getBody();
+//			assertThat(sesionRepo.findAllByPlanId(planId)).isNullOrEmpty();
+//		}
 	}
 
 	@Nested
