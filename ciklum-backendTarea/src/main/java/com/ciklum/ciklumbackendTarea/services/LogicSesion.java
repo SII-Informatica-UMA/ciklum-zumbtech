@@ -31,7 +31,7 @@ public class LogicSesion {
     }
 
     public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
-        if(!sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
+        if(sesionDTO.getId() != idSesion || !sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
