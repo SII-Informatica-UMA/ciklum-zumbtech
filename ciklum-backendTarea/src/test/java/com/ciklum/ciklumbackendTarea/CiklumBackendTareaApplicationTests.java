@@ -124,5 +124,13 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 			assertThat(respuesta.getBody().getDescripcion().equals("trabajar"));
 		}
+
+		@Test
+		@DisplayName("el servicio de deleteSesion elimina una sesion ya existente")
+		public void deleteSesion() {
+			var peticion = delete("http","localhost",port,"/sesion/1");
+			var respuesta = restTemplate.exchange(peticion, Void.class);
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+		}
 	}
 }
