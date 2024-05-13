@@ -117,7 +117,7 @@ class CiklumBackendTareaApplicationTests {
 		}
 
 		@Test
-		@DisplayName("Devuelve una lista vacia de sesiones")
+		@DisplayName("devuelve una lista vacia de sesiones")
 		public void getAllSessionsForPlan() {
 			Long planId = 1L;
 			var url = "http://localhost:" + port + "/sesion?plan=" + planId;

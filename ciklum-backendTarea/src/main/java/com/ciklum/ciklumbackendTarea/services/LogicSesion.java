@@ -48,6 +48,8 @@ public class LogicSesion {
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
+        // var url = "http://localhost:" + "8081" + "/plan/" + idPlan;
+        // var response = restTemplate.getForEntity(url, List.class);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
