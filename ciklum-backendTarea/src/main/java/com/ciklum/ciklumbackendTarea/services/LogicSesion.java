@@ -10,11 +10,18 @@ import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriBuilderFactory;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,20 +57,28 @@ public class LogicSesion {
     }
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
-        var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, Void.class);
-        if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new PlanNoEncontradoException();
+        try {
+            var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
+            restTemplate.getForEntity(url, Void.class);
+        }
+        catch(Exception e) {
+            if(e.getMessage().equals("404 : [no body]")) {
+                throw new PlanNoEncontradoException();
+            }
         }
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
-        var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, Void.class);
-        if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new PlanNoEncontradoException();
+        try {
+            var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
+            restTemplate.getForEntity(url, Void.class);
+        }
+        catch(Exception e) {
+            if(e.getMessage().equals("404 : [no body]")) {
+                throw new PlanNoEncontradoException();
+            }
         }
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
