@@ -4,11 +4,15 @@ import com.ciklum.ciklumbackendTarea.controllers.Mapper;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
+import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,9 @@ import java.util.Optional;
 @Transactional
 public class LogicSesion {
     private SesionRepository sesionRepo;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     public LogicSesion(SesionRepository repo) {
@@ -41,16 +48,24 @@ public class LogicSesion {
         sesionRepo.deleteById(id);
     }
 
-    public Optional<List<Sesion>> getAllSesions(Long planId) {
-        List<Sesion> sesiones = sesionRepo.findAllByPlanId(planId);
-        if(sesiones.isEmpty()) throw new SesionNoEncontradaException();
+    public Optional<List<Sesion>> getAllSesions(Long idPlan) {
+        var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
+        var response = restTemplate.getForEntity(url, List.class);
+        if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new PlanNoEncontradoException();
+        }
+        List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
-        // var url = "http://localhost:" + "8081" + "/plan/" + idPlan;
-        // var response = restTemplate.getForEntity(url, List.class);
+        var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
+        var response = restTemplate.getForEntity(url, List.class);
+        if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new PlanNoEncontradoException();
+        }
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
+        // guardar la sesión en el backend del profe
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 }

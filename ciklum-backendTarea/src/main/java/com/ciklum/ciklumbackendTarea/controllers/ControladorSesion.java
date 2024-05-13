@@ -3,6 +3,7 @@ package com.ciklum.ciklumbackendTarea.controllers;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
+import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,8 @@ public class ControladorSesion {
     @ExceptionHandler(SesionNoEncontradaException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public void sesionNotFoundException() {}
+
+    @ExceptionHandler(PlanNoEncontradoException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public void planNotFoundException() {}
 }
