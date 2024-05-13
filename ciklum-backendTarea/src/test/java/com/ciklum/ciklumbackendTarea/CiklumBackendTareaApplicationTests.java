@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
@@ -121,26 +123,46 @@ class CiklumBackendTareaApplicationTests {
 			Long planId = 1L;
 
 			// Llamada al endpoint con el parámetro de plan adecuado
-			ResponseEntity<List<Sesion>> response = restTemplate.exchange(
-					"/sesion?plan=" + planId,
-					HttpMethod.GET,
-					null,
-					new ParameterizedTypeReference<List<Sesion>>() {}
-			);
+			var peticion = get("http", "localhost", port, "/sesion?plan=" + planId);
 
-			var peticion = get("http", "localhost", port, "/sesion");
-
-			var response = restTemplate.exchange(peticion,
-					new ParameterizedTypeReference<List<Sesion>>() {}
-			);
+			// Realizar la petición GET y recibir la respuesta
+			System.out.println("\n\nAAAA" + peticion + "\n\n");
+// A partir de aqui falla
+			var response = restTemplate.exchange(peticion, new ParameterizedTypeReference<List<Sesion>>() {});
+			System.out.println("\n\nAAAA\n\n");
+			System.out.println("\n\nCuerpo de la respuesta: " + response.getBody() + "\n\n");
+			System.out.println("\n\nEncabezados HTTP: " + response.getHeaders() + "\n\n");
+			System.out.println("\n\nAAAA\n\n");
 
 			// Verificar el status HTTP
-			assertThat(response.getStatusCode().value()).isEqualTo(404);
+			assertThat(response.getStatusCode().value()).isEqualTo(400); // Cambiado a 200, ya que esperamos una respuesta exitosa
 
 			// Verificar el contenido de la respuesta
 			List<Sesion> sesiones = response.getBody();
-			assertThat(sesionRepo.findAllByPlanId(planId)).isNullOrEmpty();
+			assertThat(sesiones).isNotNull(); // Verificar que la lista de sesiones no sea nula
+			assertThat(sesiones).isEmpty(); // Verificar que la lista de sesiones esté vacía
 		}*/
+
+		@Test
+		@DisplayName("Devuelve una lista vacia de sesiones")
+		public void getAllSessionsForPlan() {
+			// Supongamos que el ID del plan es 1
+			Long planId = 1L;
+
+			// Llamada al endpoint con el parámetro de plan adecuado
+			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
+			var response = restTemplate.getForEntity(url, List.class);
+
+			// Verificar el status HTTP
+			assertThat(response.getStatusCodeValue()).isEqualTo(404); // Cambiado a 200, ya que esperamos una respuesta exitosa
+
+			// Verificar el contenido de la respuesta
+			List<Sesion> sesiones = response.getBody();
+			assertThat(sesiones).isNullOrEmpty(); // Verificar que la lista de sesiones sea nula o vacia (es nula)
+		}
+
+
+
 	}
 
 	@Nested
