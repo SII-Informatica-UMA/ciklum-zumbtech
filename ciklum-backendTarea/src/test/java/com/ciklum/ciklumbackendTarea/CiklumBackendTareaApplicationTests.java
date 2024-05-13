@@ -116,53 +116,14 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
 
-		/*@Test
-		@DisplayName("Devuelve una lista vacia de sesiones")
-		public void getAllSessionsForPlan() {
-			// Supongamos que el ID del plan es 1
-			Long planId = 1L;
-
-			// Llamada al endpoint con el parámetro de plan adecuado
-			var peticion = get("http", "localhost", port, "/sesion?plan=" + planId);
-
-			// Realizar la petición GET y recibir la respuesta
-			System.out.println("\n\nAAAA" + peticion + "\n\n");
-// A partir de aqui falla
-			var response = restTemplate.exchange(peticion, new ParameterizedTypeReference<List<Sesion>>() {});
-			System.out.println("\n\nAAAA\n\n");
-			System.out.println("\n\nCuerpo de la respuesta: " + response.getBody() + "\n\n");
-			System.out.println("\n\nEncabezados HTTP: " + response.getHeaders() + "\n\n");
-			System.out.println("\n\nAAAA\n\n");
-
-			// Verificar el status HTTP
-			assertThat(response.getStatusCode().value()).isEqualTo(400); // Cambiado a 200, ya que esperamos una respuesta exitosa
-
-			// Verificar el contenido de la respuesta
-			List<Sesion> sesiones = response.getBody();
-			assertThat(sesiones).isNotNull(); // Verificar que la lista de sesiones no sea nula
-			assertThat(sesiones).isEmpty(); // Verificar que la lista de sesiones esté vacía
-		}*/
-
 		@Test
 		@DisplayName("Devuelve una lista vacia de sesiones")
 		public void getAllSessionsForPlan() {
-			// Supongamos que el ID del plan es 1
 			Long planId = 1L;
-
-			// Llamada al endpoint con el parámetro de plan adecuado
 			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
 			var response = restTemplate.getForEntity(url, List.class);
-
-			// Verificar el status HTTP
-			assertThat(response.getStatusCodeValue()).isEqualTo(404); // Cambiado a 200, ya que esperamos una respuesta exitosa
-
-			// Verificar el contenido de la respuesta
-			List<Sesion> sesiones = response.getBody();
-			assertThat(sesiones).isNullOrEmpty(); // Verificar que la lista de sesiones sea nula o vacia (es nula)
+			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
-
-
-
 	}
 
 	@Nested
