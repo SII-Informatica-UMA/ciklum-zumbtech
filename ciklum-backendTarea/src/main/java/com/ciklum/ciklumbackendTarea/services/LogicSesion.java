@@ -3,6 +3,7 @@ package com.ciklum.ciklumbackendTarea.services;
 import com.ciklum.ciklumbackendTarea.controllers.Mapper;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
+import com.ciklum.ciklumbackendTarea.dtos.getPlanDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
@@ -50,8 +51,9 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
         var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, List.class);
+        var response = restTemplate.getForEntity(url, getPlanDTO.class);
         if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            // System.out.println("FUNCIONA");
             throw new PlanNoEncontradoException();
         }
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
@@ -60,7 +62,7 @@ public class LogicSesion {
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
         var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, List.class);
+        var response = restTemplate.getForEntity(url, getPlanDTO.class);
         if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new PlanNoEncontradoException();
         }
