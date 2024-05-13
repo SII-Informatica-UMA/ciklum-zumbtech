@@ -3,6 +3,7 @@ package com.ciklum.ciklumbackendTarea;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
+import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -117,11 +118,21 @@ class CiklumBackendTareaApplicationTests {
 		}
 
 		@Test
-		@DisplayName("devuelve una lista vacia de sesiones")
-		public void getAllSessionsForPlan() {
+		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
+		public void errorGetAllSessionsForPlan() {
 			Long planId = 1L;
 			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
 			var response = restTemplate.getForEntity(url, List.class);
+			assertThat(response.getStatusCodeValue()).isEqualTo(404);
+		}
+
+		@Test
+		@DisplayName("devuelve error cuando se intenta insertar sesión a plan no existente")
+		public void postSesionForPlan() {
+			Long planId = 1L;
+			SesionNuevaDTO sesionNuevaDTO = SesionNuevaDTO.builder().descripcion("trabajar").build();
+			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
+			var response = restTemplate.postForEntity(url, sesionNuevaDTO, Sesion.class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 	}

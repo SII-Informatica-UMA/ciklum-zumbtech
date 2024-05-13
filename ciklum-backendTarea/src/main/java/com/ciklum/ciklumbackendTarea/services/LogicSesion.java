@@ -53,7 +53,6 @@ public class LogicSesion {
         var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
         var response = restTemplate.getForEntity(url, getPlanDTO.class);
         if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            // System.out.println("FUNCIONA");
             throw new PlanNoEncontradoException();
         }
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);

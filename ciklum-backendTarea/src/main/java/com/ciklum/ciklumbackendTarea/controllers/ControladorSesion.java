@@ -51,7 +51,7 @@ public class ControladorSesion {
     }
 
     @PostMapping
-    public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO){
+    public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO) {
          return ResponseEntity.of(sesionService.postSesion(idPlan, sesionNuevaDTO));
     }
 
