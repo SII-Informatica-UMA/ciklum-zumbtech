@@ -1,3 +1,4 @@
+/*
 package com.ciklum.ciklumbackendTarea.security;
 
 import java.security.Key;
@@ -37,12 +38,12 @@ public class JwtUtil {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
-    /*
-    for retrieveing any information from token we will need the secret key
-	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-	}
-    */
+
+//    for retrieveing any information from token we will need the secret key
+//	private Claims getAllClaimsFromToken(String token) {
+//		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+//	}
+
 
     private Claims getAllClaimsFromToken(String token) {
         byte[] keyBytes = secret.getBytes();
@@ -97,3 +98,6 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
+
+ */
+

@@ -1,3 +1,4 @@
+/*
 package com.ciklum.ciklumbackendTarea.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -67,3 +68,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
 }
+
+*/

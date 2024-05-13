@@ -1,3 +1,4 @@
+/*
 package com.ciklum.ciklumbackendTarea.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,3 +48,5 @@ public class SecurityConfguration {
                 .map(authentication -> (UserDetails) authentication.getPrincipal());
     }
 }
+
+ */

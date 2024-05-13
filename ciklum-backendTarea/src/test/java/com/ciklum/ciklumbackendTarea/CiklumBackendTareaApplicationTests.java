@@ -120,18 +120,16 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
-			Long planId = 1L;
-			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
-			var response = restTemplate.getForEntity(url, List.class);
+			var url = "http://localhost:" + port + "/sesion?plan=1";
+			var response = restTemplate.getForEntity(url, Void.class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 
 		@Test
-		@DisplayName("devuelve error cuando se intenta insertar sesión a plan no existente")
-		public void postSesionForPlan() {
-			Long planId = 1L;
+		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
+		public void errorPostSesionForPlan() {
 			SesionNuevaDTO sesionNuevaDTO = SesionNuevaDTO.builder().descripcion("trabajar").build();
-			var url = "http://localhost:" + port + "/sesion?plan=" + planId;
+			var url = "http://localhost:" + port + "/sesion?plan=1";
 			var response = restTemplate.postForEntity(url, sesionNuevaDTO, Sesion.class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}

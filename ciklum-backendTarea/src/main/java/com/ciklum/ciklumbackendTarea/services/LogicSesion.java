@@ -51,7 +51,7 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
         var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, getPlanDTO.class);
+        var response = restTemplate.getForEntity(url, Void.class);
         if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new PlanNoEncontradoException();
         }
@@ -61,7 +61,7 @@ public class LogicSesion {
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
         var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-        var response = restTemplate.getForEntity(url, getPlanDTO.class);
+        var response = restTemplate.getForEntity(url, Void.class);
         if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new PlanNoEncontradoException();
         }
