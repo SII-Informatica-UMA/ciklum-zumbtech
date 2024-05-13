@@ -57,20 +57,18 @@ public class LogicSesion {
     }
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
-        try {
-            var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-            restTemplate.getForEntity(url, Void.class);
-        }
-        catch(Exception e) {
-            if(e.getMessage().equals("404 : [no body]")) {
-                throw new PlanNoEncontradoException();
-            }
-        }
+        comprobarPlanExiste(idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
+        comprobarPlanExiste(idPlan);
+        Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
+        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
+    }
+
+    private void comprobarPlanExiste(Long idPlan) {
         try {
             var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
             restTemplate.getForEntity(url, Void.class);
@@ -80,7 +78,5 @@ public class LogicSesion {
                 throw new PlanNoEncontradoException();
             }
         }
-        Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
-        return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 }
