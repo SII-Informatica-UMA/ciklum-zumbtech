@@ -65,7 +65,6 @@ public class LogicSesion {
             throw new PlanNoEncontradoException();
         }
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
-        // guardar la sesión en el backend del profe
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 }
