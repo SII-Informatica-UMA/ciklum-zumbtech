@@ -77,6 +77,9 @@ public class LogicSesion {
             if(e.getMessage().equals("404 : [no body]")) {
                 throw new PlanNoEncontradoException();
             }
+            else {
+                throw e;
+            }
         }
     }
 }
