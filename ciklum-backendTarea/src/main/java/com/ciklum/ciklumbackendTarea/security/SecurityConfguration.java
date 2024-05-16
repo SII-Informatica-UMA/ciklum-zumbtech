@@ -1,5 +1,4 @@
-/*
-package com.ciklum.ciklumbackendTarea.security;
+/*package com.ciklum.ciklumbackendTarea.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +31,7 @@ public class SecurityConfguration {
                 .csrf(cs -> cs.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/login", "/passwordreset", "/forgottenpassword").permitAll()
+                                //.requestMatchers("/login", "/passwordreset", "/forgottenpassword").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
@@ -48,5 +47,4 @@ public class SecurityConfguration {
                 .map(authentication -> (UserDetails) authentication.getPrincipal());
     }
 }
-
  */

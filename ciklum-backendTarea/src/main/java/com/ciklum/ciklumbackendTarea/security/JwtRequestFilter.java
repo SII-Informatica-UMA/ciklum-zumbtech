@@ -1,5 +1,4 @@
-/*
-package com.ciklum.ciklumbackendTarea.security;
+/*package com.ciklum.ciklumbackendTarea.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 
 @Component
@@ -40,13 +38,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("No puedo obtener el JWT");
+                logger.info("No puedo obtener el JWT");
             } catch (ExpiredJwtException e) {
-                System.out.println("El token ha expirado");
+                logger.info("El token ha expirado");
             }
-            logger.debug("usuario = " + username);
+            logger.info("usuario = " + username);
         } else {
-            logger.debug("El token no comienza con Bearer");
+            logger.info("El token no comienza con Bearer");
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -64,9 +62,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
         }
+        // A la ida
+
         chain.doFilter(request, response);
+
+        // A la vuelta
     }
 
 }
-
 */
