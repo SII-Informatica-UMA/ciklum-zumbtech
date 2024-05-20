@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Builder
 @EqualsAndHashCode
 @ToString
-public class GetPlanDTO {
+public class PlanDTO {
     private Timestamp fechaInicio;
     private Timestamp fechaFin;
     private String reglaRecurrencia;

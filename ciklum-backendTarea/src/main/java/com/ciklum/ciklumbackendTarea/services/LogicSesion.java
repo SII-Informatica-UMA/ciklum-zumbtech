@@ -1,16 +1,13 @@
 package com.ciklum.ciklumbackendTarea.services;
 
 import com.ciklum.ciklumbackendTarea.controllers.Mapper;
-import com.ciklum.ciklumbackendTarea.dtos.Asociacion;
-import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
-import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
+import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,25 +45,33 @@ public class LogicSesion {
     }
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
-        comprobarPlanExiste(idPlan);
+        Long idCliente = comprobarClienteExiste(1L);
+        comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
         Long idCliente = comprobarClienteExiste(1L);
-        comprobarAsociacionEntrenadorCliente(idCliente);
-        comprobarPlanExiste(idPlan);
+        comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 
-    private void comprobarAsociacionEntrenadorCliente(Long idCliente) {
+    private void comprobarAsociacionEntrenadorCliente(Long idCliente, Long idPlan) {
         try {
             var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
-            var respuesta = restTemplate.getForEntity(url, Void.class);
-            // Comprobar que la respuesta es una lista de asociaciones de tamaño 1 y
-            // que contiene un plan con el idPlan que se quiere
+            var respuesta = restTemplate.getForEntity(url, ListAsociacion.class);
+            var valorRespuesta = respuesta.getBody().getAsociaciones();
+            if(valorRespuesta.size() != 1) {
+                throw new PlanNoEncontradoException();
+            }
+            for(PlanDTO plan : valorRespuesta.get(0).getPlanDTO()) {
+                if(plan.getId() == idPlan) {
+                    return;
+                }
+            }
+            throw new PlanNoEncontradoException();
         }
         catch(Exception e) {
             if(e.getMessage().equals("404 : [no body]")) {
@@ -80,20 +85,5 @@ public class LogicSesion {
 
     private Long comprobarClienteExiste(Long idUsuario) {
         return idUsuario;
-    }
-
-    private void comprobarPlanExiste(Long idPlan) {
-        try {
-            var url = "http://localhost:" + "8080" + "/plan/" + idPlan;
-            restTemplate.getForEntity(url, Void.class);
-        }
-        catch(Exception e) {
-            if(e.getMessage().equals("404 : [no body]")) {
-                throw new PlanNoEncontradoException();
-            }
-            else {
-                throw e;
-            }
-        }
     }
 }
