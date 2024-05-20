@@ -117,23 +117,18 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
-			// Supongamos que el puerto es 8080, cámbialo si es necesario
-			//var port = 8080;
-			var url = "http://localhost:8080/sesion?plan=9999"; // Usar un ID de plan que no exista
+			var url = "http://localhost:" + port + "/sesion?plan=1";
 			var response = restTemplate.getForEntity(url, Void.class);
-
-			// Aquí esperamos un 404 si el plan no existe
-			assertThat(response.getStatusCode().value()).isEqualTo(200);
+			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 
 		@Test
 		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
 		public void errorPostSesionForPlan() {
 			SesionNuevaDTO sesionNuevaDTO = SesionNuevaDTO.builder().descripcion("trabajar").build();
-			var url = "http://localhost:8080/sesion?plan=1";
-			//var url = "http://localhost:8080/sesion?plan=1";
+			var url = "http://localhost:" + port + "/sesion?plan=1";
 			var response = restTemplate.postForEntity(url, sesionNuevaDTO, Sesion.class);
-			assertThat(response.getStatusCodeValue()).isEqualTo(200);
+			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 	}
 
