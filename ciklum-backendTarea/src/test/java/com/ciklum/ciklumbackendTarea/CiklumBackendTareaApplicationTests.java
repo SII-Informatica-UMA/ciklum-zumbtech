@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ciklum.ciklumbackendTarea.controllers.ControladorSesion;
+import com.ciklum.ciklumbackendTarea.controllers.Mapper;
 import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
@@ -60,6 +61,8 @@ class CiklumBackendTareaApplicationTests {
 	private LogicSesion sesionService;
 	@InjectMocks
 	private ControladorSesion controlador;
+
+	private Mapper mapper = new Mapper();
 
 	@BeforeEach
 	public void initializeDatabase() {
@@ -246,7 +249,6 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() {
-
 			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
 			sesionRepo.save(s1);
 
@@ -275,6 +277,40 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getBody().size()).isEqualTo(1);
 			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
 			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+		}
+
+		@Test
+		@DisplayName("el servicio postSesion inserta una nueva sesion en un plan")
+		public void postSesion() {
+			SesionNuevaDTO s1 = SesionNuevaDTO.builder().descripcion("sesion5").idPlan(2L).build();
+
+			sesionService = new LogicSesion(sesionRepo,restMock);
+			controlador = new ControladorSesion(sesionService);
+
+			var url = "http://localhost:8080/entrena?cliente=1";
+			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
+					new Asociacion[]{
+							Asociacion.builder()
+									.planDTO(
+											Collections.singletonList(
+													PlanDTO.builder()
+															.id(2L)
+															.build()
+											)
+									)
+									.build()
+					},
+					HttpStatus.OK)
+			);
+
+			var respuesta = controlador.postSesion(2L,s1);
+
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+
+			Sesion sesionRespuesta = Mapper.SesionNuevaDTOtoSesion(respuesta.getBody());
+			assertThat(sesionRepo.findAll().size()).isEqualTo(2);
+			assertThat(sesionRespuesta.getIdPlan()).isEqualTo(s1.getIdPlan());
+			assertThat(sesionRespuesta.getDescripcion()).isEqualTo(s1.getDescripcion());
 		}
 
 	}
