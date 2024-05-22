@@ -159,6 +159,7 @@ class CiklumBackendTareaApplicationTests {
 			sesionRepo.save(s1);
 
 			sesionService = new LogicSesion(sesionRepo,restMock);
+			controlador = new ControladorSesion(sesionService);
 
 			var url = "http://localhost:8080/entrena?cliente=1";
 			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
@@ -176,7 +177,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 			try {
-				sesionService.getAllSesions(2L);
+				controlador.getAllSesions(2L);
 				assertThat(false).isTrue();
 			}
 			catch(PlanNoEncontradoException e) {
