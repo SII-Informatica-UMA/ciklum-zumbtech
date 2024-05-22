@@ -59,28 +59,18 @@ public class LogicSesion {
     }
 
     private void comprobarAsociacionEntrenadorCliente(Long idCliente, Long idPlan) {
-        try {
-            var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
-            var respuesta = restTemplate.getForEntity(url, ListAsociacion.class);
-            var valorRespuesta = respuesta.getBody().getAsociaciones();
-            if(valorRespuesta.size() != 1) {
-                throw new PlanNoEncontradoException();
-            }
-            for(PlanDTO plan : valorRespuesta.get(0).getPlanDTO()) {
-                if(plan.getId() == idPlan) {
-                    return;
-                }
-            }
+        var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
+        var respuesta = restTemplate.getForEntity(url, Asociacion[].class);
+        var valorRespuesta = respuesta.getBody();
+        if(valorRespuesta.length != 1) {
             throw new PlanNoEncontradoException();
         }
-        catch(Exception e) {
-            if(e.getMessage().equals("404 : [no body]")) {
-                throw new PlanNoEncontradoException();
-            }
-            else {
-                throw e;
+        for(PlanDTO plan : valorRespuesta[0].getPlanDTO()) {
+            if(plan.getId() == idPlan) {
+                return;
             }
         }
+        throw new PlanNoEncontradoException();
     }
 
     private Long comprobarClienteExiste(Long idUsuario) {
