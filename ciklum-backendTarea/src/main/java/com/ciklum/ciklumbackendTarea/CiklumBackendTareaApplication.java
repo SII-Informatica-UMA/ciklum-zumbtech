@@ -14,7 +14,6 @@ public class CiklumBackendTareaApplication {
 	}
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(CiklumBackendTareaApplication.class, args);
 	}
 }
