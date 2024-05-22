@@ -3,6 +3,7 @@ package com.ciklum.ciklumbackendTarea;
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ciklum.ciklumbackendTarea.controllers.ControladorSesion;
 import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
@@ -57,6 +58,8 @@ class CiklumBackendTareaApplicationTests {
 
 	@InjectMocks
 	private LogicSesion sesionService;
+	@InjectMocks
+	private ControladorSesion controlador;
 
 	@BeforeEach
 	public void initializeDatabase() {
@@ -247,6 +250,7 @@ class CiklumBackendTareaApplicationTests {
 			sesionRepo.save(s1);
 
 			sesionService = new LogicSesion(sesionRepo,restMock);
+			controlador = new ControladorSesion(sesionService);
 
 			var url = "http://localhost:8080/entrena?cliente=1";
 			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
@@ -264,11 +268,13 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 
-			var respuesta = sesionService.getAllSesions(2L);
+			var respuesta = controlador.getAllSesions(2L);
 
-			assertThat(respuesta.get().size()).isEqualTo(1);
-			assertThat(respuesta.get().get(0).getId()).isEqualTo(s1.getId());
-			assertThat(respuesta.get().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+			assertThat(respuesta.getBody().size()).isEqualTo(1);
+			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
+			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
 		}
+
 	}
 }
