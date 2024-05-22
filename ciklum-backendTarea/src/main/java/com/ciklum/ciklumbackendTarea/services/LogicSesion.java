@@ -62,12 +62,11 @@ public class LogicSesion {
         var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
         var respuesta = restTemplate.getForEntity(url, Asociacion[].class);
         var valorRespuesta = respuesta.getBody();
-        if(valorRespuesta.length != 1) {
-            throw new PlanNoEncontradoException();
-        }
-        for(PlanDTO plan : valorRespuesta[0].getPlanDTO()) {
-            if(plan.getId() == idPlan) {
-                return;
+        if(valorRespuesta.length == 1) {
+            for(PlanDTO plan : valorRespuesta[0].getPlanDTO()) {
+                if(plan.getId() == idPlan) {
+                    return;
+                }
             }
         }
         throw new PlanNoEncontradoException();
