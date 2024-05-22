@@ -2,9 +2,7 @@ package com.ciklum.ciklumbackendTarea;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ciklum.ciklumbackendTarea.dtos.ListaSesiones;
-import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
-import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
+import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
@@ -31,6 +29,7 @@ import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -212,25 +211,36 @@ class CiklumBackendTareaApplicationTests {
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() {
 
-			Sesion s1 = Sesion.builder().id(1L).idPlan(1L).build();
-			Sesion s2 = Sesion.builder().id(2L).idPlan(1L).build();
+			Sesion s1 = Sesion.builder().id(1L).descripcion("sesion1").idPlan(2L).build();
+			Sesion s2 = Sesion.builder().id(2L).descripcion("sesion2").idPlan(2L).build();
 			sesionRepo.save(s1);
 			sesionRepo.save(s2);
 
+			sesionService = new LogicSesion(sesionRepo,restMock);
 
-			var url = "<Por asignar>";
-			Mockito.when(restMock.getForEntity(url,Void.class)).thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
+			var url = "http://localhost:8080/entrena?cliente=1";
+			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
+					new Asociacion[]{
+							Asociacion.builder()
+									.planDTO(
+											Collections.singletonList(
+													PlanDTO.builder()
+															.id(2L)
+															.build()
+											)
+									)
+									.build()
+					},
+					HttpStatus.OK)
+			);
 
+			var respuesta = sesionService.getAllSesions(2L);
 
-			var peticion = RequestEntity.get(uriQuery("http","localhost",port,"plan=1","/sesion"))
-					.accept(MediaType.APPLICATION_JSON)
-					.build();
-			var response = restTemplate.exchange(peticion, new ParameterizedTypeReference<List<Sesion>>() {});
-			var res = restTemplate.exchange(peticion,
-					new ParameterizedTypeReference<List<Sesion>>() {
-					});
-
-			assertThat(true).isTrue();
+			assertThat(respuesta.get().size()).isEqualTo(2);
+			assertThat(respuesta.get().get(0).getId()).isEqualTo(s1.getId());
+			assertThat(respuesta.get().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+			assertThat(respuesta.get().get(1).getId()).isEqualTo(s2.getId());
+			assertThat(respuesta.get().get(1).getDescripcion()).isEqualTo(s2.getDescripcion());
 		}
 
 	}

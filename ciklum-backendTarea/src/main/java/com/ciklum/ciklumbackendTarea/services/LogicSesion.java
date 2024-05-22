@@ -27,6 +27,11 @@ public class LogicSesion {
         this.sesionRepo = repo;
     }
 
+    public LogicSesion(SesionRepository repo, RestTemplate rest) {
+        this.sesionRepo = repo;
+        this.restTemplate = rest;
+    }
+
     public Optional<SesionDTO> getSesion(Long id) {
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
