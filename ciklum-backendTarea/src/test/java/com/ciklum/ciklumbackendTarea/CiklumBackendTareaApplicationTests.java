@@ -3,6 +3,8 @@ package com.ciklum.ciklumbackendTarea;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ciklum.ciklumbackendTarea.dtos.*;
+import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
+import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
@@ -145,7 +147,7 @@ class CiklumBackendTareaApplicationTests {
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
 			var url = "http://localhost:" + port + "/sesion?plan=1";
-			var response = restTemplate.getForEntity(url, Void.class);
+			var response = restTemplate.getForEntity(url, Sesion[].class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 
@@ -242,6 +244,7 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.get().get(1).getId()).isEqualTo(s2.getId());
 			assertThat(respuesta.get().get(1).getDescripcion()).isEqualTo(s2.getDescripcion());
 		}
+
 
 	}
 }
