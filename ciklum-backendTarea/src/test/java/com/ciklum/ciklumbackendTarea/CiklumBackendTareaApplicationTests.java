@@ -2,7 +2,6 @@ package com.ciklum.ciklumbackendTarea;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ciklum.ciklumbackendTarea.dtos.ListaSesiones;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
