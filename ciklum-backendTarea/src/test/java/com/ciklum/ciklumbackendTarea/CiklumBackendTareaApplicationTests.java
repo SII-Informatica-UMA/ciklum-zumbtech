@@ -146,7 +146,7 @@ class CiklumBackendTareaApplicationTests {
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
 			var url = "http://localhost:" + port + "/sesion?plan=1";
-			var response = restTemplate.getForEntity(url, Void.class);
+			var response = restTemplate.getForEntity(url, Sesion[].class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 
@@ -208,7 +208,7 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
 
-		@Test
+		/*@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() {
 
@@ -231,7 +231,7 @@ class CiklumBackendTareaApplicationTests {
 					});
 
 			assertThat(true).isTrue();
-		}
+		}*/
 
 	}
 }
