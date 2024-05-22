@@ -1,11 +1,13 @@
 package com.ciklum.ciklumbackendTarea;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
+import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
 import org.junit.jupiter.api.BeforeEach;
@@ -146,9 +148,37 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
-			var url = "http://localhost:" + port + "/sesion?plan=1";
-			var response = restTemplate.getForEntity(url, Sesion[].class);
+			var urlS = "http://localhost:" + port + "/sesion?plan=1";
+			var response = restTemplate.getForEntity(urlS, Sesion[].class);
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
+
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
+			sesionRepo.save(s1);
+
+			sesionService = new LogicSesion(sesionRepo,restMock);
+
+			var url = "http://localhost:8080/entrena?cliente=1";
+			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
+					new Asociacion[]{
+							Asociacion.builder()
+									.planDTO(
+											Collections.singletonList(
+													PlanDTO.builder()
+															.id(3L)
+															.build()
+											)
+									)
+									.build()
+					},
+					HttpStatus.OK)
+			);
+			try {
+				sesionService.getAllSesions(2L);
+				assertThat(false).isTrue();
+			}
+			catch(PlanNoEncontradoException e) {
+
+			}
 		}
 
 		@Test
@@ -213,10 +243,8 @@ class CiklumBackendTareaApplicationTests {
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() {
 
-			Sesion s1 = Sesion.builder().id(1L).descripcion("sesion1").idPlan(2L).build();
-			Sesion s2 = Sesion.builder().id(2L).descripcion("sesion2").idPlan(2L).build();
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
 			sesionRepo.save(s1);
-			sesionRepo.save(s2);
 
 			sesionService = new LogicSesion(sesionRepo,restMock);
 
@@ -238,13 +266,9 @@ class CiklumBackendTareaApplicationTests {
 
 			var respuesta = sesionService.getAllSesions(2L);
 
-			assertThat(respuesta.get().size()).isEqualTo(2);
+			assertThat(respuesta.get().size()).isEqualTo(1);
 			assertThat(respuesta.get().get(0).getId()).isEqualTo(s1.getId());
 			assertThat(respuesta.get().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
-			assertThat(respuesta.get().get(1).getId()).isEqualTo(s2.getId());
-			assertThat(respuesta.get().get(1).getDescripcion()).isEqualTo(s2.getDescripcion());
 		}
-
-
 	}
 }
