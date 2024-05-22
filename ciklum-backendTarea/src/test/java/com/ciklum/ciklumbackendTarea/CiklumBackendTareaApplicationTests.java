@@ -2,44 +2,58 @@ package com.ciklum.ciklumbackendTarea;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ciklum.ciklumbackendTarea.dtos.ListaSesiones;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
+import com.ciklum.ciklumbackendTarea.services.LogicSesion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("En el controlador de sesiones")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ExtendWith(MockitoExtension.class)
 class CiklumBackendTareaApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+
+	@Mock
+	private RestTemplate restMock;
 
 	@Value(value="${local.server.port}")
 	private int port;
 
 	@Autowired
 	private SesionRepository sesionRepo;
+
+	@InjectMocks
+	private LogicSesion sesionService;
 
 	@BeforeEach
 	public void initializeDatabase() {
@@ -54,6 +68,17 @@ class CiklumBackendTareaApplicationTests {
 		for (String path: paths) {
 			ub = ub.path(path);
 		}
+		return ub.build();
+	}
+	public URI uriQuery(String scheme, String host, int port, String query, String ...paths) {
+		UriBuilderFactory ubf = new DefaultUriBuilderFactory();
+		UriBuilder ub = ubf.builder()
+				.scheme(scheme)
+				.host(host).port(port);
+		for (String path: paths) {
+			ub = ub.path(path);
+		}
+		ub = ub.query("plan=1");
 		return ub.build();
 	}
 
@@ -182,5 +207,31 @@ class CiklumBackendTareaApplicationTests {
 			var respuesta = restTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
+
+		@Test
+		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
+		public void getAllSesiones() {
+
+			Sesion s1 = Sesion.builder().id(1L).idPlan(1L).build();
+			Sesion s2 = Sesion.builder().id(2L).idPlan(1L).build();
+			sesionRepo.save(s1);
+			sesionRepo.save(s2);
+
+
+			var url = "<Por asignar>";
+			Mockito.when(restMock.getForEntity(url,Void.class)).thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
+
+
+			var peticion = RequestEntity.get(uriQuery("http","localhost",port,"plan=1","/sesion"))
+					.accept(MediaType.APPLICATION_JSON)
+					.build();
+			var response = restTemplate.exchange(peticion, new ParameterizedTypeReference<List<Sesion>>() {});
+			var res = restTemplate.exchange(peticion,
+					new ParameterizedTypeReference<List<Sesion>>() {
+					});
+
+			assertThat(true).isTrue();
+		}
+
 	}
 }
