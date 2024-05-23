@@ -15,11 +15,10 @@ import java.util.List;
 @ToString
 @Builder
 public class Sesion {
-    @Id
-    @GeneratedValue
-    private Long id;
+    private Long idPlan;
     private Timestamp fechaInicio;
     private Timestamp fechaFin;
+    private String trabajoRealizado;
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "link_multimedia", foreignKey = @ForeignKey(name = "fk_sesion_multimedia"))
     @Column(name = "link")
@@ -30,13 +29,7 @@ public class Sesion {
     @CollectionTable(name = "dato_salud", foreignKey = @ForeignKey(name = "fk_sesion_datoSalud"))
     @Column(name = "dato")
     private List<String> datosSalud;
-    private String trabajoRealizado;
-
-    /*
-    @ManyToOne
-    @JoinColumn(name = "plan_id", foreignKey = @ForeignKey(name = "fk_sesion_plan"))
-    private Plan plan;
-    */
-
-    private Long idPlan;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 }
