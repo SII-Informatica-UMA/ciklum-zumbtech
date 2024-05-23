@@ -5,6 +5,7 @@ import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
+import com.ciklum.ciklumbackendTarea.exceptions.TokenNoValidoException;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,4 +62,8 @@ public class ControladorSesion {
     @ExceptionHandler(PlanNoEncontradoException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public void planNotFoundException() {}
+
+    @ExceptionHandler(TokenNoValidoException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public void notValidTokenException() {}
 }

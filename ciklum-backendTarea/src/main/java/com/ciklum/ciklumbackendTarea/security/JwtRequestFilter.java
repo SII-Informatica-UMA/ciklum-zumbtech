@@ -1,4 +1,4 @@
-/*package com.ciklum.ciklumbackendTarea.security;
+package com.ciklum.ciklumbackendTarea.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -70,4 +70,3 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
 }
-*/

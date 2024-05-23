@@ -1,4 +1,4 @@
-/*package com.ciklum.ciklumbackendTarea.security;
+package com.ciklum.ciklumbackendTarea.security;
 //import java.security.interfaces.RSAPrivateKey;
 //import java.security.interfaces.RSAPublicKey;
 //
@@ -87,11 +87,16 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 
-    //generate token for user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String userString) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, userString);
     }
+
+    //generate token for user
+//    public String generateToken(UserDetails userDetails) {
+//        Map<String, Object> claims = new HashMap<>();
+//        return doGenerateToken(claims, userDetails.getUsername());
+//    }
 
 //    public String generateToken(Usuario usuario) {
 //        Map<String, Object> claims = new HashMap<>();
@@ -128,4 +133,4 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
-*/
+

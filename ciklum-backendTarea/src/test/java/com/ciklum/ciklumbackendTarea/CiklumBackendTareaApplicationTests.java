@@ -11,11 +11,9 @@ import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
+import com.ciklum.ciklumbackendTarea.security.JwtUtil;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -57,6 +55,11 @@ class CiklumBackendTareaApplicationTests {
 	@Autowired
 	private SesionRepository sesionRepo;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	private String token;
+
 	@InjectMocks
 	private LogicSesion sesionService;
 	@InjectMocks
@@ -66,6 +69,7 @@ class CiklumBackendTareaApplicationTests {
 
 	@BeforeEach
 	public void initializeDatabase() {
+		token = jwtUtil.generateToken("1");
 		sesionRepo.deleteAll();
 	}
 
@@ -94,6 +98,7 @@ class CiklumBackendTareaApplicationTests {
 	private RequestEntity<Void> get(String scheme, String host, int port, String path) {
 		URI uri = uri(scheme, host,port, path);
 		var peticion = RequestEntity.get(uri)
+				.header("Authorization", "Bearer " + token)
 				.accept(MediaType.APPLICATION_JSON)
 				.build();
 		return peticion;
@@ -102,6 +107,7 @@ class CiklumBackendTareaApplicationTests {
 	private RequestEntity<Void> delete(String scheme, String host, int port, String path) {
 		URI uri = uri(scheme, host,port, path);
 		var peticion = RequestEntity.delete(uri)
+				.header("Authorization", "Bearer " + token)
 				.build();
 		return peticion;
 	}
@@ -109,6 +115,7 @@ class CiklumBackendTareaApplicationTests {
 	private <T> RequestEntity<T> post(String scheme, String host, int port, String path, T object) {
 		URI uri = uri(scheme, host,port, path);
 		var peticion = RequestEntity.post(uri)
+				.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(object);
 		return peticion;
@@ -117,6 +124,7 @@ class CiklumBackendTareaApplicationTests {
 	private <T> RequestEntity<T> put(String scheme, String host, int port, String path, T object) {
 		URI uri = uri(scheme, host,port, path);
 		var peticion = RequestEntity.put(uri)
+				.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(object);
 		return peticion;
