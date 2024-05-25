@@ -163,7 +163,10 @@ class CiklumBackendTareaApplicationTests {
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
 		public void errorGetAllSessionsForPlan() {
 			var urlS = "http://localhost:" + port + "/sesion?plan=1";
-			var response = restTemplate.getForEntity(urlS, Sesion[].class);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var response = restTemplate.exchange(urlS, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<Sesion>>(){});
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 
 			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
@@ -201,7 +204,10 @@ class CiklumBackendTareaApplicationTests {
 		public void errorPostSesionForPlan() {
 			SesionNuevaDTO sesionNuevaDTO = SesionNuevaDTO.builder().descripcion("trabajar").build();
 			var url = "http://localhost:" + port + "/sesion?plan=1";
-			var response = restTemplate.postForEntity(url, sesionNuevaDTO, Sesion.class);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(sesionNuevaDTO, headers);
+			var response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,new ParameterizedTypeReference<List<Sesion>>(){});
 			assertThat(response.getStatusCodeValue()).isEqualTo(404);
 		}
 	}

@@ -7,6 +7,7 @@ import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.exceptions.TokenNoValidoException;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
