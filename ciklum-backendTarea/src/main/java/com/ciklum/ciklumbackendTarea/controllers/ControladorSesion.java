@@ -47,13 +47,13 @@ public class ControladorSesion {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sesion>> getAllSesions(@RequestParam(name = "plan") Long idPlan) {
-        return ResponseEntity.of(sesionService.getAllSesions(idPlan));
+    public ResponseEntity<List<Sesion>> getAllSesions(@RequestParam(name = "plan") Long idPlan, @RequestHeader("Authorization") String header) {
+        return ResponseEntity.of(sesionService.getAllSesions(idPlan, header));
     }
 
     @PostMapping
-    public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO) {
-         return ResponseEntity.of(sesionService.postSesion(idPlan, sesionNuevaDTO));
+    public ResponseEntity<SesionNuevaDTO> postSesion(@RequestParam(name = "plan") Long idPlan, @RequestBody SesionNuevaDTO sesionNuevaDTO, @RequestHeader("Authorization") String header) {
+         return ResponseEntity.of(sesionService.postSesion(idPlan, sesionNuevaDTO, header));
     }
 
     @ExceptionHandler(SesionNoEncontradaException.class)

@@ -69,7 +69,7 @@ class CiklumBackendTareaApplicationTests {
 
 	@BeforeEach
 	public void initializeDatabase() {
-		token = jwtUtil.generateToken("1");
+		token = jwtUtil.generateToken("10");
 		sesionRepo.deleteAll();
 	}
 
@@ -191,7 +191,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 			try {
-				controlador.getAllSesions(2L);
+				controlador.getAllSesions(2L, token);
 				assertThat(false).isTrue();
 			}
 			catch(PlanNoEncontradoException e) {
@@ -285,7 +285,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 
-			var respuesta = controlador.getAllSesions(2L);
+			var respuesta = controlador.getAllSesions(2L, token);
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 			assertThat(respuesta.getBody().size()).isEqualTo(1);
@@ -317,7 +317,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 
-			var respuesta = controlador.postSesion(2L,s1);
+			var respuesta = controlador.postSesion(2L, s1, token);
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 
@@ -326,6 +326,5 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(sesionRespuesta.getIdPlan()).isEqualTo(s1.getIdPlan());
 			assertThat(sesionRespuesta.getDescripcion()).isEqualTo(s1.getDescripcion());
 		}
-
 	}
 }

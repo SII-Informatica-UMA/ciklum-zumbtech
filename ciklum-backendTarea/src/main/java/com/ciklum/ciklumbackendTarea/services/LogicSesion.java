@@ -6,6 +6,7 @@ import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
+import com.ciklum.ciklumbackendTarea.security.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class LogicSesion {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    //@Autowired
+    //private JwtUtil jwtUtil;
 
     @Autowired
     public LogicSesion(SesionRepository repo) {
@@ -49,15 +53,15 @@ public class LogicSesion {
         sesionRepo.deleteById(id);
     }
 
-    public Optional<List<Sesion>> getAllSesions(Long idPlan) {
-        Long idCliente = comprobarClienteExiste(1L);
+    public Optional<List<Sesion>> getAllSesions(Long idPlan, String header) {
+        Long idCliente = comprobarClienteExiste(header);
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
-    public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
-        Long idCliente = comprobarClienteExiste(1L);
+    public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO, String header) {
+        Long idCliente = comprobarClienteExiste(header);
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
@@ -77,7 +81,9 @@ public class LogicSesion {
         throw new PlanNoEncontradoException();
     }
 
-    private Long comprobarClienteExiste(Long idUsuario) {
-        return idUsuario;
+    private Long comprobarClienteExiste(String header) {
+        //String id = jwtUtil.getIdFromToken(header);
+        //return Long.parseLong(id);
+        return 1L;
     }
 }
