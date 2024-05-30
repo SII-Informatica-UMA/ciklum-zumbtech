@@ -191,7 +191,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 			try {
-				controlador.getAllSesions(2L, token);
+				controlador.getAllSesions(2L);
 				assertThat(false).isTrue();
 			}
 			catch(PlanNoEncontradoException e) {
@@ -285,7 +285,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 
-			var respuesta = controlador.getAllSesions(2L, token);
+			var respuesta = controlador.getAllSesions(2L);
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 			assertThat(respuesta.getBody().size()).isEqualTo(1);
@@ -317,7 +317,7 @@ class CiklumBackendTareaApplicationTests {
 					HttpStatus.OK)
 			);
 
-			var respuesta = controlador.postSesion(2L, s1, token);
+			var respuesta = controlador.postSesion(2L, s1);
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 

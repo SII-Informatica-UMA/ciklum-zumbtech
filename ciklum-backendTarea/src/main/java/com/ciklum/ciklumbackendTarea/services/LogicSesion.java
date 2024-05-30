@@ -10,6 +10,10 @@ import com.ciklum.ciklumbackendTarea.security.JwtUtil;
 import com.ciklum.ciklumbackendTarea.security.SecurityConfguration;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,8 +28,8 @@ public class LogicSesion {
     @Autowired
     private RestTemplate restTemplate;
 
-    //@Autowired
-    //private JwtUtil jwtUtil;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     public LogicSesion(SesionRepository repo) {
@@ -38,31 +42,34 @@ public class LogicSesion {
     }
 
     public Optional<SesionDTO> getSesion(Long id) {
+        comprobarClienteExiste();
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
         return Optional.of(Mapper.toSesionDTO(sesion));
     }
 
     public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
+        comprobarClienteExiste();
         if(sesionDTO.getId() != idSesion || !sesionRepo.existsById(idSesion)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.save(Mapper.toSesion(sesionDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 
     public void deleteSesion(Long id) {
+        comprobarClienteExiste();
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         sesionRepo.deleteById(id);
     }
 
-    public Optional<List<Sesion>> getAllSesions(Long idPlan, String header) {
-        Long idCliente = comprobarClienteExiste(header);
+    public Optional<List<Sesion>> getAllSesions(Long idPlan) {
+        Long idCliente = comprobarClienteExiste();
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
-    public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO, String header) {
-        Long idCliente = comprobarClienteExiste(header);
+    public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
+        Long idCliente = comprobarClienteExiste();
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
@@ -82,10 +89,41 @@ public class LogicSesion {
         throw new PlanNoEncontradoException();
     }
 
-    private Long comprobarClienteExiste(String header) {
-        //String id = jwtUtil.getIdFromToken(header);
-        //return Long.parseLong(id);
-        System.out.println("===================\nRESS: "+SecurityConfguration.getAuthenticatedUser().get().getUsername());
-        return 1L;
+    private Long comprobarClienteExiste() {
+
+        Long userId = Long.parseLong(SecurityConfguration.getAuthenticatedUser().get().getUsername());
+        String token = jwtUtil.generateToken(userId + "");
+
+        List<CentroDTO> centros = getAllCentros(token);
+
+        for(CentroDTO centro : centros) {
+            List<ClienteDTO> clientes = getAllClientsInCentro(centro.getIdCentro(), token);
+            for(ClienteDTO client : clientes) {
+                if(client.getIdUsuario() == userId) {
+                    return client.getId();
+                }
+            }
+        }
+        throw new PlanNoEncontradoException();
+    }
+
+    private List<CentroDTO> getAllCentros(String token) {
+        var url = "http://localhost:" + 8080 + "/centro";
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<CentroDTO>>(){});
+        return response.getBody();
+    }
+
+    private List<ClienteDTO> getAllClientsInCentro(Long centroId, String token) {
+        var url = "http://localhost:" + 8080 + "/cliente?centro=" + centroId;
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<ClienteDTO>>(){});
+        return response.getBody();
     }
 }
