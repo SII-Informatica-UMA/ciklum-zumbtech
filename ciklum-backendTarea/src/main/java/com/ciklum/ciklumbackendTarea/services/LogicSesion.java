@@ -7,6 +7,7 @@ import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import com.ciklum.ciklumbackendTarea.security.JwtUtil;
+import com.ciklum.ciklumbackendTarea.security.SecurityConfguration;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,7 @@ public class LogicSesion {
     private Long comprobarClienteExiste(String header) {
         //String id = jwtUtil.getIdFromToken(header);
         //return Long.parseLong(id);
+        System.out.println("===================\nRESS: "+SecurityConfguration.getAuthenticatedUser().get().getUsername());
         return 1L;
     }
 }
