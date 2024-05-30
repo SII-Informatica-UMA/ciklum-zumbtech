@@ -42,7 +42,11 @@ public class LogicSesion {
     }
 
     public Optional<SesionDTO> getSesion(Long id) {
-        comprobarClienteExiste();
+        try {
+            comprobarClienteExiste();
+        } catch (PlanNoEncontradoException e) {
+            comprobarEntrenadorExiste();
+        }
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
         return Optional.of(Mapper.toSesionDTO(sesion));
@@ -62,6 +66,11 @@ public class LogicSesion {
     }
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
+        try {
+            comprobarClienteExiste();
+        } catch (PlanNoEncontradoException e) {
+            comprobarEntrenadorExiste();
+        }
         Long idCliente = comprobarClienteExiste();
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
@@ -83,6 +92,22 @@ public class LogicSesion {
             for(PlanDTO plan : valorRespuesta[0].getPlanDTO()) {
                 if(plan.getId() == idPlan) {
                     return;
+                }
+            }
+        }
+        throw new PlanNoEncontradoException();
+    }
+
+    private Long comprobarEntrenadorExiste() {
+        Long userId = Long.parseLong(SecurityConfguration.getAuthenticatedUser().get().getUsername());
+        String token = jwtUtil.generateToken(userId + "");
+
+        List<CentroDTO> centros = getAllCentros(token);
+        for(CentroDTO centro : centros) {
+            List<EntrenadorDTO> entrenadores = getAllEntrenadoresInCentro(centro.getIdCentro(), token);
+            for(EntrenadorDTO entrenador : entrenadores) {
+                if(entrenador.getIdUsuario() == userId) {
+                    return entrenador.getId();
                 }
             }
         }
@@ -124,6 +149,16 @@ public class LogicSesion {
         headers.set("Authorization", "Bearer " + token);
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<ClienteDTO>>(){});
+        return response.getBody();
+    }
+
+    private List<EntrenadorDTO> getAllEntrenadoresInCentro(Long centroId, String token) {
+        var url = "http://localhost:" + 8080 + "/entrenador?centro=" + centroId;
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<EntrenadorDTO>>(){});
         return response.getBody();
     }
 }
