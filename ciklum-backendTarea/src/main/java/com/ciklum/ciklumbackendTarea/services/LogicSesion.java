@@ -66,12 +66,12 @@ public class LogicSesion {
     }
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
+        Long idCliente = null;
         try {
-            comprobarClienteExiste();
-        } catch (PlanNoEncontradoException e) {
-            comprobarEntrenadorExiste();
+            idCliente = comprobarClienteExiste();
+        } catch(PlanNoEncontradoException e) {
+            idCliente = comprobarEntrenadorExiste();
         }
-        Long idCliente = comprobarClienteExiste();
         comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
@@ -85,11 +85,19 @@ public class LogicSesion {
     }
 
     private void comprobarAsociacionEntrenadorCliente(Long idCliente, Long idPlan) {
+        Long userId = Long.parseLong(SecurityConfguration.getAuthenticatedUser().get().getUsername());
+        String token = jwtUtil.generateToken(userId + "");
+
         var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
-        var respuesta = restTemplate.getForEntity(url, Asociacion[].class);
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        var respuesta = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<Asociacion>>(){});
+
         var valorRespuesta = respuesta.getBody();
-        if(valorRespuesta.length == 1) {
-            for(PlanDTO plan : valorRespuesta[0].getPlanDTO()) {
+        if(valorRespuesta.size() == 1) {
+            for(PlanDTO plan : valorRespuesta.get(0).getPlanDTO()) {
                 if(plan.getId() == idPlan) {
                     return;
                 }
