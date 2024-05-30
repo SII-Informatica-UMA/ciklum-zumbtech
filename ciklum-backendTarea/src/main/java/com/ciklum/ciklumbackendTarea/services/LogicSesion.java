@@ -89,7 +89,7 @@ public class LogicSesion {
         Long userId = Long.parseLong(SecurityConfguration.getAuthenticatedUser().get().getUsername());
         String token = jwtUtil.generateToken(userId + "");
 
-        var url = "http://localhost:" + "8080" + "/entrena?cliente=" + idCliente;
+        var url = "http://localhost:" + 8080 + "/entrena?cliente=" + idCliente;
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Authorization", "Bearer " + token);
@@ -120,7 +120,7 @@ public class LogicSesion {
                 }
             }
         }
-        throw new TokenNoValidoException();
+        throw new PlanNoEncontradoException();
     }
 
     private Long comprobarClienteExiste() {
