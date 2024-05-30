@@ -269,23 +269,59 @@ class CiklumBackendTareaApplicationTests {
 			sesionService = new LogicSesion(sesionRepo,restMock);
 			controlador = new ControladorSesion(sesionService);
 
-			var url = "http://localhost:8080/entrena?cliente=1";
-			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
-					new Asociacion[]{
-							Asociacion.builder()
-									.planDTO(
-											Collections.singletonList(
-													PlanDTO.builder()
-															.id(2L)
-															.build()
-											)
-									)
-									.build()
-					},
-					HttpStatus.OK)
-			);
+			// Mockito cabecera
+			Long idCentro = 3L;
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
-			var respuesta = controlador.getAllSesions(2L);
+			// Mockito para comprobarAsociacionEntrenadorCliente
+			var urlEntrena = "http://localhost:" + 8080 + "/entrena?cliente=1";
+			Mockito.when(restMock.exchange(urlEntrena, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Asociacion>>() {}))
+					.thenReturn(
+						new ResponseEntity<>(
+								Collections.singletonList(
+										Asociacion.builder()
+												.planDTO(
+														Collections.singletonList(
+																PlanDTO.builder()
+																		.id(2L)
+																		.build()
+														)
+												)
+												.build()
+								), HttpStatus.OK
+						)
+					);
+
+			// Mockito para comprobarClienteExiste
+			var urlCentros = "http://localhost:" + 8080 + "/centro";
+			Mockito.when(restMock.exchange(urlCentros, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<CentroDTO>>() {}))
+					.thenReturn(
+							new ResponseEntity<>(
+									Collections.singletonList(
+											CentroDTO.builder()
+													.idCentro(idCentro)
+													.build()
+									), HttpStatus.OK
+							)
+					);
+
+			var urlCliente = "http://localhost:" + 8080 + "/cliente?centro=" + idCentro;
+			Mockito.when(restMock.exchange(urlCliente, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ClienteDTO>>() {}))
+					.thenReturn(
+							new ResponseEntity<>(
+									Collections.singletonList(
+											ClienteDTO.builder()
+													.id(1L)
+													.idUsuario(10L)
+													.build()
+									), HttpStatus.OK
+							)
+					);
+
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=2";
+			var respuesta = restTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 			assertThat(respuesta.getBody().size()).isEqualTo(1);

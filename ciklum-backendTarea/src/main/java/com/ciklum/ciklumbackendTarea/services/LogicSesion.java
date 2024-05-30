@@ -5,6 +5,7 @@ import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.entities.Sesion;
 import com.ciklum.ciklumbackendTarea.exceptions.PlanNoEncontradoException;
 import com.ciklum.ciklumbackendTarea.exceptions.SesionNoEncontradaException;
+import com.ciklum.ciklumbackendTarea.exceptions.TokenNoValidoException;
 import com.ciklum.ciklumbackendTarea.repositories.SesionRepository;
 import com.ciklum.ciklumbackendTarea.security.JwtUtil;
 import com.ciklum.ciklumbackendTarea.security.SecurityConfguration;
@@ -119,7 +120,7 @@ public class LogicSesion {
                 }
             }
         }
-        throw new PlanNoEncontradoException();
+        throw new TokenNoValidoException();
     }
 
     private Long comprobarClienteExiste() {
