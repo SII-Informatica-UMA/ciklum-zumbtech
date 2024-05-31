@@ -32,6 +32,7 @@ public class SecurityConfguration {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 //.requestMatchers("/login", "/passwordreset", "/forgottenpassword").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

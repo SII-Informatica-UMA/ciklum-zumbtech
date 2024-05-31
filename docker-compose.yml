@@ -1,40 +1,34 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.4.0
-    container_name: mysql_container
-    environment:
-      MYSQL_DATABASE: listadb
-      MYSQL_USER: listauser
-      MYSQL_PASSWORD: listapassword
-      MYSQL_ROOT_PASSWORD: rootpassword
-    volumes:
-      - datos:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    healthcheck:
-      test: "/usr/bin/mysql --user=listauser --password=listapassword --execute \"SHOW DATABASES;\""
-      interval: 5s
-      timeout: 2s
-      retries: 60
 
   backend:
     build: ./ciklum-backend
     container_name: backend_container
     environment:
-      SPRING_H2_CONSOLE_ENABLED: 'false'
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/listadb
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_H2_CONSOLE_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:listadb
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
       SPRING_DATASOURCE_USERNAME: listauser
       SPRING_DATASOURCE_PASSWORD: listapassword
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
-      SPRING_JPA_GENERATE_DDL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.H2Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
-    depends_on:
-      mysql:
-        condition: service_healthy
+    
+  backend2:
+    build: ./ciklum-backendTarea
+    container_name: backend_container2
+    environment:
+      SPRING_H2_CONSOLE_ENABLED: 'true'
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:listadb
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
+      SPRING_DATASOURCE_USERNAME: listauser2
+      SPRING_DATASOURCE_PASSWORD: listapassword2
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.H2Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8081:8081"
   
   frontend:
     build: ./ciklum-frontend
