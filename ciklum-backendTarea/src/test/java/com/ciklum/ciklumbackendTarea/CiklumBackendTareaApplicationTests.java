@@ -231,14 +231,16 @@ class CiklumBackendTareaApplicationTests {
 	@DisplayName("cuando la base de datos esta vacia")
 	public class BaseDatosVacia {
 
-		/*@Test
+		@Test
 		@DisplayName("lanza error cuando se llama a deleteSesion y no existe")
-		public void errorDeleteSesion() {
+		public void errorDeleteSesion() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockCliente(3L, 1L);
 			var peticion = delete("http","localhost",port,"/sesion/1");
 			var url = "http://localhost:" + port + "/sesion/1";
 			var respuesta = testRestTemplate.exchange(url, HttpMethod.DELETE, peticion, Void.class);
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}*/
+		}
 
 		@Test
 		@DisplayName("lanza error cuando se llama a getSesion y no existe")
