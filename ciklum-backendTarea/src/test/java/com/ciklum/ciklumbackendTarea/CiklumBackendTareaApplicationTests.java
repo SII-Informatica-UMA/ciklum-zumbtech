@@ -128,6 +128,7 @@ class CiklumBackendTareaApplicationTests {
 		return peticion;
 	}
 
+	// Mocks para solicitudes GET
 	private void mockEntrena(Long idCliente, Long idPlan) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?cliente=" + idCliente)))
 				.andExpect(method(HttpMethod.GET))
@@ -145,7 +146,6 @@ class CiklumBackendTareaApplicationTests {
 										.build()
 						))));
 	}
-
 	private void mockCentro(Long idCentro) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/centro")))
 				.andExpect(method(HttpMethod.GET))
@@ -158,7 +158,6 @@ class CiklumBackendTareaApplicationTests {
 								)
 						)));
 	}
-
 	private void mockCliente(Long idCentro, Long idCliente) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
@@ -174,7 +173,6 @@ class CiklumBackendTareaApplicationTests {
 								)
 						));
 	}
-
 	private void mockClienteIdUser(Long idCentro, Long idCliente, Long idUser) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
@@ -190,7 +188,6 @@ class CiklumBackendTareaApplicationTests {
 								)
 						));
 	}
-
 	private void mockEntrenador(Long idCentro, Long idEntrenador) throws URISyntaxException, JsonProcessingException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
@@ -206,7 +203,6 @@ class CiklumBackendTareaApplicationTests {
 								)
 						));
 	}
-
 	private void mockEntrenadorIdUsuario(Long idCentro, Long idEntrenador, Long idUsuario) throws URISyntaxException, JsonProcessingException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
@@ -383,7 +379,7 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
 		}
 
-		/*@Test
+		@Test
 		@DisplayName("el servicio postSesion inserta una nueva sesion en un plan")
 		public void postSesion() throws URISyntaxException, JsonProcessingException {
 			SesionNuevaDTO s1 = SesionNuevaDTO.builder().descripcion("sesion5").idPlan(2L).build();
@@ -398,7 +394,7 @@ class CiklumBackendTareaApplicationTests {
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(s1, headers);
-			var urlSolicitud = "http://localhost:" + port + "/entrena?cliente=" + idCliente;
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
 			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<SesionNuevaDTO>() {});
 
 
@@ -408,6 +404,6 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(sesionRepo.findAll().size()).isEqualTo(2);
 			assertThat(sesionRespuesta.getIdPlan()).isEqualTo(s1.getIdPlan());
 			assertThat(sesionRespuesta.getDescripcion()).isEqualTo(s1.getDescripcion());
-		}*/
+		}
 	}
 }
