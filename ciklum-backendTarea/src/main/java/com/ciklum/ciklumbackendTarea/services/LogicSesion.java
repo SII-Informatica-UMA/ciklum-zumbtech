@@ -24,6 +24,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class LogicSesion {
+
     private SesionRepository sesionRepo;
 
     @Autowired
@@ -35,11 +36,6 @@ public class LogicSesion {
     @Autowired
     public LogicSesion(SesionRepository repo) {
         this.sesionRepo = repo;
-    }
-
-    public LogicSesion(SesionRepository repo, RestTemplate rest) {
-        this.sesionRepo = repo;
-        this.restTemplate = rest;
     }
 
     public Optional<SesionDTO> getSesion(Long id) {

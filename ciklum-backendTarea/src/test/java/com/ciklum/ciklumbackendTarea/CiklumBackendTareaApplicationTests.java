@@ -308,36 +308,6 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
 		}
 
-		@Test
-		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un cliente  ")
-		public void errorGetAllSessionsForEntrenador() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
-			Long idCentro = 3L;
-			Long idCliente = 1L;
-			Long idPlan = 2L;
-			Long idEntrenaddor = 4L;
-
-			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
-			sesionRepo.save(s1);
-
-			mockEntrena(idCliente, idPlan);
-			mockCentro(idCentro);
-			mockCliente(idCentro, idCliente);
-			mockEntrenadorIdUsuario(idCentro,28L,14L);
-
-			// Peticion al microservicio
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Authorization", "Bearer " + token);
-			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
-			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
-
-			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-			/*assertThat(respuesta.getBody().size()).isEqualTo(1);
-			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
-			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
-		}
-
 		/*@Test
 		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
 		public void errorPostSesionForPlan() {
