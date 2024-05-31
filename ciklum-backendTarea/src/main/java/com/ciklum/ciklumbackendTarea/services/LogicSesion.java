@@ -94,7 +94,7 @@ public class LogicSesion {
 
         headers.set("Authorization", "Bearer " + token);
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        var respuesta = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<Asociacion>>(){});
+        var respuesta = restTemplate.exchange(url, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Asociacion>>(){});
 
         var valorRespuesta = respuesta.getBody();
         if(valorRespuesta.size() == 1) {
@@ -120,7 +120,7 @@ public class LogicSesion {
                 }
             }
         }
-        throw new PlanNoEncontradoException();
+        throw new TokenNoValidoException();
     }
 
     private Long comprobarClienteExiste() {

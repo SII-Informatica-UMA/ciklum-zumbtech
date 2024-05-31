@@ -15,6 +15,7 @@ import com.ciklum.ciklumbackendTarea.security.JwtUtil;
 import com.ciklum.ciklumbackendTarea.services.LogicSesion;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -263,21 +264,21 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() {
-			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
-			sesionRepo.save(s1);
+			// Identificadores
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
 
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
+			sesionRepo.save(s1);
+/*
 			sesionService = new LogicSesion(sesionRepo,restMock);
 			controlador = new ControladorSesion(sesionService);
-
-			// Mockito cabecera
-			Long idCentro = 3L;
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Authorization", "Bearer " + token);
-			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+*/
 
 			// Mockito para comprobarAsociacionEntrenadorCliente
-			var urlEntrena = "http://localhost:" + 8080 + "/entrena?cliente=1";
-			Mockito.when(restMock.exchange(urlEntrena, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Asociacion>>() {}))
+			var urlEntrena = "http://localhost:" + 8080 + "/entrena?cliente=" + idCliente;
+			Mockito.when(restMock.exchange(Mockito.eq(urlEntrena), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(new ParameterizedTypeReference<List<Asociacion>>() {})))
 					.thenReturn(
 						new ResponseEntity<>(
 								Collections.singletonList(
@@ -285,7 +286,7 @@ class CiklumBackendTareaApplicationTests {
 												.planDTO(
 														Collections.singletonList(
 																PlanDTO.builder()
-																		.id(2L)
+																		.id(idPlan)
 																		.build()
 														)
 												)
@@ -295,8 +296,9 @@ class CiklumBackendTareaApplicationTests {
 					);
 
 			// Mockito para comprobarClienteExiste
+
 			var urlCentros = "http://localhost:" + 8080 + "/centro";
-			Mockito.when(restMock.exchange(urlCentros, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<CentroDTO>>() {}))
+			Mockito.when(restMock.exchange(ArgumentMatchers.argThat(a->a.equals(urlCentros)), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(new ParameterizedTypeReference<List<CentroDTO>>() {})))
 					.thenReturn(
 							new ResponseEntity<>(
 									Collections.singletonList(
@@ -308,19 +310,23 @@ class CiklumBackendTareaApplicationTests {
 					);
 
 			var urlCliente = "http://localhost:" + 8080 + "/cliente?centro=" + idCentro;
-			Mockito.when(restMock.exchange(urlCliente, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ClienteDTO>>() {}))
+			Mockito.when(restMock.exchange(Mockito.eq(urlCliente), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(new ParameterizedTypeReference<List<ClienteDTO>>() {})))
 					.thenReturn(
 							new ResponseEntity<>(
 									Collections.singletonList(
 											ClienteDTO.builder()
-													.id(1L)
+													.id(idCliente)
 													.idUsuario(10L)
 													.build()
 									), HttpStatus.OK
 							)
 					);
 
-			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=2";
+			// Peticion al microservicio
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
 			var respuesta = restTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
