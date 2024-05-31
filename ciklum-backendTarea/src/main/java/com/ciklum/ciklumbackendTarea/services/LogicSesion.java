@@ -44,9 +44,9 @@ public class LogicSesion {
 
     public Optional<SesionDTO> getSesion(Long id) {
         try {
-            comprobarClienteExiste();
-        } catch (PlanNoEncontradoException e) {
             comprobarEntrenadorExiste();
+        } catch (PlanNoEncontradoException e) {
+            comprobarClienteExiste();
         }
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
@@ -68,7 +68,6 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
         Long idCliente = null;
-        System.out.println("\nPACO");
         try {
             idCliente = comprobarClienteExiste();
         } catch(PlanNoEncontradoException e) {
@@ -130,7 +129,6 @@ public class LogicSesion {
         String token = jwtUtil.generateToken(userId + "");
 
         List<CentroDTO> centros = getAllCentros(token);
-
         for(CentroDTO centro : centros) {
             List<ClienteDTO> clientes = getAllClientsInCentro(centro.getIdCentro(), token);
             for(ClienteDTO client : clientes) {
@@ -158,7 +156,7 @@ public class LogicSesion {
 
         headers.set("Authorization", "Bearer " + token);
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<ClienteDTO>>(){});
+        var response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ClienteDTO>>(){});
         return response.getBody();
     }
 

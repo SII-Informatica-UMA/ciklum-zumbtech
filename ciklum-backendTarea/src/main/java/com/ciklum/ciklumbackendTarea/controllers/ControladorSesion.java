@@ -63,8 +63,4 @@ public class ControladorSesion {
     @ExceptionHandler(PlanNoEncontradoException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public void planNotFoundException() {}
-
-    @ExceptionHandler(TokenNoValidoException.class)
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    public void notValidTokenException() {}
 }

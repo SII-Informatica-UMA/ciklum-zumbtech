@@ -5,6 +5,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
+import com.ciklum.ciklumbackendTarea.controllers.Mapper;
 import com.ciklum.ciklumbackendTarea.dtos.*;
 import com.ciklum.ciklumbackendTarea.dtos.SesionDTO;
 import com.ciklum.ciklumbackendTarea.dtos.SesionNuevaDTO;
@@ -100,17 +101,12 @@ class CiklumBackendTareaApplicationTests {
 		return peticion;
 	}
 
-	private HttpEntity<Void> delete(String scheme, String host, int port, String path) {
-		/*URI uri = uri(scheme, host,port, path);
+	private RequestEntity<Void> delete(String scheme, String host, int port, String path) {
+		URI uri = uri(scheme, host,port, path);
 		var peticion = RequestEntity.delete(uri)
 				.header("Authorization", "Bearer " + token)
 				.build();
-		return peticion;*/
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + token);
-		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-		return requestEntity;
+		return peticion;
 	}
 
 	private <T> RequestEntity<T> post(String scheme, String host, int port, String path, T object) {
@@ -224,7 +220,7 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}^*/
 
-		@Test
+		/*@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente o no asociado a un cliente")
 		public void errorGetAllSessionsForPlan() throws URISyntaxException, JsonProcessingException {
 			// Identificadores
@@ -247,10 +243,10 @@ class CiklumBackendTareaApplicationTests {
 			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-			/*assertThat(respuesta.getBody().size()).isEqualTo(1);
+			assertThat(respuesta.getBody().size()).isEqualTo(1);
 			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
-			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
-		}
+			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+		}*/
 
 		/*@Test
 		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
@@ -275,26 +271,35 @@ class CiklumBackendTareaApplicationTests {
 			sesionRepo.save(sesion);
 		}
 
-		/*@Test
+		@Test
 		@DisplayName("el servicio de deleteSesion elimina una sesion ya existente")
-		public void deleteSesion() {
+		public void deleteSesion() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockCliente(3L, 1L);
 			var peticion = delete("http","localhost",port,"/sesion/1");
 			var respuesta = testRestTemplate.exchange(peticion, Void.class);
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 		}
 
+
 		@Test
 		@DisplayName("el servicio de getSesion devuelve una sesion ya existente")
-		public void getSesion() {
+		public void getSesion() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockCliente(3L, 1L);
+			mockEntrenador(3L, 1L);
 			var peticion = get("http","localhost",port,"/sesion/1");
 			var respuesta = testRestTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 			assertThat(respuesta.getBody().getDescripcion()).isEqualTo("trabajar");
 		}
 
+
 		@Test
 		@DisplayName("el servicio de putSesion modica la entidad seleccionada satisfactoriamente")
-		public void putSesion() {
+		public void putSesion() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockCliente(3L, 1L);
 			SesionDTO sesionDTO = SesionDTO.builder().id(1L).descripcion("Pedro").build();
 			var peticion = put("http","localhost",port,"/sesion/1", sesionDTO);
 			var respuesta = testRestTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
@@ -304,14 +309,17 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(sesionRepo.findAll().get(0).getId()).isEqualTo(1L);
 		}
 
+
 		@Test
 		@DisplayName("el servicio de putSesion lanza error si el id no coincide con el del sesionDTO")
-		public void errorPutSesionId() {
+		public void errorPutSesionId() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockCliente(3L, 1L);
 			SesionDTO sesionDTO = SesionDTO.builder().id(2L).descripcion("Pedro").build();
 			var peticion = put("http","localhost",port,"/sesion/1", sesionDTO);
 			var respuesta = testRestTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}*/
+		}
 
 		@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
@@ -343,29 +351,22 @@ class CiklumBackendTareaApplicationTests {
 
 		/*@Test
 		@DisplayName("el servicio postSesion inserta una nueva sesion en un plan")
-		public void postSesion() {
+		public void postSesion() throws URISyntaxException, JsonProcessingException {
 			SesionNuevaDTO s1 = SesionNuevaDTO.builder().descripcion("sesion5").idPlan(2L).build();
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
 
-			sesionService = new LogicSesion(sesionRepo,restMock);
-			controlador = new ControladorSesion(sesionService);
+			mockEntrena(idCliente, idPlan);
+			mockCentro(idCentro);
+			mockCliente(idCentro, idCliente);
 
-			var url = "http://localhost:8080/entrena?cliente=1";
-			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
-					new Asociacion[]{
-							Asociacion.builder()
-									.planDTO(
-											Collections.singletonList(
-													PlanDTO.builder()
-															.id(2L)
-															.build()
-											)
-									)
-									.build()
-					},
-					HttpStatus.OK)
-			);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(s1, headers);
+			var urlSolicitud = "http://localhost:" + port + "/entrena?cliente=" + idCliente;
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<SesionNuevaDTO>() {});
 
-			var respuesta = controlador.postSesion(2L, s1);
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
 
