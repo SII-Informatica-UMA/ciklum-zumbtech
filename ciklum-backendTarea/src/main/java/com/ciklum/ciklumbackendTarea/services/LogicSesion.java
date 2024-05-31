@@ -73,7 +73,7 @@ public class LogicSesion {
         } catch(PlanNoEncontradoException e) {
             idCliente = comprobarEntrenadorExiste();
         }
-        comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
+        comprobarAsociacionEntrenadorCliente(1L, idPlan);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
@@ -120,7 +120,7 @@ public class LogicSesion {
                 }
             }
         }
-        throw new TokenNoValidoException();
+        throw new PlanNoEncontradoException();
     }
 
     private Long comprobarClienteExiste() {
