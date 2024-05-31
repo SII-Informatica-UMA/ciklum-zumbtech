@@ -174,20 +174,12 @@ class CiklumBackendTareaApplicationTests {
 						));
 	}
 
-	private void mockCliente404(Long idCentro, Long idCliente) throws JsonProcessingException, URISyntaxException {
-		mockServer.expect(ExpectedCount.manyTimes(),
-						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
+	private void mockEntrenaListaVacia(Long idCliente, Long idPlan) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?cliente=" + idCliente)))
 				.andExpect(method(HttpMethod.GET))
-				.andRespond(withStatus(HttpStatus.NOT_FOUND)
+				.andRespond(withStatus(HttpStatus.OK)
 						.contentType(MediaType.APPLICATION_JSON)
-						.body(objectMapper.writeValueAsString(Collections.singletonList(
-												ClienteDTO.builder()
-														.id(idCliente)
-														.idUsuario(10L)
-														.build()
-										)
-								)
-						));
+						.body(objectMapper.writeValueAsString(Collections.emptyList())));
 	}
 	private void mockClienteIdUser(Long idCentro, Long idCliente, Long idUser) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(),
@@ -407,6 +399,31 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getBody().size()).isEqualTo(1);
 			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
 			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+		}
+
+		@Test
+		@DisplayName("el servicio getAllSesiones muestra error al no encontrar asociacion cliente entrenador")
+		public void getAllSesionesErrorAsociacion() throws URISyntaxException, JsonProcessingException {
+			// Identificadores
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
+
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
+			sesionRepo.save(s1);
+
+			mockEntrenaListaVacia(idCliente, idPlan);
+			mockCentro(idCentro);
+			mockCliente(idCentro, idCliente);
+
+			// Peticion al microservicio
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
+
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
 
 		@Test
