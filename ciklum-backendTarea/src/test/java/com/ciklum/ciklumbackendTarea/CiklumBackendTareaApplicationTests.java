@@ -81,17 +81,6 @@ class CiklumBackendTareaApplicationTests {
 		}
 		return ub.build();
 	}
-	public URI uriQuery(String scheme, String host, int port, String query, String ...paths) {
-		UriBuilderFactory ubf = new DefaultUriBuilderFactory();
-		UriBuilder ub = ubf.builder()
-				.scheme(scheme)
-				.host(host).port(port);
-		for (String path: paths) {
-			ub = ub.path(path);
-		}
-		ub = ub.query("plan=1");
-		return ub.build();
-	}
 
 	private RequestEntity<Void> get(String scheme, String host, int port, String path) {
 		URI uri = uri(scheme, host,port, path);
@@ -128,7 +117,6 @@ class CiklumBackendTareaApplicationTests {
 		return peticion;
 	}
 
-	// Mocks para solicitudes GET
 	private void mockEntrena(Long idCliente, Long idPlan) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?cliente=" + idCliente)))
 				.andExpect(method(HttpMethod.GET))
@@ -146,6 +134,7 @@ class CiklumBackendTareaApplicationTests {
 										.build()
 						))));
 	}
+
 	private void mockEntrenaEntrenador(Long idEntrenador, Long idPlan) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?entrenador=" + idEntrenador)))
 				.andExpect(method(HttpMethod.GET))
@@ -163,6 +152,7 @@ class CiklumBackendTareaApplicationTests {
 										.build()
 						))));
 	}
+
 	private void mockCentro(Long idCentro) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/centro")))
 				.andExpect(method(HttpMethod.GET))
@@ -175,6 +165,7 @@ class CiklumBackendTareaApplicationTests {
 								)
 						)));
 	}
+
 	private void mockCliente(Long idCentro, Long idCliente) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
@@ -198,6 +189,7 @@ class CiklumBackendTareaApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.body(objectMapper.writeValueAsString(Collections.emptyList())));
 	}
+
 	private void mockClienteIdUser(Long idCentro, Long idCliente, Long idUser) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
@@ -213,6 +205,7 @@ class CiklumBackendTareaApplicationTests {
 								)
 						));
 	}
+
 	private void mockEntrenador(Long idCentro, Long idEntrenador) throws URISyntaxException, JsonProcessingException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
@@ -228,6 +221,7 @@ class CiklumBackendTareaApplicationTests {
 								)
 						));
 	}
+
 	private void mockEntrenadorIdUsuario(Long idCentro, Long idEntrenador, Long idUsuario) throws URISyntaxException, JsonProcessingException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
@@ -260,9 +254,36 @@ class CiklumBackendTareaApplicationTests {
 		}
 
 		@Test
+		@DisplayName("lanza error cuando se llama a putSesion y no existe")
+		public void errorPutSesion() throws URISyntaxException, JsonProcessingException {
+			Sesion s1 = Sesion.builder().id(1L).build();
+
+			mockCentro(3L);
+			mockClienteIdUser(3L, 1L, 10L);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(s1, headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion/1";
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.PUT, requestEntity, new ParameterizedTypeReference<SesionNuevaDTO>() {});
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
+		}
+
+		@Test
 		@DisplayName("lanza error cuando se llama a getSesion y no existe")
 		public void errorGetSesion() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
+			mockCentro(3L);
+			mockEntrenadorIdUsuario(3L, 1L, 10L);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion/1";
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<SesionDTO>() {});
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
+		}
+
+		@Test
+		@DisplayName("lanza error cuando se llama a getSesion y el usuario no es válido")
+		public void errorGetSesionUser() throws URISyntaxException, JsonProcessingException {
 			Long idCentro = 3L;
 			Long idCliente = 1L;
 			Long idSesion = 1L;
@@ -271,7 +292,6 @@ class CiklumBackendTareaApplicationTests {
 			mockClienteIdUser(idCentro, idCliente,11L);
 			mockEntrenadorIdUsuario(idCentro,5L,12L);
 
-			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
@@ -280,20 +300,10 @@ class CiklumBackendTareaApplicationTests {
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}
-/*
-		@Test
-		@DisplayName("lanza error cuando se llama a putSesion y no existe")
-		public void errorPutSesion() {
-			SesionDTO sesionDTO = SesionDTO.builder().build();
-			var peticion = put("http","localhost",port,"/sesion/1", sesionDTO);
-			var respuesta = testRestTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
-			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}^*/
 
 		@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente o no asociado a un cliente")
 		public void errorGetAllSessionsForPlan() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
 			Long idCentro = 3L;
 			Long idCliente = 1L;
 			Long idPlan = 2L;
@@ -306,7 +316,6 @@ class CiklumBackendTareaApplicationTests {
 			mockClienteIdUser(idCentro, idCliente,11L);
 			mockEntrenadorIdUsuario(idCentro,5L,12L);
 
-			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
@@ -314,22 +323,7 @@ class CiklumBackendTareaApplicationTests {
 			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-			/*assertThat(respuesta.getBody().size()).isEqualTo(1);
-			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
-			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
 		}
-
-		/*@Test
-		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
-		public void errorPostSesionForPlan() {
-			SesionNuevaDTO sesionNuevaDTO = SesionNuevaDTO.builder().descripcion("trabajar").build();
-			var url = "http://localhost:" + port + "/sesion?plan=1";
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Authorization", "Bearer " + token);
-			HttpEntity<?> requestEntity = new HttpEntity<>(sesionNuevaDTO, headers);
-			var response = testRestTemplate.exchange(url, HttpMethod.POST, requestEntity,new ParameterizedTypeReference<List<Sesion>>(){});
-			assertThat(response.getStatusCodeValue()).isEqualTo(404);
-		}*/
 	}
 
 	@Nested
@@ -354,8 +348,8 @@ class CiklumBackendTareaApplicationTests {
 
 
 		@Test
-		@DisplayName("el servicio de getSesion devuelve una sesion ya existente")
-		public void getSesion() throws URISyntaxException, JsonProcessingException {
+		@DisplayName("el servicio de getSesion devuelve una sesion ya existente a un entrenador")
+		public void getSesionEntrenador() throws URISyntaxException, JsonProcessingException {
 			mockCentro(3L);
 			mockCliente(3L, 1L);
 			mockEntrenador(3L, 1L);
@@ -365,6 +359,17 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getBody().getDescripcion()).isEqualTo("trabajar");
 		}
 
+		@Test
+		@DisplayName("el servicio de getSesion devuelve una sesion ya existente a un cliente")
+		public void getSesionCliente() throws URISyntaxException, JsonProcessingException {
+			mockCentro(3L);
+			mockClienteIdUser(3L,5L,10L);
+			mockEntrenadorIdUsuario(3L,5L,9L);
+			var peticion = get("http","localhost",port,"/sesion/1");
+			var respuesta = testRestTemplate.exchange(peticion, new ParameterizedTypeReference<SesionDTO>() {});
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+			assertThat(respuesta.getBody().getDescripcion()).isEqualTo("trabajar");
+		}
 
 		@Test
 		@DisplayName("el servicio de putSesion modica la entidad seleccionada satisfactoriamente")
@@ -395,7 +400,6 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesiones() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
 			Long idCentro = 3L;
 			Long idCliente = 1L;
 			Long idPlan = 2L;
@@ -407,7 +411,6 @@ class CiklumBackendTareaApplicationTests {
 			mockCentro(idCentro);
 			mockCliente(idCentro, idCliente);
 
-			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
@@ -423,7 +426,6 @@ class CiklumBackendTareaApplicationTests {
 		@Test
 		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan para un entrenador")
 		public void getAllSesionesEntrenador() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
 			Long idCentro = 3L;
 			Long idCliente = 1L;
 			Long idPlan = 2L;
@@ -436,7 +438,6 @@ class CiklumBackendTareaApplicationTests {
 			mockClienteIdUser(idCentro, idCliente,11L);
 			mockEntrenadorIdUsuario(idCentro,5L,10L);
 
-			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
@@ -450,9 +451,8 @@ class CiklumBackendTareaApplicationTests {
 		}
 
 		@Test
-		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
+		@DisplayName("el servicio getAllSesiones devuelve error al no encontrar la asociacion entrenador-cliente")
 		public void getAllSesionesErrorAsociacion() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
 			Long idCentro = 3L;
 			Long idCliente = 1L;
 			Long idPlan = 2L;
@@ -464,32 +464,6 @@ class CiklumBackendTareaApplicationTests {
 			mockCentro(idCentro);
 			mockCliente(idCentro, idCliente);
 
-			// Peticion al microservicio
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Authorization", "Bearer " + token);
-			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
-			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
-
-			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}
-
-		@Test
-		@DisplayName("el servicio getAllSesiones muestra error al no encontrar asociacion cliente entrenador")
-		public void getAllSesionesErrorAsociacion2() throws URISyntaxException, JsonProcessingException {
-			// Identificadores
-			Long idCentro = 3L;
-			Long idCliente = 1L;
-			Long idPlan = 2L;
-
-			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
-			sesionRepo.save(s1);
-
-			mockEntrenaListaVacia(idCliente, idPlan);
-			mockCentro(idCentro);
-			mockCliente(idCentro, idCliente);
-
-			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
