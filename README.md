@@ -13,11 +13,11 @@ Este proyecto de Full Stack implementa una aplicación en Angular que permite a 
 Este proyecto hace uso de las siguientes tecnologías:
 
 - **Angular**: Para la creación de la interfaz de usuario dinámica y receptiva.
-- **Firebase**: Para la autenticación de usuarios y el almacenamiento de datos en la nube.
+- **Docker**: Para meter en contenedores los distintos servicios y que el usuario no tenga que configurar nada.
 - **Plataformas de alojamiento de videos (YouTube, Vimeo)**: Para la integración de videos en las sesiones de entrenamiento.
 - **HTML/CSS**: Para la estructura y el diseño de la interfaz de usuario.
 - **JavaScript/TypeScript**: Para la lógica del lado del cliente y la manipulación de datos.
-- Futura conexión con un Backend en **Java SpringBoot**
+- Conexión con un Backend en **Java SpringBoot**
 
 ## Colaboradores
 
@@ -29,90 +29,44 @@ Este proyecto hace uso de las siguientes tecnologías:
 
 
 
-## Instalación y Uso
-### Para el proyecto de front-end
+## Instalación
+Se trata de un proyecto que conecta a un frontend con un backend que se comunica con una base de datos. El proyecto esta dockerizado y es transparente al usuario. Solo hay que seguir los siguientes pasos:
 
 1. Clona este repositorio a tu máquina local utilizando el siguiente comando:
+   
    ```bash
    git clone https://github.com/tu_usuario/nombre_del_repositorio.git
-2. Navega hasta el directorio del proyecto:
+3. Navega hasta el directorio del proyecto:
+   
    ```bash
    cd nombre_del_repositorio
-3. Instala las dependencias necesarias:
+4. Ejecuta el siguiente comando Docker para lanzar todos los servicios:
+   
    ```bash
-   npm install
-4. Ejecuta la aplicación:
-   ```bash
-   ng serve -o
+   docker compose up --build
 5. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
-   
-### Para el proyecto de back-end
-1. Clona el directorio en tu máquina local:
-```bash
-git clone https://github.com/tu_usuario/nombre_del_repositorio.git
-```
-2. Ve a un directorio donde haya aun proyecto Maven, por ejemplo, desde la carpeta ciklum-zumbtech:
-```bash
-cd ciklum-backendTarea
-```
-3. Haz la instalación de tu proyecto Maven, tienes dos formas de hacerlo:   
-   3.1. Si es la primera vez que instalas y compilas el proyecto, puedes hacer:
-   ```bash
-   mvn install
-   ```
-   3.2. Si el proyecto ya ha sido compilado otras veces y quieres eliminar los archivos generados en compilaciones anteriores:
-   ```bash
-   mvn clean install
-   ```
-4. Importante, si estás en IntelliJ darle a click derecho a la carpeta del proyecto -> Maven -> Recargar como Maven  (SI NO NO TE VA A DEJAR CORRER LA APLICACIÓN)
-5. Ya podrás ejecutar tu "SpringBootApplication" correctamente
-   
-## Información para Colaboradores
 
+## Uso y funcionalidades
+Una vez se han lanzado todos los servicios a través del comando de Docker, el usuario podrá consultar estas distintas opciones:
 
-1. **Crear y Gestionar Ramas Individuales**: Antes de comenzar a trabajar en una nueva característica o solucionar un problema, siempre crea una rama separada utilizando el comando
-   ```bash
-      git checkout -b nombre_de_la_rama
-   ```
-    Esto asegurará que cada contribución esté aislada y se pueda manejar de manera independiente.
-    En caso de ya existir la rama en remoto y querer conectar la información en local, introducir adicionalmente el siguiente comando:
-   ```bash
-      git pull origin nombre_de_la_rama
-   ```
-   En caso de haber hecho muchos cambios en una rama en local y querer descartarlos todos y tener los datos de la versión más actualizada, insertar:
-   ```bash
-      git clean -fd
-      git pull origin nombre_de_la_rama
-   ```
+- **La Aplicación Angular**: abriendo el navegador y insertando la url http://localhost:4200, se podrá hacer uso de forma normal de la aplicación de frontend que será completamente funcional y ya estará conectado al backend que no tiene la seguridad activa.
 
-4. **Hacer Commits en la Rama Respectiva**: Realiza tus cambios y commits en la rama que has creado para tu tarea específica. Utiliza el siguiente comando para saber que archivos has modificado y elegir cuáles subir:
-   ```bash
-   git diff --name-only nombre_de_la_rama
-   ```
-   Luego elegir uno a uno los archivos que queremos hacerles commit:
-   ```bash
-   git add nombre_archivo_1 nombre_archivo_2 ... nombre_archivo_n
-   ```
-   Y por último hacer el commit junto con un mensaje descriptivo:
-   ```bash
-   git commit -m "Descripción clara y concisa de tus cambios"
-   ```
+- **El Swagger del Backend sin seguridad**: abriendo el navegador y insertando la url http://localhost:8080/swagger-ui/index.html#, se podrá observar la especificación de la API a la que se está conectando nuestra aplicación angular. Es una especificación completa con todos los microservicios, pero no tiene la seguridad activa.
+  
+  <p align="center">
+   <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto.png"/>
+</p>
 
-6. **Sincronizar con el Repositorio Remoto**: Antes de hacer un push de tus cambios al repositorio remoto, asegúrate de sincronizar tu rama con la rama principal (`main`). Sigue estos pasos:
-   ```bash
-   git checkout main
-   git pull origin main
-   git merge nombre_de_tu_rama
-   ```
+- **El Swagger del Backend con seguridad**: abriendo el navegador y insertando la url http://localhost:8081/swagger-ui/index.html#, se podrá observar la especificación de la API del backend que sí que tiene la seguridad activa. Esta solo tiene la implementación del microservicio de gestión de sesiones por parte de clientes.
+  <p align="center">
+   <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto2.png"/>
+  </p>
+- Si bien esta API no es la que se usa para hacer la conexión desde el proyecto en angular, la añado al proyecto porque demuestra que sé como implantar seguridad desde una aplicación SpringBoot. Si se hace         cualquier petición sin añadir la contraseña o un token válido se devolverá un error 403.
 
-8. **Revisión de Código**: Una vez que hayas completado tu trabajo y estés listo para fusionarlo con la rama principal (`main`), haz un pull request desde tu rama hacia `main`. Esto permitirá que otros colaboradores revisen tus cambios, hagan comentarios y proporcionen retroalimentación antes de que se realice la fusión. Puedes hacerlo desde la interfaz de usuario de GitHub o utilizando el siguiente comando:
-   ```bash
-   git push origin main
-   ```
-   También se pueden subir directamente todos los cambios de una rama local a la misma rama en remoto, sin tener que hacer "merge" con main. Esto puede ser útil, si se desea completar una funcionalidad completa antes de subirlo a la rama principal. En ese caso, nos saltaríamos el paso 3 y directamente usaríamos:
-   ```bash
-   git push origin nombre_de_la_rama"
-   ```
+<p align="center">
+   <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto3.png"/>
+</p>
+
 ## Soporte
 
 Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en 0610948715@uma.es.
