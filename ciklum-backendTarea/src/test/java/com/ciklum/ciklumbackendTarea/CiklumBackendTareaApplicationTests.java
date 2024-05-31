@@ -402,8 +402,33 @@ class CiklumBackendTareaApplicationTests {
 		}
 
 		@Test
-		@DisplayName("el servicio getAllSesiones muestra error al no encontrar asociacion cliente entrenador")
+		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan")
 		public void getAllSesionesErrorAsociacion() throws URISyntaxException, JsonProcessingException {
+			// Identificadores
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
+
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
+			sesionRepo.save(s1);
+
+			mockEntrena(idCliente, 5L);
+			mockCentro(idCentro);
+			mockCliente(idCentro, idCliente);
+
+			// Peticion al microservicio
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
+
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
+		}
+
+		@Test
+		@DisplayName("el servicio getAllSesiones muestra error al no encontrar asociacion cliente entrenador")
+		public void getAllSesionesErrorAsociacion2() throws URISyntaxException, JsonProcessingException {
 			// Identificadores
 			Long idCentro = 3L;
 			Long idCliente = 1L;

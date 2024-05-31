@@ -46,7 +46,7 @@ public class LogicSesion {
         }
         if(!sesionRepo.existsById(id)) throw new SesionNoEncontradaException();
         Sesion sesion = sesionRepo.findById(id).get();
-        return Optional.of(Mapper.toSesionDTO(sesion));
+        return Optional.of(new Mapper().toSesionDTO(sesion));
     }
 
     public Optional<SesionNuevaDTO> putSesion(Long idSesion, SesionDTO sesionDTO) {
