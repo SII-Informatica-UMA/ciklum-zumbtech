@@ -68,6 +68,7 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
         Long idCliente = null;
+        System.out.println("\nPACO");
         try {
             idCliente = comprobarClienteExiste();
         } catch(PlanNoEncontradoException e) {

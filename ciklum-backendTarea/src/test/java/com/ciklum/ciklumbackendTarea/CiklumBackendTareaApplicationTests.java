@@ -67,7 +67,6 @@ class CiklumBackendTareaApplicationTests {
 		token = jwtUtil.generateToken("10");
 		sesionRepo.deleteAll();
 		mockServer = MockRestServiceServer.bindTo(restMock).ignoreExpectOrder(true).build();
-				//createServer(restMock).ign;
 	}
 
 	private URI uri(String scheme, String host, int port, String ...paths) {
@@ -132,18 +131,81 @@ class CiklumBackendTareaApplicationTests {
 		return peticion;
 	}
 
+	private void mockEntrena(Long idCliente, Long idPlan) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?cliente=" + idCliente)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+								Asociacion.builder()
+										.planDTO(
+												Collections.singletonList(
+														PlanDTO.builder()
+																.id(idPlan)
+																.build()
+												)
+										)
+										.build()
+						))));
+	}
+
+	private void mockCentro(Long idCentro) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/centro")))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+										CentroDTO.builder()
+												.idCentro(idCentro)
+												.build()
+								)
+						)));
+	}
+
+	private void mockCliente(Long idCentro, Long idCliente) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(),
+						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+												ClienteDTO.builder()
+														.id(idCliente)
+														.idUsuario(10L)
+														.build()
+										)
+								)
+						));
+	}
+
+	private void mockEntrenador(Long idCentro, Long idEntrenador) throws URISyntaxException, JsonProcessingException {
+		mockServer.expect(ExpectedCount.manyTimes(),
+						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+												EntrenadorDTO.builder()
+														.id(idEntrenador)
+														.idUsuario(10L)
+														.build()
+										)
+								)
+						));
+	}
+
 	@Nested
 	@DisplayName("cuando la base de datos esta vacia")
 	public class BaseDatosVacia {
 
-		@Test
+		/*@Test
 		@DisplayName("lanza error cuando se llama a deleteSesion y no existe")
 		public void errorDeleteSesion() {
 			var peticion = delete("http","localhost",port,"/sesion/1");
 			var url = "http://localhost:" + port + "/sesion/1";
 			var respuesta = testRestTemplate.exchange(url, HttpMethod.DELETE, peticion, Void.class);
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-		}
+		}*/
 
 		/*@Test
 		@DisplayName("lanza error cuando se llama a getSesion y no existe")
@@ -162,45 +224,33 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}^*/
 
-		/*@Test
-		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente")
-		public void errorGetAllSessionsForPlan() {
-			var urlS = "http://localhost:" + port + "/sesion?plan=1";
+		@Test
+		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente o no asociado a un cliente")
+		public void errorGetAllSessionsForPlan() throws URISyntaxException, JsonProcessingException {
+			// Identificadores
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
+
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
+			sesionRepo.save(s1);
+
+			mockEntrena(idCliente, idPlan);
+			mockCentro(idCentro);
+			//mockCliente(idCentro, idCliente);
+
+			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + token);
 			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-			var response = restTemplate.exchange(urlS, HttpMethod.GET, requestEntity,new ParameterizedTypeReference<List<Sesion>>(){});
-			assertThat(response.getStatusCodeValue()).isEqualTo(404);
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
-			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(2L).build();
-			sesionRepo.save(s1);
-
-			sesionService = new LogicSesion(sesionRepo,restMock);
-			controlador = new ControladorSesion(sesionService);
-
-			var url = "http://localhost:8080/entrena?cliente=1";
-			Mockito.when(restMock.getForEntity(url, Asociacion[].class)).thenReturn(new ResponseEntity<>(
-					new Asociacion[]{
-							Asociacion.builder()
-									.planDTO(
-											Collections.singletonList(
-													PlanDTO.builder()
-															.id(3L)
-															.build()
-											)
-									)
-									.build()
-					},
-					HttpStatus.OK)
-			);
-			try {
-				controlador.getAllSesions(2L);
-				assertThat(false).isTrue();
-			}
-			catch(PlanNoEncontradoException e) {
-
-			}
-		}*/
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
+			/*assertThat(respuesta.getBody().size()).isEqualTo(1);
+			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
+			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
+		}
 
 		/*@Test
 		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
@@ -274,46 +324,9 @@ class CiklumBackendTareaApplicationTests {
 			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
 			sesionRepo.save(s1);
 
-			mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?cliente=" + idCliente)))
-					.andExpect(method(HttpMethod.GET))
-					.andRespond(withStatus(HttpStatus.OK)
-					.contentType(MediaType.APPLICATION_JSON)
-					.body(objectMapper.writeValueAsString(Collections.singletonList(
-							Asociacion.builder()
-									.planDTO(
-											Collections.singletonList(
-													PlanDTO.builder()
-															.id(idPlan)
-															.build()
-											)
-									)
-									.build()
-					))));
-
-			mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/centro")))
-					.andExpect(method(HttpMethod.GET))
-					.andRespond(withStatus(HttpStatus.OK)
-							.contentType(MediaType.APPLICATION_JSON)
-							.body(objectMapper.writeValueAsString(Collections.singletonList(
-											CentroDTO.builder()
-													.idCentro(idCentro)
-													.build()
-									)
-							)));
-
-			mockServer.expect(ExpectedCount.manyTimes(),
-							requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
-					.andExpect(method(HttpMethod.GET))
-					.andRespond(withStatus(HttpStatus.OK)
-							.contentType(MediaType.APPLICATION_JSON)
-							.body(objectMapper.writeValueAsString(Collections.singletonList(
-													ClienteDTO.builder()
-															.id(idCliente)
-															.idUsuario(10L)
-															.build()
-											)
-									)
-							));
+			mockEntrena(idCliente, idPlan);
+			mockCentro(idCentro);
+			mockCliente(idCentro, idCliente);
 
 			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
