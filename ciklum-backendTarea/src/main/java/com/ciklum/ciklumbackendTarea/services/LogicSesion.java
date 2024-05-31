@@ -64,28 +64,30 @@ public class LogicSesion {
 
     public Optional<List<Sesion>> getAllSesions(Long idPlan) {
         Long idCliente = null;
+        boolean cliente = true;
         try {
             idCliente = comprobarClienteExiste();
         } catch(PlanNoEncontradoException e) {
             idCliente = comprobarEntrenadorExiste();
+            cliente = false;
         }
-        comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
+        comprobarAsociacionEntrenadorCliente(idCliente, idPlan, cliente);
         List<Sesion> sesiones = sesionRepo.findAllByPlanId(idPlan);
         return Optional.of(sesiones);
     }
 
     public Optional<SesionNuevaDTO> postSesion(Long idPlan, SesionNuevaDTO SesionNuevaDTO) {
         Long idCliente = comprobarClienteExiste();
-        comprobarAsociacionEntrenadorCliente(idCliente, idPlan);
+        comprobarAsociacionEntrenadorCliente(idCliente, idPlan, true);
         Sesion sesion = sesionRepo.save(Mapper.SesionNuevaDTOtoSesion(SesionNuevaDTO));
         return Optional.of(Mapper.toSesionNuevaDTO(sesion));
     }
 
-    private void comprobarAsociacionEntrenadorCliente(Long idCliente, Long idPlan) {
+    private void comprobarAsociacionEntrenadorCliente(Long idCliente, Long idPlan, boolean cliente) {
         Long userId = Long.parseLong(SecurityConfguration.getAuthenticatedUser().get().getUsername());
         String token = jwtUtil.generateToken(userId + "");
 
-        var url = "http://localhost:" + 8080 + "/entrena?cliente=" + idCliente;
+        var url = "http://localhost:" + 8080 + ((cliente)?"/entrena?cliente=" : "/entrena?entrenador=") + idCliente;
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Authorization", "Bearer " + token);

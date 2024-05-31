@@ -146,6 +146,23 @@ class CiklumBackendTareaApplicationTests {
 										.build()
 						))));
 	}
+	private void mockEntrenaEntrenador(Long idEntrenador, Long idPlan) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/entrena?entrenador=" + idEntrenador)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+								Asociacion.builder()
+										.planDTO(
+												Collections.singletonList(
+														PlanDTO.builder()
+																.id(idPlan)
+																.build()
+												)
+										)
+										.build()
+						))));
+	}
 	private void mockCentro(Long idCentro) throws JsonProcessingException, URISyntaxException {
 		mockServer.expect(ExpectedCount.manyTimes(), requestTo(new URI("http://localhost:" + 8080 + "/centro")))
 				.andExpect(method(HttpMethod.GET))
@@ -389,6 +406,35 @@ class CiklumBackendTareaApplicationTests {
 			mockEntrena(idCliente, idPlan);
 			mockCentro(idCentro);
 			mockCliente(idCentro, idCliente);
+
+			// Peticion al microservicio
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + token);
+			HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+			var urlSolicitud = "http://localhost:" + port + "/sesion?plan=" + idPlan;
+			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
+
+			assertThat(respuesta.getStatusCode().value()).isEqualTo(200);
+			assertThat(respuesta.getBody().size()).isEqualTo(1);
+			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
+			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
+		}
+
+		@Test
+		@DisplayName("el servicio getAllSesiones muestra todas las sesiones de un plan para un entrenador")
+		public void getAllSesionesEntrenador() throws URISyntaxException, JsonProcessingException {
+			// Identificadores
+			Long idCentro = 3L;
+			Long idCliente = 1L;
+			Long idPlan = 2L;
+
+			Sesion s1 = Sesion.builder().id(2L).descripcion("sesion1").idPlan(idPlan).build();
+			sesionRepo.save(s1);
+
+			mockEntrenaEntrenador(5L, idPlan);
+			mockCentro(idCentro);
+			mockClienteIdUser(idCentro, idCliente,11L);
+			mockEntrenadorIdUsuario(idCentro,5L,10L);
 
 			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
