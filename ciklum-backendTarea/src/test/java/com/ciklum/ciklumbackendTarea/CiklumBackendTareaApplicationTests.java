@@ -24,6 +24,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -39,7 +40,7 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("En el controlador de sesiones")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class CiklumBackendTareaApplicationTests {
 
 	@Autowired
@@ -174,6 +175,22 @@ class CiklumBackendTareaApplicationTests {
 						));
 	}
 
+	private void mockClienteIdUser(Long idCentro, Long idCliente, Long idUser) throws JsonProcessingException, URISyntaxException {
+		mockServer.expect(ExpectedCount.manyTimes(),
+						requestTo(new URI("http://localhost:" + 8080 + "/cliente?centro=" + idCentro)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+												ClienteDTO.builder()
+														.id(idCliente)
+														.idUsuario(idUser)
+														.build()
+										)
+								)
+						));
+	}
+
 	private void mockEntrenador(Long idCentro, Long idEntrenador) throws URISyntaxException, JsonProcessingException {
 		mockServer.expect(ExpectedCount.manyTimes(),
 						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
@@ -184,6 +201,22 @@ class CiklumBackendTareaApplicationTests {
 												EntrenadorDTO.builder()
 														.id(idEntrenador)
 														.idUsuario(10L)
+														.build()
+										)
+								)
+						));
+	}
+
+	private void mockEntrenadorIdUsuario(Long idCentro, Long idEntrenador, Long idUsuario) throws URISyntaxException, JsonProcessingException {
+		mockServer.expect(ExpectedCount.manyTimes(),
+						requestTo(new URI("http://localhost:" + 8080 + "/entrenador?centro=" + idCentro)))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withStatus(HttpStatus.OK)
+						.contentType(MediaType.APPLICATION_JSON)
+						.body(objectMapper.writeValueAsString(Collections.singletonList(
+												EntrenadorDTO.builder()
+														.id(idEntrenador)
+														.idUsuario(idUsuario)
 														.build()
 										)
 								)
@@ -220,7 +253,7 @@ class CiklumBackendTareaApplicationTests {
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
 		}^*/
 
-		/*@Test
+		@Test
 		@DisplayName("devuelve error cuando se intenta sacar la lista de sesiones de un plan no existente o no asociado a un cliente")
 		public void errorGetAllSessionsForPlan() throws URISyntaxException, JsonProcessingException {
 			// Identificadores
@@ -233,7 +266,8 @@ class CiklumBackendTareaApplicationTests {
 
 			mockEntrena(idCliente, idPlan);
 			mockCentro(idCentro);
-			//mockCliente(idCentro, idCliente);
+			mockClienteIdUser(idCentro, idCliente,11L);
+			mockEntrenadorIdUsuario(idCentro,28L,14L);
 
 			// Peticion al microservicio
 			HttpHeaders headers = new HttpHeaders();
@@ -243,10 +277,10 @@ class CiklumBackendTareaApplicationTests {
 			var respuesta = testRestTemplate.exchange(urlSolicitud, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Sesion>>() {});
 
 			assertThat(respuesta.getStatusCode().value()).isEqualTo(404);
-			assertThat(respuesta.getBody().size()).isEqualTo(1);
+			/*assertThat(respuesta.getBody().size()).isEqualTo(1);
 			assertThat(respuesta.getBody().get(0).getId()).isEqualTo(s1.getId());
-			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());
-		}*/
+			assertThat(respuesta.getBody().get(0).getDescripcion()).isEqualTo(s1.getDescripcion());*/
+		}
 
 		/*@Test
 		@DisplayName("devuelve error cuando se intenta insertar sesion a plan no existente")
