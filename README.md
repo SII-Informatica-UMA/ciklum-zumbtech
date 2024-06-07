@@ -40,11 +40,15 @@ Se trata de un proyecto que conecta a un frontend con un backend que se comunica
    
    ```bash
    cd nombre_del_repositorio
-4. Ejecuta el siguiente comando Docker para lanzar todos los servicios:
+4. La primera vez que lo quieras probar, ejecuta el siguiente comando Docker para lanzar todos los servicios:
    
    ```bash
    docker compose up --build
-5. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
+4. El resto de veces, simplemente ejecuta este otro comando Docker para lanzar todos los servicios:
+   
+   ```bash
+   docker compose up 
+6. Abre tu navegador y navega a http://localhost:4200 para ver la aplicación en acción.
 
 ## Uso y funcionalidades
 Una vez se han lanzado todos los servicios a través del comando de Docker, el usuario podrá consultar estas distintas opciones:
