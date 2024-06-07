@@ -53,7 +53,11 @@ Se trata de un proyecto que conecta a un frontend con un backend que se comunica
 ## Uso y funcionalidades
 Una vez se han lanzado todos los servicios a través del comando de Docker, el usuario podrá consultar estas distintas opciones:
 
-- **La Aplicación Angular**: abriendo el navegador y insertando la url http://localhost:4200, se podrá hacer uso de forma normal de la aplicación de frontend que será completamente funcional y ya estará conectado al backend que no tiene la seguridad activa.
+- **La Aplicación Angular**: abriendo el navegador y insertando la url http://localhost:4200, se podrá hacer uso de forma normal de la aplicación de frontend que será completamente funcional y ya estará conectado al backend que no tiene la seguridad activa. Nota: para conectarse con admin a la aplicación, el correo es admin@uma.es y la contraseña es admin.
+
+<p align="center">
+   <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/frontend.png"/>
+</p>
 
 - **El Swagger del Backend sin seguridad**: abriendo el navegador y insertando la url http://localhost:8080/swagger-ui/index.html#, se podrá observar la especificación de la API a la que se está conectando nuestra aplicación angular. Es una especificación completa con todos los microservicios, pero no tiene la seguridad activa.
   
