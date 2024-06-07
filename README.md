@@ -53,17 +53,20 @@ Una vez se han lanzado todos los servicios a través del comando de Docker, el u
 
 - **El Swagger del Backend sin seguridad**: abriendo el navegador y insertando la url http://localhost:8080/swagger-ui/index.html#, se podrá observar la especificación de la API a la que se está conectando nuestra aplicación angular. Es una especificación completa con todos los microservicios, pero no tiene la seguridad activa.
   
-  <p align="center">
+<p align="center">
    <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto.png"/>
 </p>
 
 - **El Swagger del Backend con seguridad**: abriendo el navegador y insertando la url http://localhost:8081/swagger-ui/index.html#, se podrá observar la especificación de la API del backend que sí que tiene la seguridad activa. Esta solo tiene la implementación del microservicio de gestión de sesiones por parte de clientes.
-  <p align="center">
+  
+<p align="center">
    <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto2.png"/>
-  </p>
-- Si bien esta API no es la que se usa para hacer la conexión desde el proyecto en angular, la añado al proyecto porque demuestra que sé como implantar seguridad desde una aplicación SpringBoot. Si se hace         cualquier petición sin añadir la contraseña o un token válido se devolverá un error 403.
+</p>
+
+- Si bien esta API no es la que se usa para hacer la conexión desde el proyecto en angular, la añado al proyecto porque demuestra que sé como implantar seguridad desde una aplicación SpringBoot. Si se hace         cualquier petición sin añadir la contraseña o un token válido se devolverá un error 403. 
 
 <p align="center">
+   <br>
    <img src="https://github.com/rorro6787/rorro6787/blob/main/Images/foto3.png"/>
 </p>
 
