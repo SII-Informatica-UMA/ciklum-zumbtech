@@ -35,7 +35,7 @@ Se trata de un proyecto que conecta a un frontend con un backend que se comunica
 1. Clona este repositorio a tu máquina local utilizando el siguiente comando:
    
    ```bash
-   git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+   git clone url_del_repositorio
 3. Navega hasta el directorio del proyecto:
    
    ```bash
@@ -73,8 +73,3 @@ Una vez se han lanzado todos los servicios a través del comando de Docker, el u
 ## Soporte
 
 Si tienes algún problema o pregunta sobre este proyecto, no dudes en abrir un issue en el repositorio o contactar al equipo de desarrollo en 0610948715@uma.es.
-
-¡Gracias por tu interés en nuestro proyecto! Esperamos tus contribuciones.
-
-
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/5-86A-DI)
